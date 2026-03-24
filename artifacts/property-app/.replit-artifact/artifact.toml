@@ -1,0 +1,27 @@
+kind = "mobile"
+previewPath = "/property-app/"
+title = "Property Dashboard Mobile"
+version = "1.0.0"
+id = "artifacts/property-app"
+router = "expo-domain"
+
+[[integratedSkills]]
+name = "expo"
+version = "1.0.0"
+
+[[services]]
+ensurePreviewReachable = "/status"
+name = "expo"
+paths = [ "/property-app/" ]
+localPort = 22078
+
+[services.development]
+run = "pnpm --filter @workspace/property-app run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/property-app", "run", "build" ]
+run = [ "pnpm", "--filter", "@workspace/property-app", "run", "serve" ]
+
+[services.env]
+PORT = "22078"
+BASE_PATH = "/property-app/"
