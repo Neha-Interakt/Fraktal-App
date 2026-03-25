@@ -1,3 +1,4 @@
+import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import {
@@ -10,13 +11,59 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Circle, Path } from "react-native-svg";
+import Svg, { Path, Rect, G } from "react-native-svg";
 import Colors from "@/constants/colors";
 
-const { width: SW } = Dimensions.get("window");
 const isWeb = Platform.OS === "web";
 
-// ─── SVG Icons from Figma ────────────────────────────────────────────────────
+// ─── Status Bar Icons (from Figma) ───────────────────────────────────────────
+
+function CellularIcon() {
+  return (
+    <Svg width={20} height={12} viewBox="0 0 20 12" fill="none">
+      <Rect x={0} y={7} width={3} height={5} rx={0.5} fill="#0c0c0c" />
+      <Rect x={4.25} y={5} width={3} height={7} rx={0.5} fill="#0c0c0c" />
+      <Rect x={8.5} y={3} width={3} height={9} rx={0.5} fill="#0c0c0c" />
+      <Rect x={12.75} y={1} width={3} height={11} rx={0.5} fill="#0c0c0c" />
+      <Rect x={17} y={0} width={3} height={12} rx={0.5} fill="#0c0c0c" opacity={0.3} />
+    </Svg>
+  );
+}
+
+function WifiIcon() {
+  return (
+    <Svg width={18} height={13} viewBox="0 0 18 13" fill="none">
+      <Path
+        d="M9 10.5C9.82843 10.5 10.5 11.1716 10.5 12C10.5 12.8284 9.82843 13.5 9 13.5C8.17157 13.5 7.5 12.8284 7.5 12C7.5 11.1716 8.17157 10.5 9 10.5Z"
+        fill="#0c0c0c"
+      />
+      <Path
+        d="M9 6.5C10.6576 6.5 12.1663 7.17 13.2635 8.25L14.6777 6.8358C13.2101 5.39578 11.2041 4.5 9 4.5C6.79589 4.5 4.78988 5.39578 3.32233 6.8358L4.73654 8.25C5.83372 7.17 7.34236 6.5 9 6.5Z"
+        fill="#0c0c0c"
+      />
+      <Path
+        d="M9 2.5C11.7614 2.5 14.2614 3.61929 16.0711 5.42893L17.4853 4.01472C15.3137 1.84315 12.3137 0.5 9 0.5C5.68629 0.5 2.68629 1.84315 0.514718 4.01472L1.92893 5.42893C3.73858 3.61929 6.23858 2.5 9 2.5Z"
+        fill="#0c0c0c"
+      />
+    </Svg>
+  );
+}
+
+function BatteryIcon() {
+  return (
+    <Svg width={25} height={13} viewBox="0 0 25 13" fill="none">
+      <Rect x={0.5} y={0.5} width={21} height={12} rx={3.5} stroke="#0c0c0c" strokeOpacity={0.35} />
+      <Rect x={2} y={2} width={16} height={9} rx={2} fill="#0c0c0c" />
+      <Path
+        d="M23 4.5V8.5C23.8047 8.17 24.5 7.17 24.5 6.5C24.5 5.83 23.8047 4.83 23 4.5Z"
+        fill="#0c0c0c"
+        fillOpacity={0.4}
+      />
+    </Svg>
+  );
+}
+
+// ─── App SVG Icons ────────────────────────────────────────────────────────────
 
 function BellIcon() {
   return (
@@ -66,7 +113,7 @@ function ChatIcon() {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M13.125 12C13.125 12.2225 13.059 12.44 12.9354 12.625C12.8118 12.81 12.6361 12.9542 12.4305 13.0394C12.225 13.1245 11.9988 13.1468 11.7805 13.1034C11.5623 13.06 11.3618 12.9528 11.2045 12.7955C11.0472 12.6382 10.94 12.4377 10.8966 12.2195C10.8532 12.0012 10.8755 11.775 10.9606 11.5695C11.0458 11.3639 11.19 11.1882 11.375 11.0646C11.56 10.941 11.7775 10.875 12 10.875C12.2984 10.875 12.5845 10.9935 12.7955 11.2045C13.0065 11.4155 13.125 11.7016 13.125 12ZM7.875 10.875C7.6525 10.875 7.43499 10.941 7.24998 11.0646C7.06498 11.1882 6.92078 11.3639 6.83564 11.5695C6.75049 11.775 6.72821 12.0012 6.77162 12.2195C6.81502 12.4377 6.92217 12.6382 7.0795 12.7955C7.23684 12.9528 7.43729 13.06 7.65552 13.1034C7.87375 13.1468 8.09995 13.1245 8.30552 13.0394C8.51109 12.9542 8.68679 12.81 8.8104 12.625C8.93402 12.44 9 12.2225 9 12C9 11.7016 8.88147 11.4155 8.6705 11.2045C8.45952 10.9935 8.17337 10.875 7.875 10.875ZM16.125 10.875C15.9025 10.875 15.685 10.941 15.5 11.0646C15.315 11.1882 15.1708 11.3639 15.0856 11.5695C15.0005 11.775 14.9782 12.0012 15.0216 12.2195C15.065 12.4377 15.1722 12.6382 15.3295 12.7955C15.4868 12.9528 15.6873 13.06 15.9055 13.1034C16.1238 13.1468 16.35 13.1245 16.5555 13.0394C16.7611 12.9542 16.9368 12.81 17.0604 12.625C17.184 12.44 17.25 12.2225 17.25 12C17.25 11.7016 17.1315 11.4155 16.9205 11.2045C16.7095 10.9935 16.4234 10.875 16.125 10.875ZM21.75 12C21.7504 13.6833 21.3149 15.338 20.486 16.8031C19.6572 18.2682 18.4631 19.4938 17.02 20.3605C15.577 21.2272 13.9341 21.7055 12.2514 21.7489C10.5686 21.7923 8.9033 21.3993 7.4175 20.6081L4.22531 21.6722C3.96102 21.7603 3.6774 21.7731 3.40624 21.7091C3.13509 21.6451 2.88711 21.5069 2.69011 21.3099C2.49311 21.1129 2.35486 20.8649 2.29087 20.5938C2.22688 20.3226 2.23967 20.039 2.32781 19.7747L3.39187 16.5825C2.59602 15.1085 2.23209 13.4438 2.33964 11.7747C2.44718 10.1056 3.02206 8.50109 4.0004 7.14456C4.97874 5.78803 6.31985 4.73418 7.86738 4.10523C9.41491 3.47628 11.1085 3.29745 12.7554 3.58985C14.4023 3.88224 15.933 4.63384 17.1691 5.75832C18.4052 6.8828 19.2954 8.33368 19.7389 9.94405C20.1824 11.5544 20.1609 13.2574 19.6769 14.8561C19.1929 16.4548 18.2663 17.8831 17.0025 18.975L16.875 18.75C18.375 17.625 19.5 16.0313 20.0156 14.2028C20.5313 12.3744 20.3906 10.4278 19.6306 8.6925C18.8706 6.95719 17.5322 5.53031 15.8414 4.64972C14.1506 3.76912 12.2069 3.48506 10.3321 3.84518C8.45728 4.2053 6.75866 5.18929 5.50716 6.63506C4.25566 8.08083 3.52471 9.90601 3.43072 11.8125C3.33672 13.719 3.88526 15.6044 4.98675 17.1638L5.10938 17.3438L3.97219 20.8041L7.50938 19.6697L7.6875 19.7625C8.98266 20.4413 10.4284 20.7669 11.8857 20.7093C13.343 20.6516 14.7591 20.2127 15.9977 19.4363C17.2363 18.6599 18.2543 17.5722 18.9516 16.2798C19.6489 14.9875 20.0026 13.5349 19.9779 12.0638L21.75 12Z"
+        d="M12 2.25C6.615 2.25 2.25 6.615 2.25 12.0272C2.25 13.8216 2.72344 15.5447 3.60938 17.0522L2.27344 21.1116C2.19938 21.3366 2.19281 21.5778 2.25438 21.8062C2.31594 22.0347 2.44313 22.2413 2.62031 22.4003C2.79844 22.5591 3.01875 22.6538 3.25125 22.6725C3.48375 22.6913 3.71531 22.6322 3.91406 22.5047L7.98281 20.0028C9.24094 20.5894 10.6078 20.8931 12 20.8931C17.385 20.8931 21.75 16.5338 21.75 12.0272C21.75 7.52063 17.385 2.25 12 2.25ZM12 19.3931C10.7484 19.3941 9.51281 19.1072 8.38594 18.5541L8.11875 18.4228L4.40625 20.6316L5.54531 17.1197L5.36344 16.8422C4.49531 15.5297 4.03594 13.9997 4.03594 12.3188C4.03594 7.97438 7.64063 3.75 12 3.75C16.3594 3.75 19.9641 7.97438 19.9641 12.3188C19.9641 16.6631 16.3594 19.3931 12 19.3931Z"
         fill="#FFCB29"
       />
     </Svg>
@@ -95,20 +142,35 @@ function ClockSmallIcon() {
   );
 }
 
+// ─── Status Bar (Figma TopHeader) ────────────────────────────────────────────
+
+function StatusBar() {
+  const insets = useSafeAreaInsets();
+  const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
+
+  return (
+    <View style={[s.statusBar, { paddingTop: topPad }]}>
+      <Text style={s.statusTime}>9:41</Text>
+      <View style={s.statusIcons}>
+        <CellularIcon />
+        <WifiIcon />
+        <BatteryIcon />
+      </View>
+    </View>
+  );
+}
+
 // ─── Navbar ───────────────────────────────────────────────────────────────────
 
 function Navbar() {
-  const insets = useSafeAreaInsets();
   return (
-    <View style={[s.navbar, { paddingTop: insets.top + 8 }]}>
-      {/* Left: Welcome + Total Properties badge */}
+    <View style={s.navbar}>
       <View style={s.navLeft}>
         <Text style={s.navWelcome}>Welcome back, Aditya!</Text>
         <View style={s.totalPropertiesBadge}>
           <Text style={s.totalPropertiesText}>Total Properties: 08</Text>
         </View>
       </View>
-      {/* Right: Bell */}
       <View style={s.navRight}>
         <TouchableOpacity activeOpacity={0.7}>
           <BellIcon />
@@ -123,11 +185,9 @@ function Navbar() {
 function RevenueCard() {
   return (
     <View style={s.revenueCard}>
-      {/* Icon box */}
       <View style={s.analyticsIconBox}>
         <BuildingOfficeIcon />
       </View>
-      {/* Text */}
       <View style={s.analyticsTexts}>
         <Text style={s.analyticsLabel}>Monthly Revenue</Text>
         <Text style={s.analyticsValue}>₹1,28,000 </Text>
@@ -137,15 +197,7 @@ function RevenueCard() {
   );
 }
 
-function SmallAnalyticsCard({
-  label,
-  value,
-  sub,
-}: {
-  label: string;
-  value: string;
-  sub: string;
-}) {
+function SmallAnalyticsCard({ label, value, sub }: { label: string; value: string; sub: string }) {
   return (
     <View style={s.smallCard}>
       <View style={s.analyticsIconBox}>
@@ -162,13 +214,7 @@ function SmallAnalyticsCard({
 
 // ─── Quick Actions ────────────────────────────────────────────────────────────
 
-function QuickAction({
-  icon,
-  label,
-}: {
-  icon: React.ReactNode;
-  label: string;
-}) {
+function QuickAction({ icon, label }: { icon: React.ReactNode; label: string }) {
   return (
     <View style={s.quickAction}>
       <LinearGradient
@@ -186,20 +232,32 @@ function QuickAction({
 
 // ─── Property Card ────────────────────────────────────────────────────────────
 
+const PROPERTY_IMAGES = [
+  "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=500&q=80",
+  "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=500&q=80",
+];
+
 function PropertyCard({
   name,
   tenant,
   rent,
+  imageUri,
 }: {
   name: string;
   tenant: string;
   rent: string;
+  imageUri: string;
 }) {
   return (
     <View style={s.propertyCard}>
-      {/* Image placeholder */}
+      {/* Property image */}
       <View style={s.propertyImageCol}>
-        <View style={s.propertyImagePlaceholder} />
+        <Image
+          source={{ uri: imageUri }}
+          style={s.propertyImage}
+          contentFit="cover"
+          transition={200}
+        />
       </View>
       {/* Bottom info */}
       <View style={s.propertyBottom}>
@@ -273,37 +331,32 @@ export default function HomeScreen() {
 
   return (
     <View style={s.screen}>
-      <Navbar />
+      <View style={s.topSection}>
+        <StatusBar />
+        <Navbar />
+      </View>
       <ScrollView
         style={s.scroll}
         contentContainerStyle={[s.scrollContent, { paddingBottom: bottomPad }]}
         showsVerticalScrollIndicator={false}
       >
-        {/* ── Analytics ── */}
+        {/* Analytics */}
         <View style={s.analyticsSection}>
           <RevenueCard />
           <View style={s.smallCardsRow}>
-            <SmallAnalyticsCard
-              label="Occupancy rate"
-              value="94%"
-              sub="+3.5%"
-            />
-            <SmallAnalyticsCard
-              label="Total ROI"
-              value="12%"
-              sub="Since inception"
-            />
+            <SmallAnalyticsCard label="Occupancy rate" value="94%" sub="+3.5%" />
+            <SmallAnalyticsCard label="Total ROI" value="12%" sub="Since inception" />
           </View>
         </View>
 
-        {/* ── Quick Actions ── */}
+        {/* Quick Actions */}
         <View style={s.quickActionsBar}>
           <QuickAction icon={<PlusCircleIcon />} label="Add property" />
           <QuickAction icon={<ChatIcon />} label="Chats" />
           <QuickAction icon={<FilesIcon />} label="Documents " />
         </View>
 
-        {/* ── Properties ── */}
+        {/* Properties */}
         <View style={s.sectionHeader}>
           <Text style={s.sectionTitle}>Properties</Text>
           <TouchableOpacity activeOpacity={0.7}>
@@ -319,16 +372,18 @@ export default function HomeScreen() {
             name="Prestige Lakeside Habitat"
             tenant="Ramesh Kumar"
             rent="₹28,000/mo "
+            imageUri={PROPERTY_IMAGES[0]}
           />
           <PropertyCard
             name="Sunset Apartments #402"
             tenant="Harish Rao"
             rent="₹28,000/mo "
+            imageUri={PROPERTY_IMAGES[1]}
           />
         </ScrollView>
 
-        {/* ── Recent Activities ── */}
-        <View style={[s.sectionHeader, { marginTop: 8 }]}>
+        {/* Recent Activities */}
+        <View style={[s.sectionHeader, { marginTop: 4 }]}>
           <Text style={s.sectionTitle}>Recent Activities</Text>
           <TouchableOpacity activeOpacity={0.7}>
             <Text style={s.seeMore}>See more</Text>
@@ -361,14 +416,37 @@ const s = StyleSheet.create({
     flex: 1,
     backgroundColor: "#e9e9e9",
   },
-
-  // Navbar
-  navbar: {
+  topSection: {
     backgroundColor: "#ffffff",
+  },
+
+  // Status bar
+  statusBar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
+    paddingBottom: 4,
+  },
+  statusTime: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 15,
+    color: "#0c0c0c",
+    letterSpacing: -0.3,
+  },
+  statusIcons: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+
+  // Navbar
+  navbar: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: 16,
+    paddingTop: 8,
     paddingBottom: 16,
   },
   navLeft: {
@@ -409,9 +487,7 @@ const s = StyleSheet.create({
   },
 
   // Analytics
-  analyticsSection: {
-    gap: 12,
-  },
+  analyticsSection: { gap: 12 },
   revenueCard: {
     backgroundColor: Colors.primary,
     borderRadius: 16,
@@ -427,10 +503,7 @@ const s = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  analyticsTexts: {
-    flexDirection: "column",
-    gap: 12,
-  },
+  analyticsTexts: { flexDirection: "column", gap: 12 },
   analyticsLabel: {
     fontFamily: "Inter_400Regular",
     fontSize: 14,
@@ -453,10 +526,7 @@ const s = StyleSheet.create({
     fontSize: 10,
     color: "#f8f8f8",
   },
-  smallCardsRow: {
-    flexDirection: "row",
-    gap: 12,
-  },
+  smallCardsRow: { flexDirection: "row", gap: 12 },
   smallCard: {
     flex: 1,
     backgroundColor: Colors.primary,
@@ -518,10 +588,7 @@ const s = StyleSheet.create({
   },
 
   // Properties
-  propertiesScrollContent: {
-    gap: 10,
-    paddingRight: 4,
-  },
+  propertiesScrollContent: { gap: 10, paddingRight: 4 },
   propertyCard: {
     backgroundColor: "#fbfbfb",
     borderRadius: 16,
@@ -537,11 +604,10 @@ const s = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-  propertyImagePlaceholder: {
+  propertyImage: {
     flex: 1,
-    backgroundColor: "#d3d3d3",
-    borderRadius: 12,
     width: "100%",
+    borderRadius: 12,
   },
   propertyBottom: {
     width: "100%",
@@ -558,7 +624,7 @@ const s = StyleSheet.create({
     fontFamily: "Inter_500Medium",
     fontSize: 12,
     color: "#323232",
-    width: 185,
+    width: 160,
   },
   propertyRow: {
     flexDirection: "row",
@@ -605,9 +671,7 @@ const s = StyleSheet.create({
   },
 
   // Activities
-  activitiesCol: {
-    gap: 16,
-  },
+  activitiesCol: { gap: 16 },
   activityCard: {
     backgroundColor: Colors.primary,
     borderRadius: 16,
@@ -638,7 +702,7 @@ const s = StyleSheet.create({
   activityTitleCol: {
     flexDirection: "column",
     gap: 2,
-    width: 173,
+    flex: 1,
   },
   activityTitle: {
     fontFamily: "Inter_600SemiBold",
