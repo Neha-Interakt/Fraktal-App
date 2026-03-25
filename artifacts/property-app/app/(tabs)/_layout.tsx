@@ -1,11 +1,13 @@
 import { Tabs } from "expo-router";
-import { Platform, View, StyleSheet, Pressable } from "react-native";
+import React from "react";
+import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path, Circle } from "react-native-svg";
+import Svg, { Path } from "react-native-svg";
 import Colors from "@/constants/colors";
 
-function HomeIcon({ active }: { active: boolean }) {
-  const color = active ? Colors.gold : Colors.white300;
+// ── Nav Icons ─────────────────────────────────────────────────────────────────
+
+function HomeFillIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -16,8 +18,7 @@ function HomeIcon({ active }: { active: boolean }) {
   );
 }
 
-function BuildingsIcon({ active }: { active: boolean }) {
-  const color = active ? Colors.gold : Colors.white300;
+function BuildingsIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -28,8 +29,7 @@ function BuildingsIcon({ active }: { active: boolean }) {
   );
 }
 
-function DollarIcon({ active }: { active: boolean }) {
-  const color = active ? Colors.gold : Colors.white300;
+function DollarIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -40,8 +40,7 @@ function DollarIcon({ active }: { active: boolean }) {
   );
 }
 
-function WrenchIcon({ active }: { active: boolean }) {
-  const color = active ? Colors.gold : Colors.white300;
+function WrenchIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -52,99 +51,90 @@ function WrenchIcon({ active }: { active: boolean }) {
   );
 }
 
-function PersonIcon({ active }: { active: boolean }) {
-  const color = active ? Colors.gold : Colors.white300;
+function UserIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M12 12C14.7614 12 17 9.76142 17 7C17 4.23858 14.7614 2 12 2C9.23858 2 7 4.23858 7 7C7 9.76142 9.23858 12 12 12Z"
-        fill={color}
-      />
-      <Path
-        d="M12 14C7.58172 14 4 17.134 4 21C4 21.5523 4.44772 22 5 22H19C19.5523 22 20 21.5523 20 21C20 17.134 16.4183 14 12 14Z"
+        d="M12.75 13.5H11.25C9.45979 13.5022 7.74368 14.2128 6.47889 15.4776C5.21411 16.7424 4.50347 18.4585 4.5 20.25C4.5 20.4489 4.57902 20.6397 4.71967 20.7803C4.86032 20.921 5.05109 21 5.25 21H18.75C18.9489 21 19.1397 20.921 19.2803 20.7803C19.421 20.6397 19.5 20.4489 19.5 20.25C19.4965 18.4585 18.7859 16.7424 17.5211 15.4776C16.2563 14.2128 14.5402 13.5022 12.75 13.5ZM6.01875 19.5C6.18806 18.2119 6.81409 17.0252 7.78312 16.1618C8.75215 15.2984 10.0018 14.8171 11.3006 14.8069C11.7503 14.8034 12.1995 14.8457 12.6413 14.9333C14.0435 15.2025 15.2992 15.9724 16.1812 17.098C16.7428 17.8124 17.1186 18.6565 17.2772 19.5H6.01875ZM12 12C12.89 12 13.76 11.7361 14.5001 11.2416C15.2401 10.7471 15.8169 10.0443 16.1575 9.22208C16.4981 8.39981 16.5872 7.495 16.4135 6.62209C16.2399 5.74918 15.8113 4.94736 15.182 4.31802C14.5526 3.68868 13.7508 3.2601 12.8779 3.08647C12.005 2.91283 11.1002 3.00195 10.2779 3.34254C9.45565 3.68314 8.75289 4.25991 8.25839 4.99993C7.76389 5.73995 7.5 6.61 7.5 7.5C7.5013 8.69326 7.97568 9.83726 8.81948 10.6811C9.66328 11.5249 10.8072 11.9993 12 12ZM12 4.5C12.5933 4.5 13.1734 4.67595 13.6667 5.00559C14.1601 5.33524 14.5446 5.80377 14.7716 6.35195C14.9987 6.90013 15.0581 7.50333 14.9424 8.08527C14.8266 8.66721 14.5409 9.20176 14.1213 9.62132C13.7018 10.0409 13.1672 10.3266 12.5853 10.4424C12.0033 10.5581 11.4001 10.4987 10.852 10.2716C10.3038 10.0446 9.83524 9.66006 9.50559 9.16671C9.17595 8.67336 9 8.09334 9 7.5C9 6.70435 9.31607 5.94129 9.87868 5.37868C10.4413 4.81607 11.2044 4.5 12 4.5Z"
         fill={color}
       />
     </Svg>
   );
 }
 
-function TabIcon({ name, focused }: { name: string; focused: boolean }) {
-  switch (name) {
-    case "home": return <HomeIcon active={focused} />;
-    case "buildings": return <BuildingsIcon active={focused} />;
-    case "dollar": return <DollarIcon active={focused} />;
-    case "wrench": return <WrenchIcon active={focused} />;
-    case "person": return <PersonIcon active={focused} />;
-    default: return null;
-  }
-}
+// ── Custom Tab Bar ─────────────────────────────────────────────────────────────
 
-function CustomTabBar({ state, descriptors, navigation }: any) {
+const NAV_ICONS = [
+  { name: "index", label: "Home", Icon: HomeFillIcon },
+  { name: "properties", label: "", Icon: BuildingsIcon },
+  { name: "finance", label: "", Icon: DollarIcon },
+  { name: "maintenance", label: "", Icon: WrenchIcon },
+  { name: "profile", label: "", Icon: UserIcon },
+];
+
+function CustomTabBar({ state, navigation }: any) {
   const insets = useSafeAreaInsets();
   const isWeb = Platform.OS === "web";
 
   return (
     <View
       style={[
-        styles.tabBar,
-        {
-          paddingBottom: isWeb ? 10 : insets.bottom > 0 ? insets.bottom - 4 : 8,
-          marginBottom: isWeb ? 0 : insets.bottom > 0 ? 8 : 12,
-          marginHorizontal: 16,
-        },
+        styles.tabBarWrapper,
+        { bottom: isWeb ? 12 : insets.bottom > 0 ? insets.bottom + 4 : 12 },
       ]}
     >
-      {state.routes.map((route: any, index: number) => {
-        const { options } = descriptors[route.key];
-        const isFocused = state.index === index;
+      <View style={styles.tabBar}>
+        {state.routes.map((route: any, index: number) => {
+          const isFocused = state.index === index;
+          const navItem = NAV_ICONS[index];
+          const iconColor = isFocused ? Colors.secondary : "#e9e9e9";
 
-        const onPress = () => {
-          const event = navigation.emit({
-            type: "tabPress",
-            target: route.key,
-            canPreventDefault: true,
-          });
-          if (!isFocused && !event.defaultPrevented) {
-            navigation.navigate(route.name);
-          }
-        };
+          const onPress = () => {
+            const event = navigation.emit({
+              type: "tabPress",
+              target: route.key,
+              canPreventDefault: true,
+            });
+            if (!isFocused && !event.defaultPrevented) {
+              navigation.navigate(route.name);
+            }
+          };
 
-        return (
-          <Pressable
-            key={route.key}
-            onPress={onPress}
-            style={[
-              styles.tabItem,
-              isFocused && styles.tabItemActive,
-            ]}
-          >
-            <TabIcon name={options.tabBarIconName} focused={isFocused} />
-            {isFocused && (
-              <View style={styles.activeLabel}>
-                {/* active dot indicator */}
-              </View>
-            )}
-          </Pressable>
-        );
-      })}
+          return (
+            <Pressable key={route.key} onPress={onPress} style={styles.tabItem}>
+              {isFocused ? (
+                <View style={styles.activeTabItem}>
+                  <navItem.Icon color={iconColor} />
+                  <Text style={styles.activeLabel}>Home</Text>
+                </View>
+              ) : (
+                <navItem.Icon color={iconColor} />
+              )}
+            </Pressable>
+          );
+        })}
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  tabBar: {
+  tabBarWrapper: {
     position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    left: 16,
+    right: 16,
+  },
+  tabBar: {
     flexDirection: "row",
     backgroundColor: Colors.primary,
     borderRadius: 32,
-    paddingTop: 8,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    alignItems: "center",
+    justifyContent: "space-between",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: -2 },
-    shadowOpacity: 0.15,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
     shadowRadius: 8,
     elevation: 10,
   },
@@ -152,13 +142,18 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 10,
-    borderRadius: 24,
+    paddingVertical: 4,
   },
-  tabItemActive: {
-    backgroundColor: "rgba(255,255,255,0.08)",
+  activeTabItem: {
+    alignItems: "center",
+    gap: 2,
   },
-  activeLabel: {},
+  activeLabel: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 10,
+    color: Colors.secondary,
+    lineHeight: 14,
+  },
 });
 
 export default function TabLayout() {
@@ -167,26 +162,11 @@ export default function TabLayout() {
       tabBar={(props) => <CustomTabBar {...props} />}
       screenOptions={{ headerShown: false }}
     >
-      <Tabs.Screen
-        name="index"
-        options={{ tabBarIconName: "home" } as any}
-      />
-      <Tabs.Screen
-        name="properties"
-        options={{ tabBarIconName: "buildings" } as any}
-      />
-      <Tabs.Screen
-        name="finance"
-        options={{ tabBarIconName: "dollar" } as any}
-      />
-      <Tabs.Screen
-        name="maintenance"
-        options={{ tabBarIconName: "wrench" } as any}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{ tabBarIconName: "person" } as any}
-      />
+      <Tabs.Screen name="index" />
+      <Tabs.Screen name="properties" />
+      <Tabs.Screen name="finance" />
+      <Tabs.Screen name="maintenance" />
+      <Tabs.Screen name="profile" />
     </Tabs>
   );
 }
