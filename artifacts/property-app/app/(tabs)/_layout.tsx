@@ -87,7 +87,7 @@ function CustomTabBar({ state, navigation }: any) {
         {state.routes.map((route: any, index: number) => {
           const isFocused = state.index === index;
           const navItem = NAV_ICONS[index];
-          const iconColor = isFocused ? Colors.secondary : "#e9e9e9";
+          const iconColor = Colors.secondary;
 
           const onPress = () => {
             const event = navigation.emit({
