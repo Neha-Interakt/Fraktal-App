@@ -2,12 +2,12 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path } from "react-native-svg";
+import Svg, { Path, Circle, Rect } from "react-native-svg";
 import Colors from "@/constants/colors";
 
-// ── Nav Icons ─────────────────────────────────────────────────────────────────
+// ── Filled Icons (active state) ────────────────────────────────────────────────
 
-function HomeFillIcon({ color }: { color: string }) {
+function HomeFilledIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -18,29 +18,29 @@ function HomeFillIcon({ color }: { color: string }) {
   );
 }
 
-function BuildingsIcon({ color }: { color: string }) {
+function BuildingsFilledIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M23.25 19.5H22.5V9.75C22.6989 9.75 22.8897 9.671 23.0303 9.53033C23.171 9.38968 23.25 9.19891 23.25 9C23.25 8.80109 23.171 8.61032 23.0303 8.46967C22.8897 8.32902 22.6989 8.25 22.5 8.25V7.5C22.5 7.10218 22.342 6.72064 22.0607 6.43934C21.7794 6.15804 21.3978 6 21 6H16.5V4.5C16.5 4.10218 16.342 3.72064 16.0607 3.43934C15.7794 3.15804 15.3978 3 15 3H3C2.60218 3 2.22064 3.15804 1.93934 3.43934C1.65804 3.72064 1.5 4.10218 1.5 4.5V19.5H0.75C0.551088 19.5 0.360322 19.579 0.21967 19.7197C0.0790176 19.8603 0 20.0511 0 20.25C0 20.4489 0.0790176 20.6397 0.21967 20.7803C0.360322 20.921 0.551088 21 0.75 21H23.25C23.4489 21 23.6397 20.921 23.7803 20.7803C23.921 20.6397 24 20.4489 24 20.25C24 20.0511 23.921 19.8603 23.7803 19.7197C23.6397 19.579 23.4489 19.5 23.25 19.5ZM16.5 9.75H21V19.5H16.5V9.75ZM3 4.5H15V19.5H12V15C12 14.8011 11.921 14.6103 11.7803 14.4697C11.6397 14.329 11.4489 14.25 11.25 14.25H6.75C6.55109 14.25 6.36032 14.329 6.21967 14.4697C6.07902 14.6103 6 14.8011 6 15V19.5H3V4.5ZM10.5 19.5H7.5V15.75H10.5V19.5Z"
+        d="M15 3H3C2.17 3 1.5 3.67 1.5 4.5V21H10.5V16.5H13.5V21H22.5V9C22.5 8.17 21.83 7.5 21 7.5H16.5V4.5C16.5 3.67 15.83 3 15 3ZM7.5 18H5.25V15.75H7.5V18ZM7.5 13.5H5.25V11.25H7.5V13.5ZM7.5 9H5.25V6.75H7.5V9ZM12 13.5H9.75V11.25H12V13.5ZM12 9H9.75V6.75H12V9ZM20.25 18H18V15.75H20.25V18ZM20.25 13.5H18V11.25H20.25V13.5Z"
         fill={color}
       />
     </Svg>
   );
 }
 
-function DollarIcon({ color }: { color: string }) {
+function DollarFilledIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M12 2.25C6.615 2.25 2.25 6.615 2.25 12C2.25 17.385 6.615 21.75 12 21.75C17.385 21.75 21.75 17.385 21.75 12C21.75 6.615 17.385 2.25 12 2.25ZM12 20.25C7.44375 20.25 3.75 16.5563 3.75 12C3.75 7.44375 7.44375 3.75 12 3.75C16.5563 3.75 20.25 7.44375 20.25 12C20.25 16.5563 16.5563 20.25 12 20.25ZM14.25 11.25H12.75V8.25H13.5C13.8978 8.25 14.2794 8.40804 14.5607 8.68934C14.842 8.97064 15 9.35218 15 9.75C15 9.94891 15.079 10.1397 15.2197 10.2803C15.3603 10.421 15.5511 10.5 15.75 10.5C15.9489 10.5 16.1397 10.421 16.2803 10.2803C16.421 10.1397 16.5 9.94891 16.5 9.75C16.5 8.95435 16.1839 8.19129 15.6213 7.62868C15.0587 7.06607 14.2957 6.75 13.5 6.75H12.75V6C12.75 5.80109 12.671 5.61032 12.5303 5.46967C12.3897 5.32902 12.1989 5.25 12 5.25C11.8011 5.25 11.6103 5.32902 11.4697 5.46967C11.329 5.61032 11.25 5.80109 11.25 6V6.75H10.5C9.70435 6.75 8.94129 7.06607 8.37868 7.62868C7.81607 8.19129 7.5 8.95435 7.5 9.75C7.5 10.5457 7.81607 11.3087 8.37868 11.8713C8.94129 12.4339 9.70435 12.75 10.5 12.75H11.25V15.75H10.5C10.1022 15.75 9.72064 15.592 9.43934 15.3107C9.15804 15.0294 9 14.6478 9 14.25C9 14.0511 8.92098 13.8603 8.78033 13.7197C8.63968 13.579 8.44891 13.5 8.25 13.5C8.05109 13.5 7.86032 13.579 7.71967 13.7197C7.57902 13.8603 7.5 14.0511 7.5 14.25C7.5 15.0457 7.81607 15.8087 8.37868 16.3713C8.94129 16.9339 9.70435 17.25 10.5 17.25H11.25V18C11.25 18.1989 11.329 18.3897 11.4697 18.5303C11.6103 18.671 11.8011 18.75 12 18.75C12.1989 18.75 12.3897 18.671 12.5303 18.5303C12.671 18.3897 12.75 18.1989 12.75 18V17.25H13.5C14.2957 17.25 15.0587 16.9339 15.6213 16.3713C16.1839 15.8087 16.5 15.0457 16.5 14.25C16.5 13.4543 16.1839 12.6913 15.6213 12.1287C15.0587 11.5661 14.2957 11.25 13.5 11.25H12.75V8.25H14.25V9.75ZM10.5 11.25C10.1022 11.25 9.72064 11.092 9.43934 10.8107C9.15804 10.5294 9 10.1478 9 9.75C9 9.35218 9.15804 8.97064 9.43934 8.68934C9.72064 8.40804 10.1022 8.25 10.5 8.25H11.25V11.25H10.5ZM13.5 12.75C13.8978 12.75 14.2794 12.908 14.5607 13.1893C14.842 13.4706 15 13.8522 15 14.25C15 14.6478 14.842 15.0294 14.5607 15.3107C14.2794 15.592 13.8978 15.75 13.5 15.75H12.75V12.75H13.5Z"
+        d="M12 2.25C6.615 2.25 2.25 6.615 2.25 12C2.25 17.385 6.615 21.75 12 21.75C17.385 21.75 21.75 17.385 21.75 12C21.75 6.615 17.385 2.25 12 2.25ZM13.5 17.25H12.75V18C12.75 18.414 12.414 18.75 12 18.75C11.586 18.75 11.25 18.414 11.25 18V17.25H10.5C9.254 17.25 8.25 16.246 8.25 15V14.25C8.25 13.836 8.586 13.5 9 13.5C9.414 13.5 9.75 13.836 9.75 14.25V15C9.75 15.414 10.086 15.75 10.5 15.75H11.25V12.75H10.5C9.254 12.75 8.25 11.746 8.25 10.5V9C8.25 7.754 9.254 6.75 10.5 6.75H11.25V6C11.25 5.586 11.586 5.25 12 5.25C12.414 5.25 12.75 5.586 12.75 6V6.75H13.5C14.746 6.75 15.75 7.754 15.75 9C15.75 9.414 15.414 9.75 15 9.75C14.586 9.75 14.25 9.414 14.25 9C14.25 8.586 13.914 8.25 13.5 8.25H12.75V11.25H13.5C14.746 11.25 15.75 12.254 15.75 13.5V15C15.75 16.246 14.746 17.25 13.5 17.25Z"
         fill={color}
       />
     </Svg>
   );
 }
 
-function WrenchIcon({ color }: { color: string }) {
+function WrenchFilledIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
@@ -51,26 +51,126 @@ function WrenchIcon({ color }: { color: string }) {
   );
 }
 
-function UserIcon({ color }: { color: string }) {
+function UserFilledIcon({ color }: { color: string }) {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
       <Path
-        d="M12.75 13.5H11.25C9.45979 13.5022 7.74368 14.2128 6.47889 15.4776C5.21411 16.7424 4.50347 18.4585 4.5 20.25C4.5 20.4489 4.57902 20.6397 4.71967 20.7803C4.86032 20.921 5.05109 21 5.25 21H18.75C18.9489 21 19.1397 20.921 19.2803 20.7803C19.421 20.6397 19.5 20.4489 19.5 20.25C19.4965 18.4585 18.7859 16.7424 17.5211 15.4776C16.2563 14.2128 14.5402 13.5022 12.75 13.5ZM6.01875 19.5C6.18806 18.2119 6.81409 17.0252 7.78312 16.1618C8.75215 15.2984 10.0018 14.8171 11.3006 14.8069C11.7503 14.8034 12.1995 14.8457 12.6413 14.9333C14.0435 15.2025 15.2992 15.9724 16.1812 17.098C16.7428 17.8124 17.1186 18.6565 17.2772 19.5H6.01875ZM12 12C12.89 12 13.76 11.7361 14.5001 11.2416C15.2401 10.7471 15.8169 10.0443 16.1575 9.22208C16.4981 8.39981 16.5872 7.495 16.4135 6.62209C16.2399 5.74918 15.8113 4.94736 15.182 4.31802C14.5526 3.68868 13.7508 3.2601 12.8779 3.08647C12.005 2.91283 11.1002 3.00195 10.2779 3.34254C9.45565 3.68314 8.75289 4.25991 8.25839 4.99993C7.76389 5.73995 7.5 6.61 7.5 7.5C7.5013 8.69326 7.97568 9.83726 8.81948 10.6811C9.66328 11.5249 10.8072 11.9993 12 12ZM12 4.5C12.5933 4.5 13.1734 4.67595 13.6667 5.00559C14.1601 5.33524 14.5446 5.80377 14.7716 6.35195C14.9987 6.90013 15.0581 7.50333 14.9424 8.08527C14.8266 8.66721 14.5409 9.20176 14.1213 9.62132C13.7018 10.0409 13.1672 10.3266 12.5853 10.4424C12.0033 10.5581 11.4001 10.4987 10.852 10.2716C10.3038 10.0446 9.83524 9.66006 9.50559 9.16671C9.17595 8.67336 9 8.09334 9 7.5C9 6.70435 9.31607 5.94129 9.87868 5.37868C10.4413 4.81607 11.2044 4.5 12 4.5Z"
+        d="M12 12C14.4853 12 16.5 9.98528 16.5 7.5C16.5 5.01472 14.4853 3 12 3C9.51472 3 7.5 5.01472 7.5 7.5C7.5 9.98528 9.51472 12 12 12Z"
+        fill={color}
+      />
+      <Path
+        d="M12.75 13.5H11.25C8.3505 13.5 6 15.8505 6 18.75V20.25C6 20.664 6.336 21 6.75 21H17.25C17.664 21 18 20.664 18 20.25V18.75C18 15.8505 15.6495 13.5 12.75 13.5Z"
         fill={color}
       />
     </Svg>
   );
 }
 
-// ── Custom Tab Bar ─────────────────────────────────────────────────────────────
+// ── Outline Icons (inactive state) ────────────────────────────────────────────
 
-const NAV_ICONS = [
-  { name: "index", label: "Home", Icon: HomeFillIcon },
-  { name: "properties", label: "", Icon: BuildingsIcon },
-  { name: "finance", label: "", Icon: DollarIcon },
-  { name: "maintenance", label: "", Icon: WrenchIcon },
-  { name: "profile", label: "", Icon: UserIcon },
+function HomeOutlineIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M21.4072 10.7803L12.5322 1.90531C12.3916 1.76484 12.1999 1.68567 12.0003 1.68567C11.8007 1.68567 11.609 1.76484 11.4684 1.90531L2.59338 10.7803C2.43016 10.9412 2.34165 11.1614 2.34165 11.4034C2.34165 11.6454 2.43016 11.8656 2.61958 12.017C2.78985 12.1771 3.01665 12.263 3.25026 12.255L4.50026 12.2203V20.25C4.50026 20.6478 4.6583 21.0294 4.9396 21.3107C5.2209 21.592 5.60243 21.75 6.00026 21.75H9.00026C9.19917 21.75 9.38994 21.671 9.53059 21.5303C9.67124 21.3897 9.75026 21.1989 9.75026 21V16.5H14.2503V21C14.2503 21.1989 14.3293 21.3897 14.4699 21.5303C14.6106 21.671 14.8014 21.75 15.0003 21.75H18.0003C18.3981 21.75 18.7796 21.592 19.0609 21.3107C19.3422 21.0294 19.5003 20.6478 19.5003 20.25V12.2203L20.7503 12.255C20.9839 12.263 21.2107 12.1771 21.381 12.017C21.5512 11.8568 21.6589 11.6363 21.6589 11.4034C21.6589 11.1614 21.5704 10.9412 21.4072 10.7803Z"
+        fill="none"
+        stroke={color}
+        strokeWidth={1.5}
+      />
+      <Path
+        d="M9.75 21V16.5H14.25V21"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+function BuildingsOutlineIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M3 21V4.5C3 3.672 3.672 3 4.5 3H15C15.828 3 16.5 3.672 16.5 4.5V7.5H19.5C20.328 7.5 21 8.172 21 9V21"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Path d="M1.5 21H22.5" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M6 7.5H9" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M6 11.25H9" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M6 15H9" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M12 15H10.5" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M12 11.25H10.5" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M17.25 12H19.5" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M17.25 15.75H19.5" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path
+        d="M10.5 21V16.5H13.5V21"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </Svg>
+  );
+}
+
+function DollarOutlineIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Circle cx={12} cy={12} r={9.75} stroke={color} strokeWidth={1.5} />
+      <Path
+        d="M12 6V7.5M12 16.5V18M9 9.75C9 8.507 10.007 7.5 11.25 7.5H12.75C13.993 7.5 15 8.507 15 9.75C15 10.993 13.993 12 12.75 12H11.25C10.007 12 9 13.007 9 14.25C9 15.493 10.007 16.5 11.25 16.5H12.75C13.993 16.5 15 15.493 15 14.25"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+      />
+    </Svg>
+  );
+}
+
+function WrenchOutlineIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        fill="none"
+      />
+    </Svg>
+  );
+}
+
+function UserOutlineIcon({ color }: { color: string }) {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path
+        d="M20 21V19C20 16.791 18.209 15 16 15H8C5.791 15 4 16.791 4 19V21"
+        stroke={color}
+        strokeWidth={1.5}
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <Circle cx={12} cy={7} r={4} stroke={color} strokeWidth={1.5} />
+    </Svg>
+  );
+}
+
+// ── Nav Config ─────────────────────────────────────────────────────────────────
+
+const NAV_ITEMS = [
+  { name: "index",       label: "Home",        FilledIcon: HomeFilledIcon,     OutlineIcon: HomeOutlineIcon },
+  { name: "properties",  label: "Properties",  FilledIcon: BuildingsFilledIcon, OutlineIcon: BuildingsOutlineIcon },
+  { name: "finance",     label: "Finance",     FilledIcon: DollarFilledIcon,   OutlineIcon: DollarOutlineIcon },
+  { name: "maintenance", label: "Maintenance", FilledIcon: WrenchFilledIcon,   OutlineIcon: WrenchOutlineIcon },
+  { name: "profile",     label: "Profile",     FilledIcon: UserFilledIcon,     OutlineIcon: UserOutlineIcon },
 ];
+
+// ── Custom Tab Bar ─────────────────────────────────────────────────────────────
 
 function CustomTabBar({ state, navigation }: any) {
   const insets = useSafeAreaInsets();
@@ -86,8 +186,8 @@ function CustomTabBar({ state, navigation }: any) {
       <View style={styles.tabBar}>
         {state.routes.map((route: any, index: number) => {
           const isFocused = state.index === index;
-          const navItem = NAV_ICONS[index];
-          const iconColor = Colors.secondary;
+          const item = NAV_ITEMS[index];
+          const color = Colors.secondary;
 
           const onPress = () => {
             const event = navigation.emit({
@@ -104,11 +204,11 @@ function CustomTabBar({ state, navigation }: any) {
             <Pressable key={route.key} onPress={onPress} style={styles.tabItem}>
               {isFocused ? (
                 <View style={styles.activeTabItem}>
-                  <navItem.Icon color={iconColor} />
-                  <Text style={styles.activeLabel}>Home</Text>
+                  <item.FilledIcon color={color} />
+                  <Text style={styles.activeLabel}>{item.label}</Text>
                 </View>
               ) : (
-                <navItem.Icon color={iconColor} />
+                <item.OutlineIcon color={color} />
               )}
             </Pressable>
           );
@@ -143,6 +243,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 4,
+    minHeight: 44,
   },
   activeTabItem: {
     alignItems: "center",
