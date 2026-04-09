@@ -1,5 +1,6 @@
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
+import { router } from "expo-router";
 import React from "react";
 import {
   Dimensions,
@@ -351,7 +352,9 @@ export default function HomeScreen() {
 
         {/* Quick Actions */}
         <View style={s.quickActionsBar}>
-          <QuickAction icon={<PlusCircleIcon />} label="Add property" />
+          <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
+            <QuickAction icon={<PlusCircleIcon />} label="Add property" />
+          </TouchableOpacity>
           <QuickAction icon={<ChatIcon />} label="Chats" />
           <QuickAction icon={<FilesIcon />} label="Documents " />
         </View>

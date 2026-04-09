@@ -190,7 +190,7 @@ export default function PropertiesScreen() {
             <Text style={s.pageTitle}>Properties</Text>
             <Text style={s.pageSubtitle}>{PROPERTIES_DATA.length} properties listed</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.8} style={s.addBtn}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/add-property")}>
             <View style={s.addBtnInner}>
               <PlusIcon />
             </View>

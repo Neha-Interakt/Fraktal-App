@@ -25,6 +25,7 @@ function RootLayoutNav() {
     <Stack screenOptions={{ headerBackTitle: "Back" }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="property-detail" options={{ headerShown: false, animation: "slide_from_right" }} />
+      <Stack.Screen name="add-property" options={{ headerShown: false, animation: "slide_from_bottom" }} />
     </Stack>
   );
 }
