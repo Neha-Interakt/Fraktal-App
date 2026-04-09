@@ -3,179 +3,19 @@ import { LinearGradient } from "expo-linear-gradient";
 import React, { useState } from "react";
 import {
   Platform,
-  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path, Rect } from "react-native-svg";
+import Svg, { Path, Rect, Circle, Ellipse } from "react-native-svg";
 import Colors from "@/constants/colors";
 
 const isWeb = Platform.OS === "web";
 
-// ─── Icons ───────────────────────────────────────────────────────────────────
-
-function SearchIcon() {
-  return (
-    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none">
-      <Path
-        d="M16.5 16.5L12.875 12.875M14.8333 8.16667C14.8333 11.8486 11.8486 14.8333 8.16667 14.8333C4.48477 14.8333 1.5 11.8486 1.5 8.16667C1.5 4.48477 4.48477 1.5 8.16667 1.5C11.8486 1.5 14.8333 4.48477 14.8333 8.16667Z"
-        stroke="#888"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
-
-function FilterIcon() {
-  return (
-    <Svg width={18} height={18} viewBox="0 0 18 18" fill="none">
-      <Path
-        d="M3 4.5H15M5.25 9H12.75M7.5 13.5H10.5"
-        stroke="#f8f8f8"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
-
-function MapPinIcon() {
-  return (
-    <Svg width={12} height={12} viewBox="0 0 12 12" fill="none">
-      <Path
-        d="M6 1C4.067 1 2.5 2.567 2.5 4.5C2.5 7 6 11 6 11C6 11 9.5 7 9.5 4.5C9.5 2.567 7.933 1 6 1ZM6 6C5.172 6 4.5 5.328 4.5 4.5C4.5 3.672 5.172 3 6 3C6.828 3 7.5 3.672 7.5 4.5C7.5 5.328 6.828 6 6 6Z"
-        fill="#888"
-      />
-    </Svg>
-  );
-}
-
-function BedIcon() {
-  return (
-    <Svg width={14} height={14} viewBox="0 0 14 14" fill="none">
-      <Path
-        d="M1 9.5V5.5C1 4.948 1.448 4.5 2 4.5H12C12.552 4.5 13 4.948 13 5.5V9.5"
-        stroke="#888"
-        strokeWidth={1.2}
-        strokeLinecap="round"
-      />
-      <Path
-        d="M1 9.5H13"
-        stroke="#888"
-        strokeWidth={1.2}
-        strokeLinecap="round"
-      />
-      <Rect x={1} y={9.5} width={12} height={2} rx={0.5} stroke="#888" strokeWidth={1.2} />
-      <Path
-        d="M4 4.5V3C4 2.448 4.448 2 5 2H9C9.552 2 10 2.448 10 3V4.5"
-        stroke="#888"
-        strokeWidth={1.2}
-        strokeLinecap="round"
-      />
-    </Svg>
-  );
-}
-
-function AreaIcon() {
-  return (
-    <Svg width={14} height={14} viewBox="0 0 14 14" fill="none">
-      <Rect x={1.5} y={1.5} width={11} height={11} rx={1} stroke="#888" strokeWidth={1.2} />
-      <Path d="M4.5 4.5H9.5V9.5H4.5V4.5Z" stroke="#888" strokeWidth={1.2} />
-    </Svg>
-  );
-}
-
-function ChevronRightIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 16 16" fill="none">
-      <Path
-        d="M6 4L10 8L6 12"
-        stroke="#888"
-        strokeWidth={1.5}
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
-    </Svg>
-  );
-}
-
-function PlusIcon() {
-  return (
-    <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
-      <Path
-        d="M10 4V16M4 10H16"
-        stroke="#f8f8f8"
-        strokeWidth={2}
-        strokeLinecap="round"
-      />
-    </Svg>
-  );
-}
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-
-const PROPERTIES = [
-  {
-    id: "1",
-    name: "Prestige Lakeside Habitat",
-    location: "Whitefield, Bangalore",
-    tenant: "Ramesh Kumar",
-    rent: "₹28,000",
-    rating: "4.5",
-    beds: "3 BHK",
-    area: "1,450 sq.ft",
-    status: "Occupied",
-    image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80",
-  },
-  {
-    id: "2",
-    name: "Sunset Apartments #402",
-    location: "Koramangala, Bangalore",
-    tenant: "Harish Rao",
-    rent: "₹28,000",
-    rating: "4.5",
-    beds: "2 BHK",
-    area: "1,100 sq.ft",
-    status: "Occupied",
-    image: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=600&q=80",
-  },
-  {
-    id: "3",
-    name: "Ocean View Villa",
-    location: "Indiranagar, Bangalore",
-    tenant: "—",
-    rent: "₹45,000",
-    rating: "4.8",
-    beds: "4 BHK",
-    area: "2,200 sq.ft",
-    status: "Vacant",
-    image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80",
-  },
-  {
-    id: "4",
-    name: "Green Park Residency",
-    location: "HSR Layout, Bangalore",
-    tenant: "Priya Sharma",
-    rent: "₹18,500",
-    rating: "4.2",
-    beds: "1 BHK",
-    area: "650 sq.ft",
-    status: "Occupied",
-    image: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=600&q=80",
-  },
-];
-
-const FILTERS = ["All", "Occupied", "Vacant", "For Sale"];
-
-// ─── Status Bar ──────────────────────────────────────────────────────────────
+// ─── Status Bar Icons ─────────────────────────────────────────────────────────
 
 function CellularIcon() {
   return (
@@ -189,7 +29,7 @@ function CellularIcon() {
   );
 }
 
-function WifiIconSm() {
+function WifiIcon() {
   return (
     <Svg width={18} height={13} viewBox="0 0 18 13" fill="none">
       <Path d="M9 10.5C9.828 10.5 10.5 11.172 10.5 12C10.5 12.828 9.828 13.5 9 13.5C8.172 13.5 7.5 12.828 7.5 12C7.5 11.172 8.172 10.5 9 10.5Z" fill="#0c0c0c" />
@@ -199,7 +39,7 @@ function WifiIconSm() {
   );
 }
 
-function BatteryIconSm() {
+function BatteryIcon() {
   return (
     <Svg width={25} height={13} viewBox="0 0 25 13" fill="none">
       <Rect x={0.5} y={0.5} width={21} height={12} rx={3.5} stroke="#0c0c0c" strokeOpacity={0.35} />
@@ -209,88 +49,133 @@ function BatteryIconSm() {
   );
 }
 
-function StatusBarTop() {
-  const insets = useSafeAreaInsets();
+// ─── Nav Icons ────────────────────────────────────────────────────────────────
+
+function ArrowLeftIcon() {
   return (
-    <View style={[s.statusBar, { paddingTop: isWeb ? 8 : insets.top > 0 ? insets.top : 12 }]}>
-      <Text style={s.statusTime}>9:41</Text>
-      <View style={s.statusIcons}>
-        <CellularIcon />
-        <WifiIconSm />
-        <BatteryIconSm />
-      </View>
-    </View>
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M19.5 12H4.5M4.5 12L11.25 18.75M4.5 12L11.25 5.25" stroke="#1a365d" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
   );
 }
 
-// ─── Property Card ────────────────────────────────────────────────────────────
-
-function PropertyCard({ item }: { item: typeof PROPERTIES[0] }) {
-  const isOccupied = item.status === "Occupied";
+function ChatIcon() {
   return (
-    <View style={s.card}>
-      {/* Image */}
-      <View style={s.cardImageWrap}>
-        <Image
-          source={{ uri: item.image }}
-          style={s.cardImage}
-          contentFit="cover"
-          transition={200}
-        />
-        {/* Status badge over image */}
-        <View style={[s.statusBadge, { backgroundColor: isOccupied ? "#1a365d" : "#c9a227" }]}>
-          <Text style={s.statusBadgeText}>{item.status}</Text>
-        </View>
-        {/* Rating badge */}
-        <View style={s.ratingBadge}>
-          <Text style={s.ratingStar}>★</Text>
-          <Text style={s.ratingNum}>{item.rating}</Text>
-        </View>
-      </View>
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M21 11.5C21.0034 12.8199 20.6951 14.1219 20.1 15.3C19.3944 16.7118 18.3098 17.8992 16.9674 18.7293C15.6251 19.5594 14.0782 19.9994 12.5 20C11.1801 20.0035 9.87812 19.6951 8.7 19.1L3 21L4.9 15.3C4.30493 14.1219 3.99656 12.8199 4 11.5C4.00061 9.92179 4.44061 8.37488 5.27072 7.03258C6.10083 5.69028 7.28825 4.6056 8.7 3.90003C9.87812 3.30496 11.1801 2.99659 12.5 3.00003H13C15.0843 3.11502 17.053 3.99479 18.5291 5.47089C20.0052 6.94699 20.885 8.91568 21 11V11.5Z" stroke="#1a365d" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
 
-      {/* Info */}
-      <View style={s.cardBody}>
-        <View style={s.cardBodyTop}>
-          <View style={s.cardTitleRow}>
-            <Text style={s.cardName} numberOfLines={1}>{item.name}</Text>
-            <ChevronRightIcon />
-          </View>
-          <View style={s.locationRow}>
-            <MapPinIcon />
-            <Text style={s.locationText}>{item.location}</Text>
-          </View>
-        </View>
+// ─── Spec Icons ───────────────────────────────────────────────────────────────
 
-        {/* Specs row */}
-        <View style={s.specsRow}>
-          <View style={s.specItem}>
-            <BedIcon />
-            <Text style={s.specText}>{item.beds}</Text>
-          </View>
-          <View style={s.specDot} />
-          <View style={s.specItem}>
-            <AreaIcon />
-            <Text style={s.specText}>{item.area}</Text>
-          </View>
-        </View>
+function BedIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M2 7V17M2 12H22M22 7V17M7 12V9.5C7 8.672 7.672 8 8.5 8H12M16 12V9.5C16 8.672 15.328 8 14.5 8H12M12 8V12" stroke="#1a365d" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
 
-        {/* Footer */}
-        <View style={s.cardFooter}>
-          <View style={s.tenantInfo}>
-            {isOccupied ? (
-              <>
-                <View style={s.tenantAvatarSmall} />
-                <Text style={s.tenantText} numberOfLines={1}>{item.tenant}</Text>
-              </>
-            ) : (
-              <Text style={s.vacantText}>Available</Text>
-            )}
-          </View>
-          <View style={s.rentInfo}>
-            <Text style={s.rentAmount}>{item.rent}</Text>
-            <Text style={s.rentSuffix}>/mo</Text>
-          </View>
-        </View>
+function BathIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M4 12H20V16C20 18.209 18.209 20 16 20H8C5.791 20 4 18.209 4 16V12ZM4 12V6C4 4.895 4.895 4 6 4C7.105 4 8 4.895 8 6V12" stroke="#1a365d" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M8 20L7 22M16 20L17 22" stroke="#1a365d" strokeWidth={1.5} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+function ElevatorIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Rect x={3} y={3} width={18} height={18} rx={2} stroke="#1a365d" strokeWidth={1.5} />
+      <Path d="M9 3V21M15 3V21" stroke="#1a365d" strokeWidth={1.5} />
+      <Path d="M12 8L9.5 11H14.5L12 8ZM12 16L9.5 13H14.5L12 16Z" fill="#1a365d" />
+    </Svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 2C8.134 2 5 5.134 5 9C5 13.5 12 22 12 22C12 22 19 13.5 19 9C19 5.134 15.866 2 12 2ZM12 11.5C10.619 11.5 9.5 10.381 9.5 9C9.5 7.619 10.619 6.5 12 6.5C13.381 6.5 14.5 7.619 14.5 9C14.5 10.381 13.381 11.5 12 11.5Z" stroke="#111" strokeWidth={1.4} fill="none" />
+    </Svg>
+  );
+}
+
+function MoneyIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 7C3 5.895 3.895 5 5 5H19C20.105 5 21 5.895 21 7V17C21 18.105 20.105 19 19 19H5C3.895 19 3 18.105 3 17V7Z" stroke="#111" strokeWidth={1.4} />
+      <Path d="M12 9V15M9.5 10.5C9.5 9.672 10.172 9 11 9H13C13.828 9 14.5 9.672 14.5 10.5C14.5 11.328 13.828 12 13 12H11C10.172 12 9.5 12.672 9.5 13.5C9.5 14.328 10.172 15 11 15H13C13.828 15 14.5 14.328 14.5 13.5" stroke="#111" strokeWidth={1.4} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+function PencilIcon() {
+  return (
+    <Svg width={16} height={16} viewBox="0 0 16 16" fill="none">
+      <Path d="M9.5 3.5L12.5 6.5L5 14H2V11L9.5 3.5ZM9.5 3.5L11.5 1.5L14.5 4.5L12.5 6.5" stroke="#1a365d" strokeWidth={1.2} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+function ClockIcon() {
+  return (
+    <Svg width={12} height={12} viewBox="0 0 12 12" fill="none">
+      <Circle cx={6} cy={6} r={5} stroke="#f0f0f0" strokeWidth={1} />
+      <Path d="M6 3.5V6L7.5 7.5" stroke="#f0f0f0" strokeWidth={1} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+function UsersIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M16 11C17.657 11 19 9.657 19 8C19 6.343 17.657 5 16 5" stroke="#f8f8f8" strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M18 21C18 18.239 15.314 16 12 16C8.686 16 6 18.239 6 21" stroke="#f8f8f8" strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M20 21C20 18.239 17.314 16 14 16" stroke="#f8f8f8" strokeWidth={1.5} strokeLinecap="round" />
+      <Circle cx={12} cy={8} r={4} stroke="#f8f8f8" strokeWidth={1.5} />
+    </Svg>
+  );
+}
+
+function WrenchIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.77 3.77z" stroke="#f8f8f8" strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    </Svg>
+  );
+}
+
+function TrendUpIcon() {
+  return (
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M22.5 5.25V11.25C22.5 11.449 22.421 11.64 22.28 11.78C22.14 11.921 21.949 12 21.75 12C21.551 12 21.36 11.921 21.22 11.78C21.079 11.64 21 11.449 21 11.25V7.06L13.28 14.78C13.21 14.85 13.128 14.906 13.037 14.943C12.946 14.981 12.849 15 12.75 15C12.651 15 12.554 14.981 12.463 14.943C12.372 14.906 12.289 14.85 12.219 14.78L9 11.56L2.78 17.78C2.64 17.921 2.449 18 2.25 18C2.051 18 1.86 17.921 1.719 17.78C1.579 17.64 1.5 17.449 1.5 17.25C1.5 17.051 1.579 16.86 1.719 16.719L8.469 9.969C8.539 9.9 8.622 9.844 8.713 9.807C8.804 9.769 8.901 9.749 9 9.749C9.099 9.749 9.196 9.769 9.287 9.807C9.378 9.844 9.461 9.9 9.531 9.969L12.75 13.19L19.94 6H15.75C15.551 6 15.36 5.921 15.22 5.78C15.079 5.64 15 5.449 15 5.25C15 5.051 15.079 4.86 15.22 4.719C15.36 4.579 15.551 4.5 15.75 4.5H21.75C21.949 4.5 22.14 4.579 22.28 4.719C22.421 4.86 22.5 5.051 22.5 5.25Z" fill="#FFCB29" />
+    </Svg>
+  );
+}
+
+// ─── Property Images ──────────────────────────────────────────────────────────
+
+const CAROUSEL_IMAGES = [
+  { uri: "https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80", label: "Living Room" },
+  { uri: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=800&q=80", label: "Exterior" },
+  { uri: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=80", label: "Garden" },
+  { uri: "https://images.unsplash.com/photo-1580587771525-78b9dba3b914?w=800&q=80", label: "Bedroom" },
+];
+
+// ─── Status Bar ───────────────────────────────────────────────────────────────
+
+function StatusBar({ topPad }: { topPad: number }) {
+  return (
+    <View style={[s.statusBar, { paddingTop: topPad }]}>
+      <Text style={s.statusTime}>9:41</Text>
+      <View style={s.statusIcons}>
+        <CellularIcon />
+        <WifiIcon />
+        <BatteryIcon />
       </View>
     </View>
   );
@@ -300,88 +185,183 @@ function PropertyCard({ item }: { item: typeof PROPERTIES[0] }) {
 
 export default function PropertiesScreen() {
   const insets = useSafeAreaInsets();
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [search, setSearch] = useState("");
+  const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
   const bottomPad = isWeb ? 90 : insets.bottom + 80;
-
-  const filtered = PROPERTIES.filter((p) => {
-    const matchFilter = activeFilter === "All" || p.status === activeFilter;
-    const matchSearch =
-      search === "" ||
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      p.location.toLowerCase().includes(search.toLowerCase());
-    return matchFilter && matchSearch;
-  });
+  const [activeImg, setActiveImg] = useState(0);
 
   return (
     <View style={s.screen}>
-      {/* Top white header section */}
-      <View style={s.topSection}>
-        <StatusBarTop />
-
-        {/* Page title row */}
-        <View style={s.pageHeader}>
-          <View>
-            <Text style={s.pageTitle}>Properties</Text>
-            <Text style={s.pageSubtitle}>{PROPERTIES.length} properties listed</Text>
+      {/* Fixed white top header */}
+      <View style={s.topHeader}>
+        <StatusBar topPad={topPad} />
+        {/* Navbar */}
+        <View style={s.navbar}>
+          <View style={s.navLeft}>
+            <TouchableOpacity activeOpacity={0.7} style={s.backBtn}>
+              <ArrowLeftIcon />
+            </TouchableOpacity>
+            <Text style={s.navTitle}>Sunset Apartments</Text>
           </View>
-          <LinearGradient
-            colors={["#1a365d", "#00122c"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 0, y: 1 }}
-            style={s.addBtn}
-          >
-            <PlusIcon />
-          </LinearGradient>
+          <TouchableOpacity activeOpacity={0.7}>
+            <ChatIcon />
+          </TouchableOpacity>
         </View>
-
-        {/* Search bar */}
-        <View style={s.searchBar}>
-          <SearchIcon />
-          <TextInput
-            style={s.searchInput}
-            placeholder="Search properties..."
-            placeholderTextColor="#aaa"
-            value={search}
-            onChangeText={setSearch}
-          />
-        </View>
-
-        {/* Filter chips */}
-        <ScrollView
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          contentContainerStyle={s.filtersRow}
-        >
-          {FILTERS.map((f) => (
-            <Pressable
-              key={f}
-              onPress={() => setActiveFilter(f)}
-              style={[s.filterChip, activeFilter === f && s.filterChipActive]}
-            >
-              <Text style={[s.filterChipText, activeFilter === f && s.filterChipTextActive]}>
-                {f}
-              </Text>
-            </Pressable>
-          ))}
-        </ScrollView>
       </View>
 
-      {/* Property list */}
       <ScrollView
         style={s.scroll}
         contentContainerStyle={[s.scrollContent, { paddingBottom: bottomPad }]}
         showsVerticalScrollIndicator={false}
       >
-        {filtered.length === 0 ? (
-          <View style={s.emptyState}>
-            <Text style={s.emptyTitle}>No properties found</Text>
-            <Text style={s.emptySubtitle}>Try adjusting your search or filters</Text>
+        {/* Image Carousel */}
+        <View style={s.carouselWrap}>
+          <Image
+            source={{ uri: CAROUSEL_IMAGES[activeImg].uri }}
+            style={s.carouselImage}
+            contentFit="cover"
+            transition={250}
+          />
+          {/* Bottom labels + dots */}
+          <View style={s.carouselBottom}>
+            <Text style={s.carouselLabel}>{CAROUSEL_IMAGES[activeImg].label}</Text>
+            <View style={s.dots}>
+              {CAROUSEL_IMAGES.map((_, i) => (
+                <TouchableOpacity key={i} onPress={() => setActiveImg(i)}>
+                  <View style={[s.dot, i === activeImg && s.dotActive]} />
+                </TouchableOpacity>
+              ))}
+            </View>
+            <Text style={s.carouselDate}>Updated Feb 2026</Text>
           </View>
-        ) : (
-          filtered.map((item) => <PropertyCard key={item.id} item={item} />)
-        )}
+          {/* Edit button */}
+          <TouchableOpacity style={s.editBtn} activeOpacity={0.8}>
+            <Text style={s.editBtnText}>Edit</Text>
+            <PencilIcon />
+          </TouchableOpacity>
+        </View>
+
+        {/* Location + Rent + Status */}
+        <View style={s.infoRow}>
+          <View style={s.infoLeft}>
+            <View style={s.infoLine}>
+              <MapPinIcon />
+              <Text style={s.infoText}>Flat 402 · Whitefield, Bengaluru</Text>
+            </View>
+            <View style={s.infoLine}>
+              <MoneyIcon />
+              <Text style={s.infoText}>₹28,000/month</Text>
+            </View>
+          </View>
+          <View style={s.leaseBadge}>
+            <Text style={s.leaseText}>Lease Active</Text>
+          </View>
+        </View>
+
+        {/* Specs row */}
+        <View style={s.specsRow}>
+          <View style={s.specItem}>
+            <View style={s.specIcon}><BedIcon /></View>
+            <Text style={s.specText}><Text style={s.specBold}>2</Text>-Bed rooms</Text>
+          </View>
+          <View style={s.specItem}>
+            <View style={s.specIcon}><BathIcon /></View>
+            <Text style={s.specText}><Text style={s.specBold}>2</Text>-Bath rooms</Text>
+          </View>
+          <View style={s.specItem}>
+            <View style={s.specIcon}><ElevatorIcon /></View>
+            <Text style={s.specText}>Lift available</Text>
+          </View>
+        </View>
+
+        {/* Tenant Card */}
+        <View style={s.navyCard}>
+          <View style={s.cardTitleRow}>
+            <View style={s.cardIconWrap}><UsersIcon /></View>
+            <Text style={s.cardTitle}>Current Tenant</Text>
+          </View>
+          <View style={s.tenantInfoRow}>
+            <View style={s.tenantAvatarLg} />
+            <View style={s.tenantDetails}>
+              <Text style={s.tenantName}>Harish Rao</Text>
+              <Text style={s.tenantSub}>Tenant since Jan 2024</Text>
+            </View>
+            <View style={s.tenantRentBox}>
+              <Text style={s.tenantRentAmt}>₹28,000</Text>
+              <Text style={s.tenantRentSub}>/month</Text>
+            </View>
+          </View>
+          <View style={s.leaseRow}>
+            <View style={s.leaseInfoItem}>
+              <Text style={s.leaseInfoLabel}>Lease Start</Text>
+              <Text style={s.leaseInfoVal}>Jan 15, 2024</Text>
+            </View>
+            <View style={s.leaseInfoDivider} />
+            <View style={s.leaseInfoItem}>
+              <Text style={s.leaseInfoLabel}>Lease End</Text>
+              <Text style={s.leaseInfoVal}>Jan 14, 2025</Text>
+            </View>
+            <View style={s.leaseInfoDivider} />
+            <View style={s.leaseInfoItem}>
+              <Text style={s.leaseInfoLabel}>Status</Text>
+              <Text style={[s.leaseInfoVal, { color: "#68d391" }]}>Renewed</Text>
+            </View>
+          </View>
+        </View>
+
+        {/* Maintenance Card */}
+        <View style={s.navyCard}>
+          <View style={s.cardTitleRow}>
+            <View style={s.cardIconWrap}><WrenchIcon /></View>
+            <Text style={s.cardTitle}>Maintenance Requests</Text>
+            <View style={s.badgeCount}><Text style={s.badgeCountText}>2</Text></View>
+          </View>
+          <MaintenanceItem label="AC not cooling" date="Mar 10, 2025" status="Open" />
+          <MaintenanceItem label="Leaky kitchen faucet" date="Feb 28, 2025" status="Resolved" />
+        </View>
+
+        {/* Analytics Card */}
+        <View style={s.navyCard}>
+          <View style={s.cardTitleRow}>
+            <View style={s.cardIconWrap}><TrendUpIcon /></View>
+            <Text style={s.cardTitle}>Rental Analytics</Text>
+          </View>
+          <View style={s.analyticsRow}>
+            <AnalyticsTile label="Monthly Revenue" value="₹28,000" change="+2%" />
+            <AnalyticsTile label="Occupancy Rate" value="100%" change="Occupied" />
+            <AnalyticsTile label="Total ROI" value="12%" change="Since start" />
+          </View>
+        </View>
       </ScrollView>
+    </View>
+  );
+}
+
+// ─── Sub-components ───────────────────────────────────────────────────────────
+
+function MaintenanceItem({ label, date, status }: { label: string; date: string; status: string }) {
+  const isOpen = status === "Open";
+  return (
+    <View style={s.maintenanceItem}>
+      <View style={s.maintenanceLeft}>
+        <View style={[s.maintenanceDot, { backgroundColor: isOpen ? "#fc8181" : "#68d391" }]} />
+        <View>
+          <Text style={s.maintenanceLabel}>{label}</Text>
+          <Text style={s.maintenanceDate}>{date}</Text>
+        </View>
+      </View>
+      <View style={[s.maintenanceBadge, { borderColor: isOpen ? "#fc8181" : "#68d391" }]}>
+        <Text style={[s.maintenanceBadgeText, { color: isOpen ? "#fc8181" : "#68d391" }]}>{status}</Text>
+      </View>
+    </View>
+  );
+}
+
+function AnalyticsTile({ label, value, change }: { label: string; value: string; change: string }) {
+  return (
+    <View style={s.analyticsTile}>
+      <Text style={s.analyticsTileVal}>{value}</Text>
+      <Text style={s.analyticsTileLabel}>{label}</Text>
+      <Text style={s.analyticsTileChange}>{change}</Text>
     </View>
   );
 }
@@ -391,7 +371,7 @@ export default function PropertiesScreen() {
 const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: "#e9e9e9" },
 
-  topSection: { backgroundColor: "#ffffff" },
+  topHeader: { backgroundColor: "#ffffff" },
 
   statusBar: {
     flexDirection: "row",
@@ -403,249 +383,298 @@ const s = StyleSheet.create({
   statusTime: {
     fontFamily: "Inter_400Regular",
     fontSize: 15,
-    color: "#0c0c0c",
+    color: "#030303",
     letterSpacing: -0.3,
   },
   statusIcons: { flexDirection: "row", alignItems: "center", gap: 8 },
 
-  pageHeader: {
+  navbar: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 16,
     paddingTop: 8,
-    paddingBottom: 12,
+    paddingBottom: 14,
   },
-  pageTitle: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 22,
-    color: "#00122c",
-    lineHeight: 28,
-  },
-  pageSubtitle: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 13,
-    color: "#888",
-    marginTop: 2,
-  },
-  addBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-
-  searchBar: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    borderRadius: 12,
-    marginHorizontal: 16,
-    paddingHorizontal: 12,
-    paddingVertical: 10,
-    gap: 8,
-    marginBottom: 12,
-  },
-  searchInput: {
-    flex: 1,
-    fontFamily: "Inter_400Regular",
-    fontSize: 14,
-    color: "#0c0c0c",
-  },
-
-  filtersRow: {
-    paddingHorizontal: 16,
-    paddingBottom: 12,
-    gap: 8,
-  },
-  filterChip: {
-    borderRadius: 20,
-    paddingHorizontal: 16,
-    paddingVertical: 6,
-    backgroundColor: "#f0f0f0",
-  },
-  filterChipActive: {
-    backgroundColor: Colors.primary,
-  },
-  filterChipText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 13,
-    color: "#555",
-  },
-  filterChipTextActive: {
-    color: "#fff",
+  navLeft: { flexDirection: "row", alignItems: "center", gap: 12 },
+  backBtn: { padding: 2 },
+  navTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+    color: "#1a365d",
   },
 
   scroll: { flex: 1 },
   scrollContent: {
-    padding: 16,
-    gap: 14,
+    paddingHorizontal: 16,
+    paddingTop: 16,
+    gap: 16,
   },
 
-  // Property card
-  card: {
-    backgroundColor: "#fbfbfb",
-    borderRadius: 16,
+  // Carousel
+  carouselWrap: {
+    borderRadius: 24,
+    height: 240,
     overflow: "hidden",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.07,
-    shadowRadius: 6,
-    elevation: 2,
-  },
-  cardImageWrap: {
-    height: 180,
-    width: "100%",
     position: "relative",
   },
-  cardImage: {
-    width: "100%",
-    height: "100%",
-  },
-  statusBadge: {
+  carouselImage: { width: "100%", height: "100%" },
+  carouselBottom: {
     position: "absolute",
-    top: 10,
-    left: 10,
-    borderRadius: 20,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 12,
+    paddingBottom: 10,
+  },
+  carouselLabel: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 10,
+    color: "#2d3748",
+  },
+  dots: { flexDirection: "row", alignItems: "center", gap: 6 },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: "#718096" },
+  dotActive: { width: 12, height: 12, borderRadius: 6, backgroundColor: "#1a365d" },
+  carouselDate: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 10,
+    color: "#2d3748",
+  },
+  editBtn: {
+    position: "absolute",
+    top: 12,
+    right: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
+    borderWidth: 1,
+    borderColor: "#718096",
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    backgroundColor: "rgba(255,255,255,0.85)",
+  },
+  editBtnText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: "#1a365d",
+  },
+
+  // Info row
+  infoRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+  },
+  infoLeft: { gap: 8 },
+  infoLine: { flexDirection: "row", alignItems: "center", gap: 4 },
+  infoText: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 14,
+    color: "#111",
+  },
+  leaseBadge: {
+    borderWidth: 1,
+    borderColor: "#38a169",
+    borderRadius: 16,
     paddingHorizontal: 10,
     paddingVertical: 4,
   },
-  statusBadgeText: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 11,
-    color: "#fff",
-  },
-  ratingBadge: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    backgroundColor: "#fff",
-    borderRadius: 20,
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 2,
-  },
-  ratingStar: { color: "#f0b100", fontSize: 12, lineHeight: 16 },
-  ratingNum: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 11,
-    color: "#0a0a0a",
+  leaseText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: "#38a169",
   },
 
-  cardBody: {
-    padding: 12,
-    gap: 10,
-  },
-  cardBodyTop: { gap: 4 },
-  cardTitleRow: {
+  // Specs
+  specsRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    backgroundColor: "#ffffff",
+    borderRadius: 16,
+    padding: 12,
   },
-  cardName: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 15,
-    color: "#00122c",
-    flex: 1,
-    marginRight: 4,
-  },
-  locationRow: {
-    flexDirection: "row",
+  specItem: { flexDirection: "row", alignItems: "center", gap: 6 },
+  specIcon: {
+    backgroundColor: "#edf2f7",
+    borderRadius: 24,
+    padding: 4,
     alignItems: "center",
-    gap: 4,
-  },
-  locationText: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 12,
-    color: "#888",
-  },
-
-  specsRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
-  specItem: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
+    justifyContent: "center",
   },
   specText: {
     fontFamily: "Inter_400Regular",
     fontSize: 12,
-    color: "#666",
+    color: "#111",
+    letterSpacing: -0.3,
   },
-  specDot: {
-    width: 3,
-    height: 3,
-    borderRadius: 1.5,
-    backgroundColor: "#ccc",
+  specBold: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 14,
+    color: "#111",
   },
 
-  cardFooter: {
+  // Navy cards
+  navyCard: {
+    backgroundColor: "#1a365d",
+    borderRadius: 16,
+    padding: 14,
+    gap: 12,
+  },
+  cardTitleRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+  },
+  cardIconWrap: {
+    backgroundColor: "#00122c",
+    borderRadius: 10,
+    padding: 6,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  cardTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: "#f8f8f8",
+    flex: 1,
+  },
+  badgeCount: {
+    backgroundColor: "#fc8181",
+    borderRadius: 99,
+    paddingHorizontal: 8,
+    paddingVertical: 2,
+  },
+  badgeCountText: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 12,
+    color: "#fff",
+  },
+
+  // Tenant
+  tenantInfoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+  },
+  tenantAvatarLg: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: "#d3d3d3",
+  },
+  tenantDetails: { flex: 1 },
+  tenantName: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: "#f8f8f8",
+  },
+  tenantSub: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: "#a0aec0",
+    marginTop: 2,
+  },
+  tenantRentBox: { alignItems: "flex-end" },
+  tenantRentAmt: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 15,
+    color: "#ffcb29",
+  },
+  tenantRentSub: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 11,
+    color: "#a0aec0",
+  },
+  leaseRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    borderTopWidth: 1,
-    borderTopColor: "#f0f0f0",
-    paddingTop: 10,
-  },
-  tenantInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    flex: 1,
-  },
-  tenantAvatarSmall: {
-    width: 24,
-    height: 24,
+    backgroundColor: "#00122c",
     borderRadius: 12,
-    backgroundColor: "#d3d3d3",
+    paddingHorizontal: 12,
+    paddingVertical: 10,
   },
-  tenantText: {
+  leaseInfoItem: { alignItems: "center", flex: 1 },
+  leaseInfoDivider: { width: 1, height: 28, backgroundColor: "#2d4a7a" },
+  leaseInfoLabel: {
     fontFamily: "Inter_400Regular",
+    fontSize: 10,
+    color: "#a0aec0",
+    marginBottom: 3,
+  },
+  leaseInfoVal: {
+    fontFamily: "Inter_600SemiBold",
     fontSize: 12,
-    color: "#555",
-    flex: 1,
-  },
-  vacantText: {
-    fontFamily: "Inter_500Medium",
-    fontSize: 12,
-    color: Colors.secondary,
-  },
-  rentInfo: {
-    flexDirection: "row",
-    alignItems: "baseline",
-  },
-  rentAmount: {
-    fontFamily: "Inter_700Bold",
-    fontSize: 15,
-    color: Colors.primary,
-  },
-  rentSuffix: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 11,
-    color: "#888",
-    marginLeft: 2,
+    color: "#f8f8f8",
   },
 
-  emptyState: {
+  // Maintenance
+  maintenanceItem: {
+    flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 60,
-    gap: 8,
+    backgroundColor: "#00122c",
+    borderRadius: 10,
+    padding: 10,
   },
-  emptyTitle: {
-    fontFamily: "Inter_600SemiBold",
-    fontSize: 16,
-    color: "#333",
-  },
-  emptySubtitle: {
-    fontFamily: "Inter_400Regular",
+  maintenanceLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
+  maintenanceDot: { width: 8, height: 8, borderRadius: 4 },
+  maintenanceLabel: {
+    fontFamily: "Inter_500Medium",
     fontSize: 13,
-    color: "#888",
+    color: "#f8f8f8",
+  },
+  maintenanceDate: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 11,
+    color: "#a0aec0",
+    marginTop: 2,
+  },
+  maintenanceBadge: {
+    borderWidth: 1,
+    borderRadius: 12,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+  },
+  maintenanceBadgeText: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 11,
+  },
+
+  // Analytics
+  analyticsRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  analyticsTile: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#00122c",
+    borderRadius: 10,
+    padding: 10,
+    marginHorizontal: 3,
+  },
+  analyticsTileVal: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 14,
+    color: "#ffcb29",
+  },
+  analyticsTileLabel: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 10,
+    color: "#a0aec0",
+    textAlign: "center",
+    marginTop: 4,
+  },
+  analyticsTileChange: {
+    fontFamily: "Inter_500Medium",
+    fontSize: 10,
+    color: "#68d391",
+    marginTop: 3,
   },
 });
