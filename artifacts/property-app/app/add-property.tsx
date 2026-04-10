@@ -75,7 +75,18 @@ function BuildingIcon({ color = WHITE }: { color?: string }) {
 function WarehouseIcon({ color = WHITE }: { color?: string }) {
   return (
     <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Path d="M4 21V10L12 3L20 10V21H15V15H9V21H4ZM2 21V9L12 1L22 9V21H17V15H7V21H2Z" fill={color} />
+      <Path d="M2 7.5L12 3L22 7.5V21H2V7.5Z" stroke={color} strokeWidth={1.5} fill="none" strokeLinejoin="round" />
+      <Path d="M8 21V14H16V21" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M2 9H22" stroke={color} strokeWidth={1.2} strokeLinecap="round" />
+      <Path d="M5 12H7M17 12H19M5 16H7M17 16H19" stroke={color} strokeWidth={1.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+function PlotIcon({ color = WHITE }: { color?: string }) {
+  return (
+    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 3h18v18H3z" stroke={color} strokeWidth={1.6} fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+      <Path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke={color} strokeWidth={1.2} strokeLinecap="round"/>
     </Svg>
   );
 }
@@ -190,24 +201,76 @@ const fi = StyleSheet.create({
   input: { backgroundColor: "#f5f5f5", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, fontFamily: "Inter_400Regular", fontSize: 14, color: "#0c0c0c", borderWidth: 1, borderColor: "#e0e0e0" },
 });
 
-function SelectCard({ icon, label, selected, onPress }: { icon: React.ReactNode; label: string; selected: boolean; onPress: () => void }) {
+function SelectCard({ icon, label, emoji, selected, onPress }: { icon: React.ReactNode; label: string; emoji: string; selected: boolean; onPress: () => void }) {
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[sc.card, selected && sc.cardActive]}>
-      <View style={[sc.iconWrap, selected && sc.iconWrapActive]}>{icon}</View>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.82} style={[sc.card, selected && sc.cardActive]}>
+      {selected && (
+        <View style={sc.checkBadge}>
+          <Text style={sc.checkTick}>✓</Text>
+        </View>
+      )}
+      <View style={[sc.iconCircle, selected && sc.iconCircleActive]}>
+        {icon}
+      </View>
+      <Text style={sc.emoji}>{emoji}</Text>
       <Text style={[sc.label, selected && sc.labelActive]}>{label}</Text>
-      {selected && <View style={sc.check}><Text style={{ color: PRIMARY, fontSize: 11, fontFamily: "Inter_600SemiBold" }}>✓</Text></View>}
+      {selected && <Text style={sc.selectedHint}>Selected</Text>}
     </TouchableOpacity>
   );
 }
 
 const sc = StyleSheet.create({
-  card: { backgroundColor: CARD, borderRadius: 16, padding: 14, alignItems: "center", gap: 8, flex: 1, borderWidth: 2, borderColor: "transparent" },
-  cardActive: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}0d` },
-  iconWrap: { width: 56, height: 56, borderRadius: 28, backgroundColor: `${PRIMARY}cc`, alignItems: "center", justifyContent: "center" },
-  iconWrapActive: { backgroundColor: PRIMARY },
-  label: { fontFamily: "Inter_500Medium", fontSize: 12, color: "#333", textAlign: "center" },
-  labelActive: { color: PRIMARY, fontFamily: "Inter_600SemiBold" },
-  check: { position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: 9, backgroundColor: GOLD, alignItems: "center", justifyContent: "center" },
+  card: {
+    backgroundColor: WHITE,
+    borderRadius: 20,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+    alignItems: "center",
+    gap: 6,
+    width: "48%",
+    borderWidth: 2,
+    borderColor: "#e8e8e8",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.06,
+    shadowRadius: 6,
+    elevation: 2,
+    position: "relative",
+  },
+  cardActive: {
+    borderColor: PRIMARY,
+    backgroundColor: PRIMARY,
+    shadowColor: PRIMARY,
+    shadowOpacity: 0.25,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  checkBadge: {
+    position: "absolute",
+    top: 10,
+    right: 10,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    backgroundColor: GOLD,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  checkTick: { color: DARK, fontSize: 12, fontFamily: "Inter_700Bold" },
+  iconCircle: {
+    width: 62,
+    height: 62,
+    borderRadius: 31,
+    backgroundColor: `${PRIMARY}18`,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 2,
+  },
+  iconCircleActive: { backgroundColor: `${WHITE}22` },
+  emoji: { fontSize: 10, opacity: 0 },
+  label: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: "#1a1a1a", textAlign: "center" },
+  labelActive: { color: WHITE, fontFamily: "Inter_700Bold" },
+  selectedHint: { fontFamily: "Inter_400Regular", fontSize: 11, color: `${WHITE}aa`, marginTop: -2 },
 });
 
 function UploadBox({ label, hint, onPress }: { label: string; hint: string; onPress?: () => void }) {
@@ -286,23 +349,26 @@ const pb = StyleSheet.create({
 
 function Step0_SelectType({ next, form, setForm }: any) {
   const types = [
-    { key: "apartment", label: "Apartment", icon: <BuildingIcon /> },
-    { key: "villa", label: "Villa", icon: <VillaIcon /> },
-    { key: "house", label: "House", icon: <HomeIcon /> },
-    { key: "commercial", label: "Commercial", icon: <OfficeIcon /> },
-    { key: "warehouse", label: "Warehouse", icon: <WarehouseIcon /> },
-    { key: "plot", label: "Plot / Land", icon: <OfficeIcon /> },
+    { key: "apartment", label: "Apartment", emoji: "🏢", icon: <BuildingIcon color={form.propertyType === "apartment" ? WHITE : PRIMARY} /> },
+    { key: "villa", label: "Villa", emoji: "🏡", icon: <VillaIcon color={form.propertyType === "villa" ? WHITE : PRIMARY} /> },
+    { key: "house", label: "House", emoji: "🏠", icon: <HomeIcon color={form.propertyType === "house" ? WHITE : PRIMARY} /> },
+    { key: "commercial", label: "Commercial", emoji: "🏬", icon: <OfficeIcon color={form.propertyType === "commercial" ? WHITE : PRIMARY} /> },
+    { key: "warehouse", label: "Warehouse", emoji: "🏭", icon: <WarehouseIcon color={form.propertyType === "warehouse" ? WHITE : PRIMARY} /> },
+    { key: "plot", label: "Plot / Land", emoji: "🗺️", icon: <PlotIcon color={form.propertyType === "plot" ? WHITE : PRIMARY} /> },
   ];
   return (
     <View style={st.content}>
-      <Text style={st.title}>What type of property?</Text>
-      <Text style={st.subtitle}>Select the category that best describes your property</Text>
-      <View style={st.grid}>
+      <View style={{ gap: 4 }}>
+        <Text style={st.title}>What type of property?</Text>
+        <Text style={st.subtitle}>Select the category that best describes your property</Text>
+      </View>
+      <View style={st.typeGrid}>
         {types.map((t) => (
           <SelectCard
             key={t.key}
             icon={t.icon}
             label={t.label}
+            emoji={t.emoji}
             selected={form.propertyType === t.key}
             onPress={() => setForm({ ...form, propertyType: t.key })}
           />
@@ -604,6 +670,7 @@ const st = StyleSheet.create({
   subtitle: { fontFamily: "Inter_400Regular", fontSize: 14, color: "#555", lineHeight: 20 },
   row: { flexDirection: "row", alignItems: "center" },
   grid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
+  typeGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12, justifyContent: "space-between" },
   infoCard: { backgroundColor: `${PRIMARY}0d`, borderRadius: 12, padding: 14, gap: 6 },
   infoTitle: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY },
   infoItem: { flexDirection: "row", alignItems: "center", gap: 8 },
