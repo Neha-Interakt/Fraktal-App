@@ -362,7 +362,7 @@ export default function HomeScreen() {
         {/* Properties */}
         <View style={s.sectionHeader}>
           <Text style={s.sectionTitle}>Properties</Text>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/properties" as any)}>
             <Text style={s.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
@@ -388,7 +388,7 @@ export default function HomeScreen() {
         {/* Recent Activities */}
         <View style={[s.sectionHeader, { marginTop: 4 }]}>
           <Text style={s.sectionTitle}>Recent Activities</Text>
-          <TouchableOpacity activeOpacity={0.7}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/finance" as any)}>
             <Text style={s.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>

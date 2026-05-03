@@ -469,7 +469,7 @@ function Step1_Verification({ next, back }: any) {
           </View>
         ))}
       </View>
-      <BtnRow onBack={back} onContinue={next} continueLabel="Proceed" />
+      <BtnRow onBack={back} onContinue={next} />
     </View>
   );
 }
@@ -523,7 +523,7 @@ function Step3_Documents({ next, back }: any) {
         <UploadBox label="Tax Receipt" hint="Latest property tax receipt (optional)" />
         <UploadBox label="NOC from Society" hint="If applicable (optional)" />
       </View>
-      <BtnRow onBack={back} onContinue={next} continueLabel="Submit for Verification" />
+      <BtnRow onBack={back} onContinue={next} />
     </View>
   );
 }
@@ -548,7 +548,7 @@ function Step4_Verified({ next }: any) {
           </View>
         ))}
       </View>
-      <SingleBtn label="Continue to Property Details" onPress={next} />
+      <SingleBtn label="Continue" onPress={next} />
     </View>
   );
 }
@@ -676,7 +676,7 @@ function Step9_Images({ next, back }: any) {
           <Text style={s.tipTxt}>💡 Use natural light · Shoot all rooms · Include exterior shots</Text>
         </View>
       </View>
-      <BtnRow onBack={back} onContinue={next} continueLabel="Save Property" />
+      <BtnRow onBack={back} onContinue={next} />
     </View>
   );
 }
