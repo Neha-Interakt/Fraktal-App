@@ -1,4 +1,3 @@
-import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -13,68 +12,124 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path, Rect, Circle, G } from "react-native-svg";
+import Svg, { Circle, Path, Rect } from "react-native-svg";
 
 const isWeb = Platform.OS === "web";
 
 // ─── Design tokens ────────────────────────────────────────────────────────────
 const PRIMARY = "#1a365d";
 const DARK = "#00122c";
-const GOLD = "#ffcb29";
-const GOLD2 = "#c9a227";
-const BG = "#e9e9e9";
+const GOLD = "#c9a227";
 const WHITE = "#ffffff";
-const CARD = "#fbfbfb";
-
-// ─── Step config ──────────────────────────────────────────────────────────────
-const STEPS = [
-  "Select Type",
-  "Ownership Verification",
-  "Ownership Type",
-  "Upload Documents",
-  "Verification Result",
-  "Create Property",
-  "Add Photos",
-  "Society & Address",
-  "Financial Details",
-  "Tax Setup",
-  "Property Saved",
-];
+const LIGHT_GRAY = "#edf2f7";
+const BORDER = "#d1d5dc";
+const PLACEHOLDER = "#a0aec0";
 
 // ─── Icons ────────────────────────────────────────────────────────────────────
 
-function ArrowLeftIcon() {
+function CaretLeftIcon() {
   return (
     <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
-      <Path d="M19.5 12H4.5M4.5 12L11.25 18.75M4.5 12L11.25 5.25" stroke={PRIMARY} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M15.5 19L8.5 12L15.5 5" stroke={PRIMARY} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
   );
 }
-function CheckCircleIcon({ color = GOLD }: { color?: string }) {
+
+function CaretDownIcon() {
   return (
-    <Svg width={48} height={48} viewBox="0 0 48 48" fill="none">
-      <Circle cx={24} cy={24} r={22} stroke={color} strokeWidth={2} />
-      <Path d="M14 24L20 30L34 16" stroke={color} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
+    <Svg width={20} height={20} viewBox="0 0 24 24" fill="none">
+      <Path d="M6 9L12 15L18 9" stroke="#718096" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
     </Svg>
   );
 }
-function HomeIcon({ color = WHITE }: { color?: string }) {
+
+function UploadSimpleIcon() {
   return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
+    <Svg width={24} height={24} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 15V4M8 8L12 4L16 8" stroke={PRIMARY} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M3 15V19C3 20.1 3.9 21 5 21H19C20.1 21 21 20.1 21 19V15" stroke={PRIMARY} strokeWidth={1.8} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+function CheckCircleIcon({ color = "#38a169" }: { color?: string }) {
+  return (
+    <Svg width={72} height={72} viewBox="0 0 72 72" fill="none">
+      <Circle cx={36} cy={36} r={34} fill={`${color}18`} stroke={color} strokeWidth={2.5} />
+      <Path d="M22 36L31 45L50 26" stroke={color} strokeWidth={3.5} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+function ShieldCheckIcon() {
+  return (
+    <Svg width={72} height={72} viewBox="0 0 72 72" fill="none">
+      <Path d="M36 8L14 18V34C14 47.8 23.6 60.8 36 64C48.4 60.8 58 47.8 58 34V18L36 8Z" fill={`${PRIMARY}12`} stroke={PRIMARY} strokeWidth={2} />
+      <Path d="M26 35L33 42L46 28" stroke={GOLD} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+function SuccessIcon() {
+  return (
+    <Svg width={96} height={96} viewBox="0 0 96 96" fill="none">
+      <Circle cx={48} cy={48} r={46} fill={`${GOLD}20`} />
+      <Circle cx={48} cy={48} r={36} fill={`${GOLD}35`} />
+      <Path d="M31 48L43 60L65 36" stroke={GOLD} strokeWidth={5} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+function MapPinIcon() {
+  return (
+    <Svg width={22} height={22} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM12 11.5C10.62 11.5 9.5 10.38 9.5 9C9.5 7.62 10.62 6.5 12 6.5C13.38 6.5 14.5 7.62 14.5 9C14.5 10.38 13.38 11.5 12 11.5Z" fill={PRIMARY} />
+    </Svg>
+  );
+}
+
+function PlusIcon({ size = 20, color = PRIMARY }: { size?: number; color?: string }) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none">
+      <Path d="M12 5V19M5 12H19" stroke={color} strokeWidth={2.2} strokeLinecap="round" />
+    </Svg>
+  );
+}
+
+// Property type icons
+function ApartmentIcon({ color = PRIMARY }: { color?: string }) {
+  return (
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 21V4.5C3 3.67 3.67 3 4.5 3H15C15.83 3 16.5 3.67 16.5 4.5V7.5H19.5C20.33 7.5 21 8.17 21 9V21H1.5M5.25 6.75H7.5M5.25 10.5H7.5M5.25 14.25H7.5M10.5 6.75H12.75M10.5 10.5H12.75M10.5 14.25H12.75M16.5 10.5H19.5M16.5 14.5H19.5M9 21V17.25H12V21" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+function VillaIcon({ color = PRIMARY }: { color?: string }) {
+  return (
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 9.5L12 3L21 9.5V20H15V14H9V20H3V9.5ZM5 11V19H8V13H16V19H19V11L12 5.5L5 11Z" fill={color} />
+    </Svg>
+  );
+}
+function HouseIcon({ color = PRIMARY }: { color?: string }) {
+  return (
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
       <Path d="M21.4 10.78L12.53 1.91C12.39 1.76 12.2 1.69 12 1.69C11.8 1.69 11.61 1.76 11.47 1.91L2.59 10.78C2.43 10.94 2.34 11.16 2.34 11.4C2.34 11.65 2.43 11.87 2.62 12.02C2.79 12.18 3.02 12.26 3.25 12.26L4.5 12.22V20.25C4.5 20.65 4.66 21.03 4.94 21.31C5.22 21.59 5.6 21.75 6 21.75H9C9.2 21.75 9.39 21.67 9.53 21.53C9.67 21.39 9.75 21.2 9.75 21V16.5H14.25V21C14.25 21.2 14.33 21.39 14.47 21.53C14.61 21.67 14.8 21.75 15 21.75H18C18.4 21.75 18.78 21.59 19.06 21.31C19.34 21.03 19.5 20.65 19.5 20.25V12.22L20.75 12.26C20.98 12.26 21.21 12.18 21.38 12.02C21.55 11.86 21.66 11.64 21.66 11.4C21.66 11.16 21.57 10.94 21.4 10.78Z" fill={color} />
     </Svg>
   );
 }
-function BuildingIcon({ color = WHITE }: { color?: string }) {
+function OfficeIcon({ color = PRIMARY }: { color?: string }) {
   return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 21V4.5C3 3.67 3.67 3 4.5 3H15C15.83 3 16.5 3.67 16.5 4.5V7.5H19.5C20.33 7.5 21 8.17 21 9V21H1.5M5.25 6.75H7.5M5.25 10.5H7.5M5.25 14.25H7.5M10.5 6.75H12.75M10.5 10.5H12.75M10.5 14.25H12.75M16.5 10.5H19.5M16.5 14.5H19.5M9 21V17.25H12V21" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" fill="none" />
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+      <Rect x={2} y={3} width={20} height={18} rx={2} stroke={color} strokeWidth={1.5} fill="none" />
+      <Path d="M8 7H16M8 11H16M8 15H12" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
+      <Path d="M2 7H22" stroke={color} strokeWidth={1.5} />
     </Svg>
   );
 }
-function WarehouseIcon({ color = WHITE }: { color?: string }) {
+function WarehouseIcon({ color = PRIMARY }: { color?: string }) {
   return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
       <Path d="M2 7.5L12 3L22 7.5V21H2V7.5Z" stroke={color} strokeWidth={1.5} fill="none" strokeLinejoin="round" />
       <Path d="M8 21V14H16V21" stroke={color} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
       <Path d="M2 9H22" stroke={color} strokeWidth={1.2} strokeLinecap="round" />
@@ -82,664 +137,661 @@ function WarehouseIcon({ color = WHITE }: { color?: string }) {
     </Svg>
   );
 }
-function PlotIcon({ color = WHITE }: { color?: string }) {
+function PlotIcon({ color = PRIMARY }: { color?: string }) {
   return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 3h18v18H3z" stroke={color} strokeWidth={1.6} fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-      <Path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke={color} strokeWidth={1.2} strokeLinecap="round"/>
-    </Svg>
-  );
-}
-function VillaIcon({ color = WHITE }: { color?: string }) {
-  return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Path d="M3 9.5L12 3L21 9.5V20H15V14H9V20H3V9.5ZM5 11V19H8V13H16V19H19V11L12 5.5L5 11Z" fill={color} />
-    </Svg>
-  );
-}
-function OfficeIcon({ color = WHITE }: { color?: string }) {
-  return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Rect x={2} y={3} width={20} height={18} rx={2} stroke={color} strokeWidth={1.5} fill="none" />
-      <Path d="M8 7H16M8 11H16M8 15H12" stroke={color} strokeWidth={1.5} strokeLinecap="round" />
-      <Path d="M2 7H22" stroke={color} strokeWidth={1.5} />
-    </Svg>
-  );
-}
-function UploadIcon() {
-  return (
-    <Svg width={40} height={40} viewBox="0 0 40 40" fill="none">
-      <Circle cx={20} cy={20} r={19} stroke={PRIMARY} strokeWidth={1.5} strokeDasharray="4 3" />
-      <Path d="M20 27V13M14 19L20 13L26 19" stroke={PRIMARY} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-function PhotoIcon() {
-  return (
-    <Svg width={40} height={40} viewBox="0 0 40 40" fill="none">
-      <Rect x={2} y={6} width={36} height={28} rx={4} stroke={PRIMARY} strokeWidth={1.5} strokeDasharray="4 3" fill="none" />
-      <Circle cx={14} cy={16} r={4} stroke={PRIMARY} strokeWidth={1.5} fill="none" />
-      <Path d="M2 28L12 18L18 24L24 18L38 30" stroke={PRIMARY} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-function ShieldIcon() {
-  return (
-    <Svg width={56} height={56} viewBox="0 0 56 56" fill="none">
-      <Path d="M28 4L8 12V28C8 39.046 16.954 49.364 28 52C39.046 49.364 48 39.046 48 28V12L28 4Z" fill={`${PRIMARY}22`} stroke={PRIMARY} strokeWidth={1.5} />
-      <Path d="M19 28L24 33L37 20" stroke={GOLD} strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-function SuccessIcon() {
-  return (
-    <Svg width={80} height={80} viewBox="0 0 80 80" fill="none">
-      <Circle cx={40} cy={40} r={38} fill={`${PRIMARY}22`} stroke={PRIMARY} strokeWidth={1.5} />
-      <Circle cx={40} cy={40} r={28} fill={PRIMARY} />
-      <Path d="M26 40L34 48L54 28" stroke={GOLD} strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
-    </Svg>
-  );
-}
-function TaxIcon() {
-  return (
-    <Svg width={32} height={32} viewBox="0 0 24 24" fill="none">
-      <Rect x={3} y={3} width={18} height={18} rx={2} stroke={PRIMARY} strokeWidth={1.5} fill="none" />
-      <Path d="M7 12H17M7 8H17M7 16H13" stroke={PRIMARY} strokeWidth={1.5} strokeLinecap="round" />
-      <Path d="M15 15L18 18M15 18L18 15" stroke={PRIMARY} strokeWidth={1.5} strokeLinecap="round" />
+    <Svg width={28} height={28} viewBox="0 0 24 24" fill="none">
+      <Path d="M3 3h18v18H3z" stroke={color} strokeWidth={1.6} fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <Path d="M3 9h18M3 15h18M9 3v18M15 3v18" stroke={color} strokeWidth={1.2} strokeLinecap="round" />
     </Svg>
   );
 }
 
-// ─── Shared components ────────────────────────────────────────────────────────
+// Amenity icons
+function WifiIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M5 12.55A11 11 0 0 1 19 12.55M1.42 9A16 16 0 0 1 22.58 9M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" stroke={c} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" /></Svg>;
+}
+function ParkingIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Rect x={3} y={3} width={18} height={18} rx={2} stroke={c} strokeWidth={1.8} /><Path d="M9 17V7H13C14.7 7 16 8.3 16 10C16 11.7 14.7 13 13 13H9" stroke={c} strokeWidth={1.8} strokeLinecap="round" /></Svg>;
+}
+function SecurityIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M12 2L4 6V12C4 16.4 7.4 20.5 12 22C16.6 20.5 20 16.4 20 12V6L12 2Z" stroke={c} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" fill="none" /></Svg>;
+}
+function LiftIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Rect x={3} y={2} width={7} height={20} rx={1} stroke={c} strokeWidth={1.8} /><Path d="M6.5 7L5 9M6.5 7L8 9" stroke={c} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><Path d="M6.5 13L5 11M6.5 13L8 11" stroke={c} strokeWidth={1.5} strokeLinecap="round" strokeLinejoin="round" /><Rect x={14} y={2} width={7} height={20} rx={1} stroke={c} strokeWidth={1.8} /></Svg>;
+}
+function PoolIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M2 16.5C5.33 16.5 5.33 19 8.67 19C12 19 12 16.5 15.33 16.5C18.67 16.5 18.67 19 22 19M2 11.5C5.33 11.5 5.33 14 8.67 14C12 14 12 11.5 15.33 11.5C18.67 11.5 18.67 14 22 14M17 8L12 3L7 8" stroke={c} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>;
+}
+function GymIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M6 6V18M18 6V18M9 9H15M9 15H15M3 12H6M18 12H21" stroke={c} strokeWidth={2} strokeLinecap="round" /></Svg>;
+}
+function PowerIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M13 2L3 14H12L11 22L21 10H12L13 2Z" stroke={c} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>;
+}
+function ClubIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M3 9.5L12 3L21 9.5V20H15V14H9V20H3V9.5Z" stroke={c} strokeWidth={1.8} fill="none" strokeLinecap="round" strokeLinejoin="round" /></Svg>;
+}
+function GardenIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M12 22V12M12 12C12 12 7 10 5 5C8.5 5 11 7.5 12 12ZM12 12C12 12 17 10 19 5C15.5 5 13 7.5 12 12Z" stroke={c} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /><Path d="M5 22H19" stroke={c} strokeWidth={1.8} strokeLinecap="round" /></Svg>;
+}
+function WaterIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Path d="M12 2C12 2 5 9 5 14.5C5 18.1 8.1 21 12 21C15.9 21 19 18.1 19 14.5C19 9 12 2 12 2Z" stroke={c} strokeWidth={1.8} fill="none" /></Svg>;
+}
+function GuardIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Circle cx={12} cy={7} r={3.5} stroke={c} strokeWidth={1.8} /><Path d="M5 20C5 17.2 8.1 15 12 15C15.9 15 19 17.2 19 20" stroke={c} strokeWidth={1.8} strokeLinecap="round" /></Svg>;
+}
+function PlayAreaIcon({ active }: { active: boolean }) {
+  const c = active ? WHITE : PRIMARY;
+  return <Svg width={22} height={22} viewBox="0 0 24 24" fill="none"><Circle cx={10} cy={5} r={2} stroke={c} strokeWidth={1.8} /><Path d="M3 20L8 13L12 17L17 10L21 14" stroke={c} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" /></Svg>;
+}
 
-function NavBtn({ label, onPress, filled = true, disabled = false }: { label: string; onPress: () => void; filled?: boolean; disabled?: boolean }) {
+const AMENITIES = [
+  { key: "wifi", label: "WiFi", icon: (a: boolean) => <WifiIcon active={a} /> },
+  { key: "parking", label: "Parking", icon: (a: boolean) => <ParkingIcon active={a} /> },
+  { key: "security", label: "CCTV / Security", icon: (a: boolean) => <SecurityIcon active={a} /> },
+  { key: "lift", label: "Lift / Elevator", icon: (a: boolean) => <LiftIcon active={a} /> },
+  { key: "pool", label: "Swimming Pool", icon: (a: boolean) => <PoolIcon active={a} /> },
+  { key: "gym", label: "Gym", icon: (a: boolean) => <GymIcon active={a} /> },
+  { key: "power", label: "Power Backup", icon: (a: boolean) => <PowerIcon active={a} /> },
+  { key: "clubhouse", label: "Club House", icon: (a: boolean) => <ClubIcon active={a} /> },
+  { key: "garden", label: "Garden", icon: (a: boolean) => <GardenIcon active={a} /> },
+  { key: "water", label: "24/7 Water", icon: (a: boolean) => <WaterIcon active={a} /> },
+  { key: "guard", label: "Security Guard", icon: (a: boolean) => <GuardIcon active={a} /> },
+  { key: "play", label: "Play Area", icon: (a: boolean) => <PlayAreaIcon active={a} /> },
+];
+
+// ─── SelectCard (property type) ───────────────────────────────────────────────
+
+function SelectCard({ icon, label, selected, onPress }: { icon: React.ReactNode; label: string; selected: boolean; onPress: () => void }) {
   return (
-    <TouchableOpacity onPress={onPress} disabled={disabled} activeOpacity={0.8} style={{ flex: filled ? 1 : undefined }}>
-      {filled ? (
-        <LinearGradient colors={[PRIMARY, DARK]} start={{ x: 0, y: 0 }} end={{ x: 0, y: 1 }} style={[btn.filled, disabled && { opacity: 0.4 }]}>
-          <Text style={btn.filledTxt}>{label}</Text>
-        </LinearGradient>
-      ) : (
-        <View style={btn.outline}>
-          <Text style={btn.outlineTxt}>{label}</Text>
+    <TouchableOpacity onPress={onPress} activeOpacity={0.82} style={[sc.card, selected && sc.cardActive]}>
+      {selected && (
+        <View style={sc.badge}>
+          <Text style={sc.badgeTick}>✓</Text>
         </View>
       )}
+      <View style={[sc.iconCircle, selected && sc.iconCircleActive]}>{icon}</View>
+      <Text style={[sc.label, selected && sc.labelActive]}>{label}</Text>
+      {selected && <Text style={sc.hint}>Selected</Text>}
     </TouchableOpacity>
   );
 }
-
-const btn = StyleSheet.create({
-  filled: { borderRadius: 14, paddingVertical: 14, alignItems: "center", justifyContent: "center" },
-  filledTxt: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: WHITE },
-  outline: { borderRadius: 14, paddingVertical: 14, alignItems: "center", justifyContent: "center", borderWidth: 1.5, borderColor: PRIMARY },
-  outlineTxt: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: PRIMARY },
+const sc = StyleSheet.create({
+  card: { backgroundColor: WHITE, borderRadius: 20, paddingVertical: 20, paddingHorizontal: 10, alignItems: "center", gap: 8, width: "48%", borderWidth: 2, borderColor: "#e8e8e8", position: "relative" },
+  cardActive: { borderColor: PRIMARY, backgroundColor: PRIMARY },
+  badge: { position: "absolute", top: 10, right: 10, width: 22, height: 22, borderRadius: 11, backgroundColor: "#ffcb29", alignItems: "center", justifyContent: "center" },
+  badgeTick: { color: DARK, fontSize: 12, fontFamily: "Inter_700Bold" },
+  iconCircle: { width: 62, height: 62, borderRadius: 31, backgroundColor: `${PRIMARY}15`, alignItems: "center", justifyContent: "center", marginBottom: 2 },
+  iconCircleActive: { backgroundColor: `${WHITE}22` },
+  label: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: "#1a1a1a", textAlign: "center" },
+  labelActive: { color: WHITE, fontFamily: "Inter_700Bold" },
+  hint: { fontFamily: "Inter_400Regular", fontSize: 11, color: `${WHITE}aa`, marginTop: -4 },
 });
 
-function FormInput({ label, placeholder, value, onChangeText, keyboardType = "default", multiline = false }: {
-  label: string; placeholder: string; value: string; onChangeText: (t: string) => void;
+// ─── AmenityChip ─────────────────────────────────────────────────────────────
+
+function AmenityChip({ label, icon, selected, onPress }: { label: string; icon: React.ReactNode; selected: boolean; onPress: () => void }) {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[am.chip, selected && am.chipActive]}>
+      {selected && <View style={am.check}><Text style={{ color: DARK, fontSize: 9, fontFamily: "Inter_700Bold" }}>✓</Text></View>}
+      <View style={[am.iconWrap, selected && am.iconWrapActive]}>{icon}</View>
+      <Text style={[am.label, selected && am.labelActive]} numberOfLines={2}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+const am = StyleSheet.create({
+  chip: { backgroundColor: WHITE, borderRadius: 14, padding: 12, alignItems: "center", gap: 6, width: "48%", borderWidth: 1.5, borderColor: BORDER, position: "relative", minHeight: 90, justifyContent: "center" },
+  chipActive: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}08` },
+  check: { position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: 9, backgroundColor: "#ffcb29", alignItems: "center", justifyContent: "center" },
+  iconWrap: { width: 44, height: 44, borderRadius: 22, backgroundColor: `${PRIMARY}12`, alignItems: "center", justifyContent: "center" },
+  iconWrapActive: { backgroundColor: PRIMARY },
+  label: { fontFamily: "Inter_500Medium", fontSize: 12, color: "#4a5568", textAlign: "center" },
+  labelActive: { color: PRIMARY, fontFamily: "Inter_600SemiBold" },
+});
+
+// ─── UploadBox ────────────────────────────────────────────────────────────────
+
+function UploadBox({ label, required = false, hint }: { label: string; required?: boolean; hint: string }) {
+  const [uploaded, setUploaded] = useState(false);
+  return (
+    <TouchableOpacity onPress={() => setUploaded(!uploaded)} activeOpacity={0.8} style={[ub.box, uploaded && ub.boxDone]}>
+      <View style={[ub.iconCircle, uploaded && ub.iconCircleDone]}>
+        {uploaded
+          ? <Text style={{ fontSize: 22, color: "#38a169" }}>✓</Text>
+          : <UploadSimpleIcon />
+        }
+      </View>
+      <View style={{ alignItems: "center", gap: 3 }}>
+        <Text style={[ub.label, uploaded && { color: "#276749" }]}>
+          {label}{required ? <Text style={{ color: "#fb2c36" }}> *</Text> : null}
+        </Text>
+        <Text style={ub.hint}>{uploaded ? "Uploaded · tap to replace" : hint}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+}
+const ub = StyleSheet.create({
+  box: { backgroundColor: WHITE, borderWidth: 1.5, borderColor: BORDER, borderRadius: 12, paddingVertical: 22, paddingHorizontal: 16, alignItems: "center", gap: 10 },
+  boxDone: { borderColor: "#38a169", backgroundColor: "#f0fff4" },
+  iconCircle: { width: 48, height: 48, borderRadius: 24, borderWidth: 1.5, borderColor: "#a0aec0", alignItems: "center", justifyContent: "center" },
+  iconCircleDone: { borderColor: "#38a169", backgroundColor: "#38a16918" },
+  label: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY, textAlign: "center" },
+  hint: { fontFamily: "Inter_500Medium", fontSize: 12, color: "#718096", textAlign: "center" },
+});
+
+// ─── FormInput ────────────────────────────────────────────────────────────────
+
+function FormInput({ label, required = false, placeholder, value, onChangeText, keyboardType = "default", multiline = false }: {
+  label: string; required?: boolean; placeholder: string; value: string; onChangeText: (t: string) => void;
   keyboardType?: any; multiline?: boolean;
 }) {
   return (
     <View style={fi.wrap}>
-      <Text style={fi.label}>{label}</Text>
+      <Text style={fi.label}>
+        {label}{required ? <Text style={{ color: "#fb2c36" }}> *</Text> : null}
+      </Text>
       <TextInput
-        style={[fi.input, multiline && { height: 80, textAlignVertical: "top" }]}
+        style={[fi.input, multiline && fi.inputMulti]}
         placeholder={placeholder}
-        placeholderTextColor="#aaa"
+        placeholderTextColor={PLACEHOLDER}
         value={value}
         onChangeText={onChangeText}
         keyboardType={keyboardType}
         multiline={multiline}
+        numberOfLines={multiline ? 3 : 1}
       />
     </View>
   );
 }
-
 const fi = StyleSheet.create({
   wrap: { gap: 6 },
-  label: { fontFamily: "Inter_500Medium", fontSize: 13, color: "#444" },
-  input: { backgroundColor: "#f5f5f5", borderRadius: 12, paddingHorizontal: 14, paddingVertical: 12, fontFamily: "Inter_400Regular", fontSize: 14, color: "#0c0c0c", borderWidth: 1, borderColor: "#e0e0e0" },
+  label: { fontFamily: "Inter_500Medium", fontSize: 14, color: PRIMARY },
+  input: { backgroundColor: WHITE, borderRadius: 12, paddingHorizontal: 14, height: 47, fontFamily: "Inter_400Regular", fontSize: 14, color: DARK, borderWidth: 1.5, borderColor: BORDER },
+  inputMulti: { height: 90, paddingTop: 12, textAlignVertical: "top" },
 });
 
-function SelectCard({ icon, label, emoji, selected, onPress }: { icon: React.ReactNode; label: string; emoji: string; selected: boolean; onPress: () => void }) {
+// ─── DropdownInput ────────────────────────────────────────────────────────────
+
+function DropdownInput({ label, required = false, placeholder, value, options, onSelect }: {
+  label: string; required?: boolean; placeholder: string; value: string; options: string[]; onSelect: (v: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
   return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.82} style={[sc.card, selected && sc.cardActive]}>
-      {selected && (
-        <View style={sc.checkBadge}>
-          <Text style={sc.checkTick}>✓</Text>
+    <View style={fi.wrap}>
+      <Text style={fi.label}>{label}{required ? <Text style={{ color: "#fb2c36" }}> *</Text> : null}</Text>
+      <TouchableOpacity onPress={() => setOpen(!open)} activeOpacity={0.8} style={dd.trigger}>
+        <Text style={[dd.value, !value && { color: PLACEHOLDER }]}>{value || placeholder}</Text>
+        <CaretDownIcon />
+      </TouchableOpacity>
+      {open && (
+        <View style={dd.list}>
+          {options.map((o) => (
+            <TouchableOpacity key={o} onPress={() => { onSelect(o); setOpen(false); }} style={dd.option}>
+              <Text style={[dd.optTxt, value === o && dd.optTxtActive]}>{o}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
       )}
-      <View style={[sc.iconCircle, selected && sc.iconCircleActive]}>
-        {icon}
-      </View>
-      <Text style={sc.emoji}>{emoji}</Text>
-      <Text style={[sc.label, selected && sc.labelActive]}>{label}</Text>
-      {selected && <Text style={sc.selectedHint}>Selected</Text>}
-    </TouchableOpacity>
-  );
-}
-
-const sc = StyleSheet.create({
-  card: {
-    backgroundColor: WHITE,
-    borderRadius: 20,
-    paddingVertical: 20,
-    paddingHorizontal: 10,
-    alignItems: "center",
-    gap: 6,
-    width: "48%",
-    borderWidth: 2,
-    borderColor: "#e8e8e8",
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    elevation: 2,
-    position: "relative",
-  },
-  cardActive: {
-    borderColor: PRIMARY,
-    backgroundColor: PRIMARY,
-    shadowColor: PRIMARY,
-    shadowOpacity: 0.25,
-    shadowRadius: 10,
-    elevation: 5,
-  },
-  checkBadge: {
-    position: "absolute",
-    top: 10,
-    right: 10,
-    width: 22,
-    height: 22,
-    borderRadius: 11,
-    backgroundColor: GOLD,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  checkTick: { color: DARK, fontSize: 12, fontFamily: "Inter_700Bold" },
-  iconCircle: {
-    width: 62,
-    height: 62,
-    borderRadius: 31,
-    backgroundColor: `${PRIMARY}18`,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 2,
-  },
-  iconCircleActive: { backgroundColor: `${WHITE}22` },
-  emoji: { fontSize: 10, opacity: 0 },
-  label: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: "#1a1a1a", textAlign: "center" },
-  labelActive: { color: WHITE, fontFamily: "Inter_700Bold" },
-  selectedHint: { fontFamily: "Inter_400Regular", fontSize: 11, color: `${WHITE}aa`, marginTop: -2 },
-});
-
-function UploadBox({ label, hint, onPress }: { label: string; hint: string; onPress?: () => void }) {
-  const [uploaded, setUploaded] = useState(false);
-  return (
-    <TouchableOpacity onPress={() => setUploaded(!uploaded)} activeOpacity={0.8} style={[ub.box, uploaded && ub.boxDone]}>
-      {uploaded ? (
-        <>
-          <View style={{ opacity: 0.7 }}><CheckCircleIcon color="#38a169" /></View>
-          <Text style={[ub.label, { color: "#38a169" }]}>{label}</Text>
-          <Text style={ub.hint}>Uploaded · tap to replace</Text>
-        </>
-      ) : (
-        <>
-          <UploadIcon />
-          <Text style={ub.label}>{label}</Text>
-          <Text style={ub.hint}>{hint}</Text>
-        </>
-      )}
-    </TouchableOpacity>
-  );
-}
-
-const ub = StyleSheet.create({
-  box: { borderRadius: 14, borderWidth: 1.5, borderColor: `${PRIMARY}55`, borderStyle: "dashed", padding: 20, alignItems: "center", gap: 8, backgroundColor: `${PRIMARY}06` },
-  boxDone: { borderColor: "#38a169", backgroundColor: "#38a16910" },
-  label: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY },
-  hint: { fontFamily: "Inter_400Regular", fontSize: 12, color: "#888", textAlign: "center" },
-});
-
-function PhotoSlot({ index }: { index: number }) {
-  const [added, setAdded] = useState(false);
-  return (
-    <TouchableOpacity onPress={() => setAdded(!added)} activeOpacity={0.8} style={[ps.slot, added && ps.slotAdded]}>
-      {added ? (
-        <Text style={{ fontSize: 24 }}>🏠</Text>
-      ) : (
-        <>
-          <Text style={ps.plus}>+</Text>
-          <Text style={ps.num}>Photo {index + 1}</Text>
-        </>
-      )}
-    </TouchableOpacity>
-  );
-}
-
-const ps = StyleSheet.create({
-  slot: { width: "30%", aspectRatio: 1, borderRadius: 12, borderWidth: 1.5, borderColor: `${PRIMARY}44`, borderStyle: "dashed", alignItems: "center", justifyContent: "center", backgroundColor: `${PRIMARY}06` },
-  slotAdded: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}18` },
-  plus: { fontSize: 24, color: PRIMARY, lineHeight: 28 },
-  num: { fontFamily: "Inter_400Regular", fontSize: 10, color: "#888" },
-});
-
-// ─── Progress bar ─────────────────────────────────────────────────────────────
-
-function ProgressBar({ step, total }: { step: number; total: number }) {
-  const pct = ((step + 1) / total) * 100;
-  return (
-    <View style={pb.wrap}>
-      <View style={pb.track}>
-        <View style={[pb.fill, { width: `${pct}%` }]} />
-      </View>
-      <Text style={pb.label}>Step {step + 1} of {total}</Text>
     </View>
   );
 }
-
-const pb = StyleSheet.create({
-  wrap: { gap: 6 },
-  track: { height: 4, backgroundColor: "#e0e0e0", borderRadius: 2, overflow: "hidden" },
-  fill: { height: "100%", backgroundColor: GOLD, borderRadius: 2 },
-  label: { fontFamily: "Inter_400Regular", fontSize: 11, color: "#888", textAlign: "right" },
+const dd = StyleSheet.create({
+  trigger: { flexDirection: "row", alignItems: "center", justifyContent: "space-between", backgroundColor: WHITE, borderRadius: 12, paddingHorizontal: 14, height: 47, borderWidth: 1.5, borderColor: BORDER },
+  value: { fontFamily: "Inter_400Regular", fontSize: 14, color: DARK, flex: 1 },
+  list: { backgroundColor: WHITE, borderRadius: 12, borderWidth: 1.5, borderColor: BORDER, overflow: "hidden", marginTop: 4, zIndex: 10 },
+  option: { paddingHorizontal: 14, paddingVertical: 13, borderBottomWidth: 1, borderBottomColor: "#f0f0f0" },
+  optTxt: { fontFamily: "Inter_400Regular", fontSize: 14, color: DARK },
+  optTxtActive: { color: PRIMARY, fontFamily: "Inter_600SemiBold" },
 });
 
-// ─── Step screens ─────────────────────────────────────────────────────────────
+// ─── PhotoSlot ────────────────────────────────────────────────────────────────
+
+function PhotoSlot({ index, wide = false }: { index: number; wide?: boolean }) {
+  const [added, setAdded] = useState(false);
+  return (
+    <TouchableOpacity onPress={() => setAdded(!added)} activeOpacity={0.8}
+      style={[ph.slot, wide && ph.slotWide, added && ph.slotAdded]}>
+      {added ? (
+        <View style={{ alignItems: "center", gap: 4 }}>
+          <Text style={{ fontSize: 30 }}>🏠</Text>
+          <Text style={{ fontFamily: "Inter_400Regular", fontSize: 11, color: added ? PRIMARY : "#718096" }}>
+            {index === 0 ? "Cover Photo" : `Photo ${index + 1}`}
+          </Text>
+        </View>
+      ) : (
+        <>
+          <View style={ph.plusWrap}><PlusIcon size={18} color={PRIMARY} /></View>
+          <Text style={ph.label}>{index === 0 ? "Cover Photo" : `Photo ${index + 1}`}</Text>
+        </>
+      )}
+    </TouchableOpacity>
+  );
+}
+const ph = StyleSheet.create({
+  slot: { width: "48%", aspectRatio: 1, borderRadius: 14, borderWidth: 1.5, borderColor: BORDER, borderStyle: "dashed", alignItems: "center", justifyContent: "center", backgroundColor: WHITE, gap: 6 },
+  slotWide: { width: "100%", aspectRatio: 2.4 },
+  slotAdded: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}0d`, borderStyle: "solid" },
+  plusWrap: { width: 38, height: 38, borderRadius: 19, backgroundColor: `${PRIMARY}12`, alignItems: "center", justifyContent: "center" },
+  label: { fontFamily: "Inter_400Regular", fontSize: 11, color: "#718096" },
+});
+
+// ─── BtnRow / SingleBtn ───────────────────────────────────────────────────────
+
+function BtnRow({ onBack, onContinue, continueLabel = "Continue", disabled = false }: {
+  onBack: () => void; onContinue: () => void; continueLabel?: string; disabled?: boolean;
+}) {
+  return (
+    <View style={bn.row}>
+      <TouchableOpacity onPress={onBack} activeOpacity={0.8} style={bn.back}>
+        <Text style={bn.backTxt}>Back</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={onContinue} activeOpacity={0.8} style={[bn.cont, disabled && bn.disabled]} disabled={disabled}>
+        <Text style={bn.contTxt}>{continueLabel}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+}
+function SingleBtn({ label = "Continue", onPress, disabled = false }: { label?: string; onPress: () => void; disabled?: boolean }) {
+  return (
+    <TouchableOpacity onPress={onPress} activeOpacity={0.8} style={[bn.cont, bn.full, disabled && bn.disabled]} disabled={disabled}>
+      <Text style={bn.contTxt}>{label}</Text>
+    </TouchableOpacity>
+  );
+}
+const bn = StyleSheet.create({
+  row: { flexDirection: "row", gap: 12 },
+  back: { flex: 1, height: 48, borderRadius: 12, borderWidth: 1.5, borderColor: PRIMARY, alignItems: "center", justifyContent: "center" },
+  backTxt: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: PRIMARY },
+  cont: { flex: 1, height: 48, borderRadius: 12, backgroundColor: PRIMARY, alignItems: "center", justifyContent: "center" },
+  full: { flex: undefined, width: "100%" as any },
+  disabled: { opacity: 0.4 },
+  contTxt: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: WHITE },
+});
+
+// ─── Step 0: Select Type ──────────────────────────────────────────────────────
 
 function Step0_SelectType({ next, form, setForm }: any) {
   const types = [
-    { key: "apartment", label: "Apartment", emoji: "🏢", icon: <BuildingIcon color={form.propertyType === "apartment" ? WHITE : PRIMARY} /> },
-    { key: "villa", label: "Villa", emoji: "🏡", icon: <VillaIcon color={form.propertyType === "villa" ? WHITE : PRIMARY} /> },
-    { key: "house", label: "House", emoji: "🏠", icon: <HomeIcon color={form.propertyType === "house" ? WHITE : PRIMARY} /> },
-    { key: "commercial", label: "Commercial", emoji: "🏬", icon: <OfficeIcon color={form.propertyType === "commercial" ? WHITE : PRIMARY} /> },
-    { key: "warehouse", label: "Warehouse", emoji: "🏭", icon: <WarehouseIcon color={form.propertyType === "warehouse" ? WHITE : PRIMARY} /> },
-    { key: "plot", label: "Plot / Land", emoji: "🗺️", icon: <PlotIcon color={form.propertyType === "plot" ? WHITE : PRIMARY} /> },
+    { key: "apartment", label: "Apartment", icon: <ApartmentIcon color={form.propertyType === "apartment" ? WHITE : PRIMARY} /> },
+    { key: "villa",     label: "Villa",      icon: <VillaIcon color={form.propertyType === "villa" ? WHITE : PRIMARY} /> },
+    { key: "house",     label: "House",      icon: <HouseIcon color={form.propertyType === "house" ? WHITE : PRIMARY} /> },
+    { key: "commercial",label: "Commercial", icon: <OfficeIcon color={form.propertyType === "commercial" ? WHITE : PRIMARY} /> },
+    { key: "warehouse", label: "Warehouse",  icon: <WarehouseIcon color={form.propertyType === "warehouse" ? WHITE : PRIMARY} /> },
+    { key: "plot",      label: "Plot / Land",icon: <PlotIcon color={form.propertyType === "plot" ? WHITE : PRIMARY} /> },
   ];
   return (
-    <View style={st.content}>
-      <View style={{ gap: 4 }}>
-        <Text style={st.title}>What type of property?</Text>
-        <Text style={st.subtitle}>Select the category that best describes your property</Text>
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 6 }}>
+        <Text style={s.title}>What type of property?</Text>
+        <Text style={s.subtitle}>Select the category that best describes your property</Text>
       </View>
-      <View style={st.typeGrid}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12, justifyContent: "space-between" }}>
         {types.map((t) => (
-          <SelectCard
-            key={t.key}
-            icon={t.icon}
-            label={t.label}
-            emoji={t.emoji}
+          <SelectCard key={t.key} icon={t.icon} label={t.label}
             selected={form.propertyType === t.key}
-            onPress={() => setForm({ ...form, propertyType: t.key })}
-          />
+            onPress={() => setForm({ ...form, propertyType: t.key })} />
         ))}
       </View>
-      <NavBtn label="Continue" onPress={next} disabled={!form.propertyType} />
+      <SingleBtn label="Continue" onPress={next} disabled={!form.propertyType} />
     </View>
   );
 }
 
-function Step1_OwnershipVerification({ next, back }: any) {
+// ─── Step 1: Ownership Verification ──────────────────────────────────────────
+
+function Step1_Verification({ next, back }: any) {
   return (
-    <View style={st.content}>
-      <View style={{ alignItems: "center", marginBottom: 8 }}><ShieldIcon /></View>
-      <Text style={st.title}>Ownership Verification</Text>
-      <Text style={st.subtitle}>We need to verify that you own this property before listing it on the platform.</Text>
-      <View style={st.infoCard}>
-        <Text style={st.infoTitle}>What we'll check</Text>
+    <View style={{ gap: 20 }}>
+      <View style={{ alignItems: "center", paddingVertical: 8 }}>
+        <ShieldCheckIcon />
+      </View>
+      <View style={{ gap: 6 }}>
+        <Text style={s.title}>Ownership Verification</Text>
+        <Text style={s.subtitle}>We need to verify that you own this property before listing it on the platform.</Text>
+      </View>
+      <View style={s.infoCard}>
+        <Text style={s.infoTitle}>What we'll check</Text>
         {["Government-issued ID", "Property ownership documents", "Registry / Sale deed", "Tax receipts (if applicable)"].map((item, i) => (
-          <View key={i} style={st.infoItem}>
-            <View style={st.infoDot} />
-            <Text style={st.infoText}>{item}</Text>
+          <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 4 }}>
+            <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: GOLD }} />
+            <Text style={s.infoText}>{item}</Text>
           </View>
         ))}
       </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Proceed" onPress={next} />
-      </View>
+      <BtnRow onBack={back} onContinue={next} continueLabel="Proceed" />
     </View>
   );
 }
 
+// ─── Step 2: Ownership Type ───────────────────────────────────────────────────
+
 function Step2_OwnershipType({ next, back, form, setForm }: any) {
   const types = [
-    { key: "freehold", label: "Freehold", desc: "You own the property outright" },
-    { key: "leasehold", label: "Leasehold", desc: "Property leased from a freeholder" },
-    { key: "cooperative", label: "Co-operative", desc: "Owned jointly with others" },
-    { key: "joint", label: "Joint Ownership", desc: "Shared ownership with family" },
+    { key: "freehold",    label: "Freehold",       desc: "You own the property outright" },
+    { key: "leasehold",   label: "Leasehold",       desc: "Property leased from a freeholder" },
+    { key: "cooperative", label: "Co-operative",    desc: "Owned jointly with others" },
+    { key: "joint",       label: "Joint Ownership", desc: "Shared ownership with family" },
   ];
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Ownership Type</Text>
-      <Text style={st.subtitle}>Select the type of ownership you hold for this property</Text>
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 6 }}>
+        <Text style={s.title}>Ownership Type</Text>
+        <Text style={s.subtitle}>Select the type of ownership you hold for this property</Text>
+      </View>
       <View style={{ gap: 10 }}>
         {types.map((t) => (
-          <TouchableOpacity
-            key={t.key}
-            onPress={() => setForm({ ...form, ownershipType: t.key })}
-            activeOpacity={0.8}
-            style={[st.radioCard, form.ownershipType === t.key && st.radioCardActive]}
-          >
-            <View style={[st.radio, form.ownershipType === t.key && st.radioActive]}>
-              {form.ownershipType === t.key && <View style={st.radioDot} />}
+          <TouchableOpacity key={t.key} onPress={() => setForm({ ...form, ownershipType: t.key })} activeOpacity={0.8}
+            style={[s.radioCard, form.ownershipType === t.key && s.radioCardActive]}>
+            <View style={[s.radio, form.ownershipType === t.key && s.radioActive]}>
+              {form.ownershipType === t.key && <View style={s.radioDot} />}
             </View>
             <View style={{ flex: 1 }}>
-              <Text style={[st.radioLabel, form.ownershipType === t.key && { color: PRIMARY }]}>{t.label}</Text>
-              <Text style={st.radioDesc}>{t.desc}</Text>
+              <Text style={[s.radioLabel, form.ownershipType === t.key && { color: PRIMARY }]}>{t.label}</Text>
+              <Text style={s.radioDesc}>{t.desc}</Text>
             </View>
           </TouchableOpacity>
         ))}
       </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Continue" onPress={next} disabled={!form.ownershipType} />
-      </View>
+      <BtnRow onBack={back} onContinue={next} disabled={!form.ownershipType} />
     </View>
   );
 }
 
-function Step3_UploadDocuments({ next, back }: any) {
+// ─── Step 3: Upload Documents ─────────────────────────────────────────────────
+
+function Step3_Documents({ next, back }: any) {
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Upload Documents</Text>
-      <Text style={st.subtitle}>Upload the required documents to verify your ownership.</Text>
-      <View style={{ gap: 14 }}>
-        <UploadBox label="Sale Deed / Registry" hint="PDF or image, max 10MB" />
-        <UploadBox label="Government-issued ID" hint="Aadhaar, PAN, Passport" />
-        <UploadBox label="Tax Receipt (optional)" hint="Latest property tax receipt" />
-        <UploadBox label="NOC from Society (optional)" hint="If applicable" />
+    <View style={{ gap: 20 }}>
+      <View style={{ gap: 6 }}>
+        <Text style={s.title}>Upload Documents</Text>
+        <Text style={s.subtitle}>Upload the required documents to verify your property ownership</Text>
       </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Submit for Verification" onPress={next} />
+      <View style={{ gap: 12 }}>
+        <UploadBox label="Sale Deed / Registry" required hint="PDF or image, max 10MB" />
+        <UploadBox label="Government-issued ID" required hint="Aadhaar, PAN, or Passport" />
+        <UploadBox label="Tax Receipt" hint="Latest property tax receipt (optional)" />
+        <UploadBox label="NOC from Society" hint="If applicable (optional)" />
       </View>
+      <BtnRow onBack={back} onContinue={next} continueLabel="Submit for Verification" />
     </View>
   );
 }
 
-function Step4_VerificationResult({ next, back }: any) {
+// ─── Step 4: Verification Result ─────────────────────────────────────────────
+
+function Step4_Verified({ next }: any) {
   return (
-    <View style={[st.content, { alignItems: "center" }]}>
-      <View style={{ marginVertical: 16 }}><CheckCircleIcon color="#38a169" /></View>
-      <Text style={[st.title, { textAlign: "center" }]}>Verification Successful!</Text>
-      <Text style={[st.subtitle, { textAlign: "center" }]}>
-        Your ownership documents have been verified. You can now proceed to list your property.
-      </Text>
-      <View style={[st.verifyBox, { backgroundColor: "#38a16912", borderColor: "#38a16955" }]}>
+    <View style={{ gap: 20, alignItems: "center" }}>
+      <View style={{ paddingVertical: 12 }}>
+        <CheckCircleIcon color="#38a169" />
+      </View>
+      <View style={{ gap: 8 }}>
+        <Text style={[s.title, { textAlign: "center" }]}>Verification Successful!</Text>
+        <Text style={[s.subtitle, { textAlign: "center" }]}>Your ownership documents have been verified. You can now proceed to list your property.</Text>
+      </View>
+      <View style={[s.infoCard, { borderColor: "#38a16944", backgroundColor: "#38a16910", width: "100%" }]}>
         {["Ownership documents verified", "Identity confirmed", "No encumbrances found"].map((item, i) => (
-          <View key={i} style={st.verifyItem}>
-            <Text style={{ color: "#38a169", fontSize: 14 }}>✓</Text>
-            <Text style={[st.infoText, { color: "#276749" }]}>{item}</Text>
+          <View key={i} style={{ flexDirection: "row", alignItems: "center", gap: 10, paddingVertical: 4 }}>
+            <Text style={{ color: "#38a169", fontSize: 16, fontFamily: "Inter_600SemiBold" }}>✓</Text>
+            <Text style={[s.infoText, { color: "#276749" }]}>{item}</Text>
           </View>
         ))}
       </View>
-      <NavBtn label="Continue to Create Property" onPress={next} />
+      <SingleBtn label="Continue to Property Details" onPress={next} />
     </View>
   );
 }
 
-function Step5_CreateProperty({ next, back, form, setForm }: any) {
+// ─── Step 5: Property Details ─────────────────────────────────────────────────
+
+function Step5_PropertyDetails({ next, back, form, setForm }: any) {
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Create Property</Text>
-      <Text style={st.subtitle}>Give your property a name and description for tenants</Text>
-      <View style={{ gap: 14 }}>
-        <FormInput label="Property Name" placeholder="e.g. Sunset Apartments #402" value={form.propertyName} onChangeText={(t) => setForm({ ...form, propertyName: t })} />
-        <FormInput label="Description" placeholder="Describe your property..." value={form.description} onChangeText={(t) => setForm({ ...form, description: t })} multiline />
-        <FormInput label="Year Built" placeholder="e.g. 2018" value={form.yearBuilt} onChangeText={(t) => setForm({ ...form, yearBuilt: t })} keyboardType="numeric" />
-        <View style={{ gap: 6 }}>
-          <Text style={fi.label}>Furnishing Status</Text>
-          <View style={st.chipRow}>
-            {["Unfurnished", "Semi-furnished", "Fully furnished"].map((f) => (
-              <Pressable key={f} onPress={() => setForm({ ...form, furnishing: f })} style={[st.chip, form.furnishing === f && st.chipActive]}>
-                <Text style={[st.chipTxt, form.furnishing === f && st.chipTxtActive]}>{f}</Text>
+    <View style={{ gap: 18 }}>
+      <FormInput label="Property Name" required placeholder="E.g., Sunset Apartments" value={form.propertyName} onChangeText={(t) => setForm({ ...form, propertyName: t })} />
+      <FormInput label="Year Built" required placeholder="E.g., 2010" value={form.yearBuilt} onChangeText={(t) => setForm({ ...form, yearBuilt: t })} keyboardType="numeric" />
+      <FormInput label="Total Area (sq ft)" required placeholder="E.g., 1200" value={form.totalArea} onChangeText={(t) => setForm({ ...form, totalArea: t })} keyboardType="numeric" />
+      <DropdownInput label="No. of BHK" required placeholder="Select BHK type"
+        value={form.bhk} options={["1 BHK", "2 BHK", "3 BHK", "4 BHK", "4+ BHK"]}
+        onSelect={(v) => setForm({ ...form, bhk: v })} />
+      <View style={{ flexDirection: "row", gap: 12 }}>
+        <View style={{ flex: 1 }}>
+          <DropdownInput label="Bedrooms" required placeholder="Select"
+            value={form.bedrooms} options={["1", "2", "3", "4", "5", "6+"]}
+            onSelect={(v) => setForm({ ...form, bedrooms: v })} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <DropdownInput label="Bathrooms" required placeholder="Select"
+            value={form.bathrooms} options={["1", "2", "3", "4", "5+"]}
+            onSelect={(v) => setForm({ ...form, bathrooms: v })} />
+        </View>
+      </View>
+      <FormInput label="Floor Number" required placeholder="E.g., 4th Floor" value={form.floor} onChangeText={(t) => setForm({ ...form, floor: t })} />
+      <BtnRow onBack={back} onContinue={next} disabled={!form.propertyName || !form.yearBuilt || !form.totalArea} />
+    </View>
+  );
+}
+
+// ─── Step 6: Society & Address ────────────────────────────────────────────────
+
+function Step6_Address({ next, back, form, setForm }: any) {
+  return (
+    <View style={{ gap: 18 }}>
+      <FormInput label="Address" required placeholder="Flat/Unit number, Building name, Street" value={form.address} onChangeText={(t) => setForm({ ...form, address: t })} />
+      <View style={{ flexDirection: "row", gap: 12 }}>
+        <View style={{ flex: 1 }}>
+          <FormInput label="City" required placeholder="Bengaluru" value={form.city} onChangeText={(t) => setForm({ ...form, city: t })} />
+        </View>
+        <View style={{ flex: 1 }}>
+          <FormInput label="State" required placeholder="Karnataka" value={form.state} onChangeText={(t) => setForm({ ...form, state: t })} />
+        </View>
+      </View>
+      <FormInput label="Pincode" required placeholder="560001" value={form.pin} onChangeText={(t) => setForm({ ...form, pin: t })} keyboardType="numeric" />
+      <TouchableOpacity activeOpacity={0.8} style={s.mapBtn}>
+        <View style={s.mapPinCircle}><MapPinIcon /></View>
+        <View style={{ flex: 1, gap: 2 }}>
+          <Text style={s.mapBtnTitle}>Select Location on Map</Text>
+          <Text style={s.mapBtnSub}>Select accurate location through map</Text>
+        </View>
+      </TouchableOpacity>
+      <BtnRow onBack={back} onContinue={next} disabled={!form.address || !form.city || !form.pin} />
+    </View>
+  );
+}
+
+// ─── Step 7: Rental Details ───────────────────────────────────────────────────
+
+function Step7_RentalDetails({ next, back, form, setForm }: any) {
+  const durations = ["3 months", "6 months", "11 months", "12 months", "24 months"];
+  return (
+    <View style={{ gap: 16 }}>
+      <View style={s.whiteCard}>
+        <FormInput label="Monthly Rent (₹)" required placeholder="E.g., 28,000" value={form.rent} onChangeText={(t) => setForm({ ...form, rent: t })} keyboardType="numeric" />
+        <FormInput label="Security Deposit (₹)" required placeholder="E.g., 56,000" value={form.deposit} onChangeText={(t) => setForm({ ...form, deposit: t })} keyboardType="numeric" />
+        <FormInput label="Brokerage (₹)" placeholder="E.g., 0 (leave blank if none)" value={form.brokerage} onChangeText={(t) => setForm({ ...form, brokerage: t })} keyboardType="numeric" />
+        <View style={{ gap: 8 }}>
+          <Text style={fi.label}>Lease Duration</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 8 }}>
+            {durations.map((d) => (
+              <Pressable key={d} onPress={() => setForm({ ...form, leaseDuration: d })} style={[s.chip, form.leaseDuration === d && s.chipActive]}>
+                <Text style={[s.chipTxt, form.leaseDuration === d && s.chipTxtActive]}>{d}</Text>
               </Pressable>
             ))}
           </View>
         </View>
+        <FormInput label="Maintenance Charges (₹/month)" placeholder="E.g., 2,000" value={form.maintenance} onChangeText={(t) => setForm({ ...form, maintenance: t })} keyboardType="numeric" />
       </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Continue" onPress={next} disabled={!form.propertyName} />
-      </View>
+      <BtnRow onBack={back} onContinue={next} disabled={!form.rent || !form.deposit} />
     </View>
   );
 }
 
-function Step6_AddPhotos({ next, back }: any) {
+// ─── Step 8: Amenities ────────────────────────────────────────────────────────
+
+function Step8_Amenities({ next, back, form, setForm }: any) {
+  const toggle = (key: string) => {
+    const cur: string[] = form.amenities || [];
+    setForm({ ...form, amenities: cur.includes(key) ? cur.filter((k: string) => k !== key) : [...cur, key] });
+  };
+  const sel: string[] = form.amenities || [];
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Add Photos</Text>
-      <Text style={st.subtitle}>Upload high-quality photos to attract tenants. Minimum 3 photos required.</Text>
-      <View style={{ alignItems: "center", marginVertical: 8 }}><PhotoIcon /></View>
-      <View style={st.photoGrid}>
-        {Array.from({ length: 6 }).map((_, i) => (
-          <PhotoSlot key={i} index={i} />
+    <View style={{ gap: 16 }}>
+      <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "space-between" }}>
+        {AMENITIES.map((a) => (
+          <AmenityChip key={a.key} label={a.label} icon={a.icon(sel.includes(a.key))} selected={sel.includes(a.key)} onPress={() => toggle(a.key)} />
         ))}
       </View>
-      <View style={st.photoTips}>
-        <Text style={st.photoTip}>💡 Tips: Use natural light · Shoot all rooms · Include exterior shots</Text>
-      </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Continue" onPress={next} />
-      </View>
+      <BtnRow onBack={back} onContinue={next} continueLabel="Continue" />
     </View>
   );
 }
 
-function Step7_SocietyAddress({ next, back, form, setForm }: any) {
+// ─── Step 9: Images ───────────────────────────────────────────────────────────
+
+function Step9_Images({ next, back }: any) {
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Society & Address</Text>
-      <Text style={st.subtitle}>Enter the complete address and society details</Text>
-      <View style={{ gap: 14 }}>
-        <FormInput label="Society / Building Name" placeholder="e.g. Prestige Lakeside Habitat" value={form.society} onChangeText={(t) => setForm({ ...form, society: t })} />
-        <FormInput label="Flat / Unit Number" placeholder="e.g. 402" value={form.flatNo} onChangeText={(t) => setForm({ ...form, flatNo: t })} />
-        <FormInput label="Floor" placeholder="e.g. 4th Floor" value={form.floor} onChangeText={(t) => setForm({ ...form, floor: t })} />
-        <FormInput label="Street / Area" placeholder="e.g. Whitefield Main Road" value={form.street} onChangeText={(t) => setForm({ ...form, street: t })} />
-        <View style={{ flexDirection: "row", gap: 10 }}>
-          <View style={{ flex: 1 }}>
-            <FormInput label="City" placeholder="e.g. Bangalore" value={form.city} onChangeText={(t) => setForm({ ...form, city: t })} />
-          </View>
-          <View style={{ flex: 1 }}>
-            <FormInput label="PIN Code" placeholder="560001" value={form.pin} onChangeText={(t) => setForm({ ...form, pin: t })} keyboardType="numeric" />
-          </View>
+    <View style={{ gap: 14 }}>
+      <View style={s.whiteCard}>
+        <Text style={fi.label}>Cover Photo <Text style={{ color: "#fb2c36" }}>*</Text></Text>
+        <Text style={s.tipSub}>This will be the main photo shown to tenants</Text>
+        <PhotoSlot index={0} wide />
+      </View>
+      <View style={s.whiteCard}>
+        <Text style={fi.label}>Additional Photos</Text>
+        <Text style={s.tipSub}>Upload at least 3 photos for best results</Text>
+        <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "space-between" }}>
+          {[1, 2, 3, 4, 5].map((i) => <PhotoSlot key={i} index={i} />)}
         </View>
-        <FormInput label="State" placeholder="e.g. Karnataka" value={form.state} onChangeText={(t) => setForm({ ...form, state: t })} />
+        <View style={s.tipBox}>
+          <Text style={s.tipTxt}>💡 Use natural light · Shoot all rooms · Include exterior shots</Text>
+        </View>
       </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Continue" onPress={next} disabled={!form.society || !form.city} />
-      </View>
+      <BtnRow onBack={back} onContinue={next} continueLabel="Save Property" />
     </View>
   );
 }
 
-function Step8_FinancialDetails({ next, back, form, setForm }: any) {
-  return (
-    <View style={st.content}>
-      <Text style={st.title}>Financial Details</Text>
-      <Text style={st.subtitle}>Set your rent, deposit, and maintenance charges</Text>
-      <View style={{ gap: 14 }}>
-        <FormInput label="Monthly Rent (₹)" placeholder="e.g. 28000" value={form.rent} onChangeText={(t) => setForm({ ...form, rent: t })} keyboardType="numeric" />
-        <FormInput label="Security Deposit (₹)" placeholder="e.g. 56000 (2 months)" value={form.deposit} onChangeText={(t) => setForm({ ...form, deposit: t })} keyboardType="numeric" />
-        <FormInput label="Maintenance Charges (₹/month)" placeholder="e.g. 2000" value={form.maintenance} onChangeText={(t) => setForm({ ...form, maintenance: t })} keyboardType="numeric" />
-        <View style={{ gap: 6 }}>
-          <Text style={fi.label}>Rent Increment Cycle</Text>
-          <View style={st.chipRow}>
-            {["None", "Annual", "Bi-annual"].map((c) => (
-              <Pressable key={c} onPress={() => setForm({ ...form, increment: c })} style={[st.chip, form.increment === c && st.chipActive]}>
-                <Text style={[st.chipTxt, form.increment === c && st.chipTxtActive]}>{c}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-        <FormInput label="Brokerage (₹)" placeholder="e.g. 0 (leave blank if none)" value={form.brokerage} onChangeText={(t) => setForm({ ...form, brokerage: t })} keyboardType="numeric" />
-      </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Continue" onPress={next} disabled={!form.rent} />
-      </View>
-    </View>
-  );
-}
+// ─── Step 10: Property Saved ──────────────────────────────────────────────────
 
-function Step9_TaxSetup({ next, back, form, setForm }: any) {
+function Step10_Saved({ form }: any) {
   return (
-    <View style={st.content}>
-      <Text style={st.title}>Tax Setup</Text>
-      <Text style={st.subtitle}>Configure GST and tax details for your property</Text>
-      <View style={{ gap: 14 }}>
-        <View style={{ gap: 6 }}>
-          <Text style={fi.label}>Is your property GST registered?</Text>
-          <View style={st.chipRow}>
-            {["Yes", "No"].map((c) => (
-              <Pressable key={c} onPress={() => setForm({ ...form, gstRegistered: c })} style={[st.chip, form.gstRegistered === c && st.chipActive]}>
-                <Text style={[st.chipTxt, form.gstRegistered === c && st.chipTxtActive]}>{c}</Text>
-              </Pressable>
-            ))}
-          </View>
-        </View>
-        {form.gstRegistered === "Yes" && (
-          <FormInput label="GSTIN" placeholder="e.g. 29ABCDE1234F1Z5" value={form.gstin} onChangeText={(t) => setForm({ ...form, gstin: t })} />
-        )}
-        <FormInput label="PAN Number" placeholder="e.g. ABCDE1234F" value={form.pan} onChangeText={(t) => setForm({ ...form, pan: t })} />
-        <FormInput label="Property Tax ID (optional)" placeholder="Municipal tax ID" value={form.taxId} onChangeText={(t) => setForm({ ...form, taxId: t })} />
-        <View style={st.infoCard}>
-          <View style={{ flexDirection: "row", alignItems: "center", gap: 8, marginBottom: 6 }}>
-            <TaxIcon />
-            <Text style={st.infoTitle}>Why we need this</Text>
-          </View>
-          <Text style={[st.infoText, { color: "#555" }]}>Tax details help generate accurate rent receipts and stay compliant with Indian tax laws. Your data is secured.</Text>
-        </View>
-      </View>
-      <View style={st.row}>
-        <NavBtn label="Back" onPress={back} filled={false} />
-        <View style={{ width: 12 }} />
-        <NavBtn label="Save Property" onPress={next} />
-      </View>
-    </View>
-  );
-}
-
-function Step10_PropertySaved({ form }: any) {
-  return (
-    <View style={[st.content, { alignItems: "center", justifyContent: "center", flex: 1 }]}>
+    <View style={{ gap: 20, alignItems: "center", paddingVertical: 16 }}>
       <SuccessIcon />
-      <Text style={[st.title, { textAlign: "center", marginTop: 20 }]}>Property Saved! 🎉</Text>
-      <Text style={[st.subtitle, { textAlign: "center" }]}>
-        {form.propertyName || "Your property"} has been successfully listed on the platform.
-      </Text>
-      <View style={[st.verifyBox, { width: "100%", marginTop: 4 }]}>
-        <SummaryRow label="Type" value={form.propertyType || "—"} />
-        <SummaryRow label="Ownership" value={form.ownershipType || "—"} />
-        <SummaryRow label="Rent" value={form.rent ? `₹${form.rent}/mo` : "—"} />
-        <SummaryRow label="City" value={form.city || "—"} />
+      <View style={{ gap: 8 }}>
+        <Text style={[s.title, { textAlign: "center" }]}>Property Added! 🎉</Text>
+        <Text style={[s.subtitle, { textAlign: "center" }]}>
+          {form.propertyName || "Your property"} has been successfully listed on the platform.
+        </Text>
       </View>
-      <View style={{ width: "100%", gap: 10, marginTop: 8 }}>
-        <NavBtn label="View My Properties" onPress={() => { router.replace("/(tabs)/properties"); }} />
-        <NavBtn label="Go to Dashboard" onPress={() => { router.replace("/(tabs)/"); }} filled={false} />
+      <View style={[s.infoCard, { width: "100%" }]}>
+        {[
+          { l: "Type",         v: form.propertyType  || "—" },
+          { l: "Ownership",    v: form.ownershipType || "—" },
+          { l: "Area",         v: form.totalArea ? `${form.totalArea} sq ft` : "—" },
+          { l: "City",         v: form.city          || "—" },
+          { l: "Monthly Rent", v: form.rent          ? `₹${form.rent}/mo` : "—" },
+        ].map(({ l, v }) => (
+          <View key={l} style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 6, borderBottomWidth: 1, borderBottomColor: `${PRIMARY}12` }}>
+            <Text style={s.infoText}>{l}</Text>
+            <Text style={[s.infoText, { color: PRIMARY, fontFamily: "Inter_600SemiBold", textTransform: "capitalize" }]}>{v}</Text>
+          </View>
+        ))}
       </View>
-    </View>
-  );
-}
-
-function SummaryRow({ label, value }: { label: string; value: string }) {
-  return (
-    <View style={{ flexDirection: "row", justifyContent: "space-between", paddingVertical: 4 }}>
-      <Text style={{ fontFamily: "Inter_400Regular", fontSize: 13, color: "#888" }}>{label}</Text>
-      <Text style={{ fontFamily: "Inter_600SemiBold", fontSize: 13, color: "#1a365d", textTransform: "capitalize" }}>{value}</Text>
+      <TouchableOpacity onPress={() => router.replace("/(tabs)/properties" as any)} activeOpacity={0.8} style={[bn.cont, bn.full]}>
+        <Text style={bn.contTxt}>View My Properties</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.replace("/(tabs)/" as any)} activeOpacity={0.8} style={[bn.back, bn.full]}>
+        <Text style={bn.backTxt}>Go to Dashboard</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 // ─── Shared styles ────────────────────────────────────────────────────────────
 
-const st = StyleSheet.create({
-  content: { gap: 16 },
-  title: { fontFamily: "Inter_700Bold", fontSize: 22, color: DARK, lineHeight: 28 },
-  subtitle: { fontFamily: "Inter_400Regular", fontSize: 14, color: "#555", lineHeight: 20 },
-  row: { flexDirection: "row", alignItems: "center" },
-  grid: { flexDirection: "row", flexWrap: "wrap", gap: 10 },
-  typeGrid: { flexDirection: "row", flexWrap: "wrap", gap: 12, justifyContent: "space-between" },
-  infoCard: { backgroundColor: `${PRIMARY}0d`, borderRadius: 12, padding: 14, gap: 6 },
-  infoTitle: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY },
-  infoItem: { flexDirection: "row", alignItems: "center", gap: 8 },
-  infoDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: GOLD },
-  infoText: { fontFamily: "Inter_400Regular", fontSize: 13, color: "#444" },
-  radioCard: { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: CARD, borderRadius: 14, padding: 14, borderWidth: 2, borderColor: "transparent" },
-  radioCardActive: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}0d` },
-  radio: { width: 20, height: 20, borderRadius: 10, borderWidth: 2, borderColor: "#ccc", alignItems: "center", justifyContent: "center" },
+const s = StyleSheet.create({
+  title:     { fontFamily: "Inter_700Bold", fontSize: 20, color: DARK, lineHeight: 28 },
+  subtitle:  { fontFamily: "Inter_400Regular", fontSize: 14, color: "#555", lineHeight: 20 },
+  infoCard:  { backgroundColor: `${PRIMARY}0d`, borderRadius: 12, padding: 14, gap: 4, borderWidth: 1, borderColor: `${PRIMARY}20` },
+  infoTitle: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY, marginBottom: 4 },
+  infoText:  { fontFamily: "Inter_400Regular", fontSize: 13, color: "#444" },
+  radioCard:       { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: "#f8fafc", borderRadius: 14, padding: 14, borderWidth: 1.5, borderColor: BORDER },
+  radioCardActive: { borderColor: PRIMARY, backgroundColor: `${PRIMARY}08` },
+  radio:     { width: 22, height: 22, borderRadius: 11, borderWidth: 2, borderColor: "#ccc", alignItems: "center", justifyContent: "center" },
   radioActive: { borderColor: PRIMARY },
-  radioDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: PRIMARY },
+  radioDot:  { width: 10, height: 10, borderRadius: 5, backgroundColor: PRIMARY },
   radioLabel: { fontFamily: "Inter_500Medium", fontSize: 14, color: "#222" },
-  radioDesc: { fontFamily: "Inter_400Regular", fontSize: 12, color: "#888", marginTop: 2 },
-  chipRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
-  chip: { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 7, backgroundColor: "#f0f0f0" },
-  chipActive: { backgroundColor: PRIMARY },
-  chipTxt: { fontFamily: "Inter_500Medium", fontSize: 13, color: "#555" },
-  chipTxtActive: { color: WHITE },
-  verifyBox: { width: "100%", backgroundColor: `${PRIMARY}0d`, borderRadius: 12, padding: 14, borderWidth: 1, borderColor: `${PRIMARY}22`, gap: 8 },
-  verifyItem: { flexDirection: "row", alignItems: "center", gap: 8 },
-  photoGrid: { flexDirection: "row", flexWrap: "wrap", gap: 10, justifyContent: "flex-start" },
-  photoTips: { backgroundColor: `${GOLD}22`, borderRadius: 10, padding: 10 },
-  photoTip: { fontFamily: "Inter_400Regular", fontSize: 12, color: "#7a5c00" },
+  radioDesc:  { fontFamily: "Inter_400Regular", fontSize: 12, color: "#888", marginTop: 2 },
+  chip:       { borderRadius: 20, paddingHorizontal: 14, paddingVertical: 9, backgroundColor: "#f0f4f8", borderWidth: 1.5, borderColor: "#e2e8f0" },
+  chipActive: { backgroundColor: PRIMARY, borderColor: PRIMARY },
+  chipTxt:    { fontFamily: "Inter_500Medium", fontSize: 13, color: "#4a5568" },
+  chipTxtActive: { color: WHITE, fontFamily: "Inter_500Medium" },
+  mapBtn:      { flexDirection: "row", alignItems: "center", gap: 12, backgroundColor: LIGHT_GRAY, borderRadius: 14, padding: 14, borderWidth: 1.5, borderColor: `${PRIMARY}22` },
+  mapPinCircle:{ width: 44, height: 44, borderRadius: 22, backgroundColor: `${PRIMARY}15`, alignItems: "center", justifyContent: "center" },
+  mapBtnTitle: { fontFamily: "Inter_600SemiBold", fontSize: 14, color: PRIMARY },
+  mapBtnSub:   { fontFamily: "Inter_400Regular", fontSize: 12, color: "#718096" },
+  whiteCard:   { backgroundColor: WHITE, borderRadius: 16, padding: 16, gap: 14, borderWidth: 1.5, borderColor: BORDER },
+  tipBox:      { backgroundColor: "#fffbeb", borderRadius: 10, padding: 10 },
+  tipTxt:      { fontFamily: "Inter_400Regular", fontSize: 12, color: "#7a5c00" },
+  tipSub:      { fontFamily: "Inter_400Regular", fontSize: 12, color: "#718096", marginTop: -8 },
 });
+
+// ─── Steps config ─────────────────────────────────────────────────────────────
+
+const STEPS = [
+  { title: "Add Property",     component: Step0_SelectType,     grayBg: false, optional: false },
+  { title: "Verification",     component: Step1_Verification,   grayBg: false, optional: false },
+  { title: "Ownership Type",   component: Step2_OwnershipType,  grayBg: false, optional: false },
+  { title: "Documents",        component: Step3_Documents,      grayBg: false, optional: false },
+  { title: "Verified",         component: Step4_Verified,       grayBg: false, optional: false },
+  { title: "Property Details", component: Step5_PropertyDetails,grayBg: false, optional: false },
+  { title: "Society & Address",component: Step6_Address,        grayBg: false, optional: false },
+  { title: "Rental Details",   component: Step7_RentalDetails,  grayBg: true,  optional: false },
+  { title: "Amenities",        component: Step8_Amenities,      grayBg: true,  optional: true  },
+  { title: "Images",           component: Step9_Images,         grayBg: true,  optional: false },
+  { title: "",                 component: Step10_Saved,         grayBg: false, optional: false },
+];
+
+const TOTAL_NUMBERED = 10; // steps 0-9 show "Step X of 10"
 
 // ─── Main screen ──────────────────────────────────────────────────────────────
 
-const STEP_COMPONENTS = [
-  Step0_SelectType,
-  Step1_OwnershipVerification,
-  Step2_OwnershipType,
-  Step3_UploadDocuments,
-  Step4_VerificationResult,
-  Step5_CreateProperty,
-  Step6_AddPhotos,
-  Step7_SocietyAddress,
-  Step8_FinancialDetails,
-  Step9_TaxSetup,
-  Step10_PropertySaved,
-];
-
 export default function AddPropertyScreen() {
   const insets = useSafeAreaInsets();
-  const topPad = isWeb ? 16 : insets.top > 0 ? insets.top : 16;
-  const bottomPad = isWeb ? 16 : insets.bottom + 16;
+  const topPad = isWeb ? 0 : insets.top > 0 ? insets.top : 12;
+  const bottomPad = isWeb ? 24 : insets.bottom + 24;
 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     propertyType: "",
     ownershipType: "",
     propertyName: "",
-    description: "",
     yearBuilt: "",
-    furnishing: "",
-    society: "",
-    flatNo: "",
+    totalArea: "",
+    bhk: "",
+    bedrooms: "",
+    bathrooms: "",
     floor: "",
-    street: "",
+    address: "",
     city: "",
-    pin: "",
     state: "",
+    pin: "",
     rent: "",
     deposit: "",
-    maintenance: "",
-    increment: "",
     brokerage: "",
-    gstRegistered: "No",
-    gstin: "",
-    pan: "",
-    taxId: "",
+    leaseDuration: "",
+    maintenance: "",
+    amenities: [] as string[],
   });
 
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
@@ -748,30 +800,49 @@ export default function AddPropertyScreen() {
     setStep((s) => s - 1);
   };
 
-  const isLastStep = step === STEP_COMPONENTS.length - 1;
-  const StepComponent = STEP_COMPONENTS[step];
+  const isSuccess = step === STEPS.length - 1;
+  const stepData = STEPS[step];
+  const StepComponent = stepData.component;
+  const stepNumber = step + 1;
 
   return (
-    <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-      <View style={[ms.screen, { paddingTop: topPad }]}>
-        {/* Header */}
+    <KeyboardAvoidingView style={{ flex: 1, backgroundColor: WHITE }} behavior={Platform.OS === "ios" ? "padding" : "height"}>
+      <View style={{ flex: 1, paddingTop: topPad, backgroundColor: WHITE }}>
+
+        {/* ── Header row: caret + title ── */}
         <View style={ms.header}>
-          {!isLastStep ? (
-            <TouchableOpacity onPress={back} style={ms.backBtn} activeOpacity={0.7}>
-              <ArrowLeftIcon />
+          {!isSuccess ? (
+            <TouchableOpacity onPress={back} style={ms.caretBtn} activeOpacity={0.7}>
+              <CaretLeftIcon />
             </TouchableOpacity>
-          ) : <View style={{ width: 36 }} />}
-          <View style={{ flex: 1, paddingHorizontal: 12 }}>
-            <Text style={ms.stepLabel} numberOfLines={1}>{STEPS[step]}</Text>
-            {!isLastStep && <ProgressBar step={step} total={STEPS.length} />}
+          ) : (
+            <View style={{ width: 32 }} />
+          )}
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
+            {stepData.title ? (
+              <Text style={ms.stepTitle}>{stepData.title}</Text>
+            ) : null}
+            {stepData.optional && (
+              <Text style={ms.optionalLabel}>(Optional)</Text>
+            )}
           </View>
-          <View style={{ width: 36 }} />
+          <View style={{ width: 32 }} />
         </View>
 
-        {/* Step content */}
+        {/* ── Progress section ── */}
+        {!isSuccess && (
+          <View style={ms.progressSection}>
+            <View style={ms.progressTrack}>
+              <View style={[ms.progressFill, { width: `${(stepNumber / TOTAL_NUMBERED) * 100}%` as any }]} />
+            </View>
+            <Text style={ms.stepText}>Step {stepNumber} of {TOTAL_NUMBERED}</Text>
+          </View>
+        )}
+
+        {/* ── Step content ── */}
         <ScrollView
-          style={{ flex: 1 }}
-          contentContainerStyle={[ms.body, { paddingBottom: bottomPad }]}
+          style={{ flex: 1, backgroundColor: stepData.grayBg ? LIGHT_GRAY : WHITE }}
+          contentContainerStyle={{ padding: 16, paddingBottom: bottomPad }}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
         >
@@ -783,9 +854,12 @@ export default function AddPropertyScreen() {
 }
 
 const ms = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: BG },
-  header: { flexDirection: "row", alignItems: "center", backgroundColor: WHITE, paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: "#f0f0f0" },
-  backBtn: { width: 36, height: 36, alignItems: "center", justifyContent: "center" },
-  stepLabel: { fontFamily: "Inter_600SemiBold", fontSize: 13, color: PRIMARY, marginBottom: 6 },
-  body: { padding: 20, paddingTop: 24 },
+  header:         { flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 16, paddingVertical: 10, backgroundColor: WHITE },
+  caretBtn:       { padding: 4 },
+  stepTitle:      { fontFamily: "Inter_600SemiBold", fontSize: 18, color: PRIMARY },
+  optionalLabel:  { fontFamily: "Inter_400Regular", fontSize: 13, color: "#718096" },
+  progressSection:{ paddingHorizontal: 16, paddingBottom: 16, gap: 8, backgroundColor: WHITE },
+  progressTrack:  { height: 10, backgroundColor: LIGHT_GRAY, borderRadius: 12, overflow: "hidden" },
+  progressFill:   { height: "100%" as any, backgroundColor: GOLD, borderRadius: 12 },
+  stepText:       { fontFamily: "Inter_400Regular", fontSize: 12, color: "#565656", textAlign: "center" },
 });
