@@ -280,7 +280,7 @@ export default function ProfileScreen() {
           <Text style={s.logoutTxt}>Sign Out</Text>
         </TouchableOpacity>
 
-        <Text style={s.versionTxt}>Version 1.0.0 · Property Manager</Text>
+        <Text style={s.versionTxt}>Version 1.0.0 · Fraktal</Text>
       </ScrollView>
     </View>
   );
