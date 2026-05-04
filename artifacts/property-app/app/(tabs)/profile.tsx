@@ -2,6 +2,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   Platform,
   ScrollView,
   StyleSheet,
@@ -12,6 +13,7 @@ import {
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Svg, { Path, Rect, Circle } from "react-native-svg";
+import { useAuth } from "@/context/auth";
 
 const isWeb = Platform.OS === "web";
 const P = "#1a365d";
@@ -146,11 +148,37 @@ const STATS = [
   { label: "Years Active", value: "4" },
 ];
 
+const ROLE_LABELS: Record<string, string> = {
+  owner: "Property Owner",
+  tenant: "Tenant",
+  manager: "Property Manager",
+};
+
 export default function ProfileScreen() {
   const insets = useSafeAreaInsets();
   const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
   const bottomPad = isWeb ? 90 : insets.bottom + 80;
   const [notifications, setNotifications] = useState(true);
+  const { logout, userName, role } = useAuth();
+
+  const displayName = userName || "User";
+  const initials = displayName.split(" ").map((w: string) => w[0]).join("").toUpperCase().slice(0, 2);
+  const roleLabel = role ? (ROLE_LABELS[role] ?? "User") : "Property Owner";
+
+  const handleSignOut = () => {
+    if (Platform.OS === "web") {
+      logout();
+      return;
+    }
+    Alert.alert(
+      "Sign Out",
+      "Are you sure you want to sign out?",
+      [
+        { text: "Cancel", style: "cancel" },
+        { text: "Sign Out", style: "destructive", onPress: () => logout() },
+      ]
+    );
+  };
 
   return (
     <View style={s.screen}>
@@ -170,14 +198,13 @@ export default function ProfileScreen() {
           {/* Avatar */}
           <View style={s.avatarWrap}>
             <LinearGradient colors={[GOLD, GOLD2]} style={s.avatar}>
-              <Text style={s.avatarInitial}>A</Text>
+              <Text style={s.avatarInitial}>{initials}</Text>
             </LinearGradient>
             <View style={s.avatarOnline} />
           </View>
-          <Text style={s.heroName}>Aditya Sharma</Text>
-          <Text style={s.heroEmail}>aditya.sharma@propmanager.in</Text>
+          <Text style={s.heroName}>{displayName}</Text>
           <View style={s.heroRoleBadge}>
-            <Text style={s.heroRoleTxt}>Property Owner</Text>
+            <Text style={s.heroRoleTxt}>{roleLabel}</Text>
           </View>
 
           {/* Stats row */}
@@ -248,7 +275,7 @@ export default function ProfileScreen() {
         ))}
 
         {/* Logout */}
-        <TouchableOpacity style={s.logoutBtn} activeOpacity={0.8}>
+        <TouchableOpacity style={s.logoutBtn} activeOpacity={0.8} onPress={handleSignOut}>
           <LogoutIcon />
           <Text style={s.logoutTxt}>Sign Out</Text>
         </TouchableOpacity>
