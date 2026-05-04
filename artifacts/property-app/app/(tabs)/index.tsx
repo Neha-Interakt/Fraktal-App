@@ -12,8 +12,9 @@ import {
   View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path, Rect, G } from "react-native-svg";
+import Svg, { Circle, Path, Rect, G } from "react-native-svg";
 import Colors from "@/constants/colors";
+import { useAuth } from "@/context/auth";
 
 const isWeb = Platform.OS === "web";
 
@@ -324,11 +325,149 @@ function ActivityCard({
   );
 }
 
+// ─── Empty State Components ───────────────────────────────────────────────────
+
+function EmptyPropertyIllustration() {
+  return (
+    <Svg width={80} height={80} viewBox="0 0 80 80" fill="none">
+      <Circle cx={40} cy={40} r={38} fill="#edf2f7" />
+      <Rect x={22} y={34} width={16} height={26} rx={3} fill="#b0bccc" />
+      <Rect x={40} y={28} width={20} height={32} rx={3} fill="#8fa3be" />
+      <Rect x={26} y={40} width={5} height={6} rx={1} fill="white" opacity={0.7} />
+      <Rect x={33} y={40} width={5} height={6} rx={1} fill="white" opacity={0.5} />
+      <Rect x={44} y={34} width={5} height={6} rx={1} fill="white" opacity={0.6} />
+      <Rect x={51} y={34} width={5} height={6} rx={1} fill="white" opacity={0.4} />
+      <Rect x={28} y={50} width={8} height={10} rx={1} fill="#c9a227" opacity={0.8} />
+      <Rect x={44} y={44} width={8} height={16} rx={1} fill="#c9a227" opacity={0.7} />
+    </Svg>
+  );
+}
+
+function EmptyActivityIllustration() {
+  return (
+    <Svg width={64} height={64} viewBox="0 0 64 64" fill="none">
+      <Circle cx={32} cy={32} r={30} fill="#edf2f7" />
+      <Rect x={18} y={20} width={28} height={6} rx={3} fill="#b0bccc" />
+      <Rect x={18} y={30} width={20} height={4} rx={2} fill="#c9a227" opacity={0.5} />
+      <Rect x={18} y={38} width={24} height={4} rx={2} fill="#b0bccc" opacity={0.6} />
+      <Rect x={18} y={46} width={16} height={4} rx={2} fill="#b0bccc" opacity={0.4} />
+    </Svg>
+  );
+}
+
+function EmptyPropertiesCard() {
+  return (
+    <View style={s.emptyCard}>
+      <EmptyPropertyIllustration />
+      <View style={{ gap: 4 }}>
+        <Text style={s.emptyTitle}>No properties yet</Text>
+        <Text style={s.emptySub}>Add your first property to start tracking rent and tenants</Text>
+      </View>
+      <TouchableOpacity
+        onPress={() => router.push("/add-property")}
+        activeOpacity={0.85}
+        style={s.emptyBtn}
+      >
+        <LinearGradient colors={["#1a365d", "#00122c"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={s.emptyBtnGrad}>
+          <Text style={s.emptyBtnTxt}>+ Add Your First Property</Text>
+        </LinearGradient>
+      </TouchableOpacity>
+    </View>
+  );
+}
+
+function EmptyActivitiesCard() {
+  return (
+    <View style={[s.emptyCard, { paddingVertical: 20 }]}>
+      <EmptyActivityIllustration />
+      <View style={{ gap: 4 }}>
+        <Text style={s.emptyTitle}>No recent activity</Text>
+        <Text style={s.emptySub}>Activity from rent payments and maintenance will appear here</Text>
+      </View>
+    </View>
+  );
+}
+
+function EmptyAnalyticsCard() {
+  return (
+    <View style={s.emptyAnalyticsCard}>
+      <View style={{ gap: 4 }}>
+        <Text style={s.emptyAnalyticsSub}>Total Revenue</Text>
+        <Text style={s.emptyAnalyticsVal}>₹0 <Text style={{ fontSize: 14, color: "#a0aec0", fontFamily: "Inter_400Regular" }}>/ month</Text></Text>
+        <Text style={{ fontFamily: "Inter_400Regular", fontSize: 12, color: "#a0aec0" }}>Add properties to see earnings</Text>
+      </View>
+      <View style={s.emptyAnalyticsIllus}>
+        <Svg width={60} height={40} viewBox="0 0 60 40" fill="none">
+          <Path d="M4 36 L16 28 L28 32 L40 20 L52 12" stroke="#c9a227" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" strokeDasharray="4 3" opacity={0.5} />
+        </Svg>
+      </View>
+    </View>
+  );
+}
+
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
+  const { isNewUser, userName } = useAuth();
   const bottomPad = isWeb ? 90 : insets.bottom + 80;
+
+  if (isNewUser) {
+    return (
+      <View style={s.screen}>
+        <View style={s.topSection}>
+          <StatusBar />
+          <Navbar />
+        </View>
+        <ScrollView
+          style={s.scroll}
+          contentContainerStyle={[s.scrollContent, { paddingBottom: bottomPad }]}
+          showsVerticalScrollIndicator={false}
+        >
+          {/* Welcome banner */}
+          <LinearGradient colors={["#1a365d", "#00122c"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.welcomeBanner}>
+            <View style={{ gap: 4 }}>
+              <Text style={s.welcomeHi}>Welcome{userName ? `, ${userName}` : ""}! 🎉</Text>
+              <Text style={s.welcomeSub}>You're all set. Add your first property to get started.</Text>
+            </View>
+            <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.85} style={s.welcomeBtn}>
+              <Text style={s.welcomeBtnTxt}>Get Started →</Text>
+            </TouchableOpacity>
+          </LinearGradient>
+
+          {/* Empty analytics */}
+          <View style={s.analyticsSection}>
+            <EmptyAnalyticsCard />
+            <View style={s.smallCardsRow}>
+              <SmallAnalyticsCard label="Occupancy rate" value="—" sub="No data yet" />
+              <SmallAnalyticsCard label="Total ROI" value="—" sub="No data yet" />
+            </View>
+          </View>
+
+          {/* Quick Actions */}
+          <View style={s.quickActionsBar}>
+            <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
+              <QuickAction icon={<PlusCircleIcon />} label="Add property" />
+            </TouchableOpacity>
+            <QuickAction icon={<ChatIcon />} label="Chats" />
+            <QuickAction icon={<FilesIcon />} label="Documents" />
+          </View>
+
+          {/* Empty Properties */}
+          <View style={s.sectionHeader}>
+            <Text style={s.sectionTitle}>Properties</Text>
+          </View>
+          <EmptyPropertiesCard />
+
+          {/* Empty Activities */}
+          <View style={[s.sectionHeader, { marginTop: 4 }]}>
+            <Text style={s.sectionTitle}>Recent Activities</Text>
+          </View>
+          <EmptyActivitiesCard />
+        </ScrollView>
+      </View>
+    );
+  }
 
   return (
     <View style={s.screen}>
@@ -760,5 +899,95 @@ const s = StyleSheet.create({
     fontSize: 12,
     color: "#f0f0f0",
     lineHeight: 16,
+  },
+
+  // ── Empty state styles ────────────────────────────────────────────────────
+  welcomeBanner: {
+    borderRadius: 18,
+    padding: 18,
+    gap: 14,
+  },
+  welcomeHi: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 18,
+    color: "#ffffff",
+  },
+  welcomeSub: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: "rgba(255,255,255,0.75)",
+    lineHeight: 18,
+  },
+  welcomeBtn: {
+    backgroundColor: "#c9a227",
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 18,
+    alignSelf: "flex-start",
+  },
+  welcomeBtnTxt: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: "#ffffff",
+  },
+  emptyCard: {
+    backgroundColor: "#ffffff",
+    borderRadius: 18,
+    padding: 24,
+    alignItems: "center",
+    gap: 14,
+    borderWidth: 1.5,
+    borderColor: "#e2e8f0",
+    borderStyle: "dashed",
+  },
+  emptyTitle: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 16,
+    color: "#1a365d",
+    textAlign: "center",
+  },
+  emptySub: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 13,
+    color: "#718096",
+    textAlign: "center",
+    lineHeight: 18,
+  },
+  emptyBtn: {
+    width: "100%",
+    borderRadius: 12,
+    overflow: "hidden",
+  },
+  emptyBtnGrad: {
+    height: 46,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptyBtnTxt: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    color: "#ffffff",
+  },
+  emptyAnalyticsCard: {
+    backgroundColor: "#1a365d",
+    borderRadius: 16,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    minHeight: 90,
+  },
+  emptyAnalyticsSub: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 12,
+    color: "rgba(255,255,255,0.65)",
+  },
+  emptyAnalyticsVal: {
+    fontFamily: "Inter_700Bold",
+    fontSize: 22,
+    color: "#ffffff",
+  },
+  emptyAnalyticsIllus: {
+    opacity: 0.6,
   },
 });
