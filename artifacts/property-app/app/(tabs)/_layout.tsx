@@ -1,8 +1,9 @@
 import { Tabs } from "expo-router";
+import { LinearGradient } from "expo-linear-gradient";
 import React from "react";
 import { Platform, Pressable, StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Svg, { Path, Circle, Rect, G } from "react-native-svg";
+import Svg, { Path, Circle } from "react-native-svg";
 import Colors from "@/constants/colors";
 
 // ── Filled Icons (active state) ────────────────────────────────────────────────
@@ -163,11 +164,11 @@ function UserOutlineIcon({ color }: { color: string }) {
 // ── Nav Config ─────────────────────────────────────────────────────────────────
 
 const NAV_ITEMS = [
-  { name: "index",       label: "Home",        FilledIcon: HomeFilledIcon,     OutlineIcon: HomeOutlineIcon },
+  { name: "index",       label: "Home",        FilledIcon: HomeFilledIcon,      OutlineIcon: HomeOutlineIcon },
   { name: "properties",  label: "Properties",  FilledIcon: BuildingsFilledIcon, OutlineIcon: BuildingsOutlineIcon },
-  { name: "finance",     label: "Finance",     FilledIcon: DollarFilledIcon,   OutlineIcon: DollarOutlineIcon },
-  { name: "maintenance", label: "Maintenance", FilledIcon: WrenchFilledIcon,   OutlineIcon: WrenchOutlineIcon },
-  { name: "profile",     label: "Profile",     FilledIcon: UserFilledIcon,     OutlineIcon: UserOutlineIcon },
+  { name: "finance",     label: "Financials",  FilledIcon: DollarFilledIcon,    OutlineIcon: DollarOutlineIcon },
+  { name: "maintenance", label: "Maintenance", FilledIcon: WrenchFilledIcon,    OutlineIcon: WrenchOutlineIcon },
+  { name: "profile",     label: "Profile",     FilledIcon: UserFilledIcon,      OutlineIcon: UserOutlineIcon },
 ];
 
 // ── Custom Tab Bar ─────────────────────────────────────────────────────────────
@@ -183,7 +184,12 @@ function CustomTabBar({ state, navigation }: any) {
         { bottom: isWeb ? 12 : insets.bottom > 0 ? insets.bottom + 4 : 12 },
       ]}
     >
-      <View style={styles.tabBar}>
+      <LinearGradient
+        colors={["#1a365d", "#00122c"]}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 0 }}
+        style={styles.tabBar}
+      >
         {state.routes.map((route: any, index: number) => {
           const isFocused = state.index === index;
           const item = NAV_ITEMS[index];
@@ -213,7 +219,7 @@ function CustomTabBar({ state, navigation }: any) {
             </Pressable>
           );
         })}
-      </View>
+      </LinearGradient>
     </View>
   );
 }
@@ -226,28 +232,27 @@ const styles = StyleSheet.create({
   },
   tabBar: {
     flexDirection: "row",
-    backgroundColor: Colors.primary,
-    borderRadius: 32,
+    borderRadius: 40,
     paddingHorizontal: 16,
-    paddingVertical: 8,
+    paddingVertical: 10,
     alignItems: "center",
     justifyContent: "space-between",
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 8,
-    elevation: 10,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.35,
+    shadowRadius: 12,
+    elevation: 12,
   },
   tabItem: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 4,
-    minHeight: 44,
+    minHeight: 48,
   },
   activeTabItem: {
     alignItems: "center",
-    gap: 2,
+    gap: 3,
   },
   activeLabel: {
     fontFamily: "Inter_500Medium",
