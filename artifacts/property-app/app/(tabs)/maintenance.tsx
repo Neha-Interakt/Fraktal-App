@@ -78,7 +78,7 @@ const PRIORITY_COLOR: Record<string, string> = {
 export default function MaintenanceScreen() {
   const insets = useSafeAreaInsets();
   const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
-  const bottomPad = isWeb ? 90 : insets.bottom + 80;
+  const bottomPad = isWeb ? 140 : insets.bottom + 120;
   const [filter, setFilter] = useState("All");
 
   const filtered = filter === "All" ? ALL_REQUESTS : ALL_REQUESTS.filter((r) => r.status === filter);

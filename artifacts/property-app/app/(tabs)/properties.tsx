@@ -127,7 +127,7 @@ function PropertyCard({ item }: { item: typeof PROPERTIES_DATA[0] }) {
 export default function PropertiesScreen() {
   const insets = useSafeAreaInsets();
   const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
-  const bottomPad = isWeb ? 90 : insets.bottom + 80;
+  const bottomPad = isWeb ? 140 : insets.bottom + 120;
   const [activeFilter, setActiveFilter] = useState("All");
   const [search, setSearch] = useState("");
 

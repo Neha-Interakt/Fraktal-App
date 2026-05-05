@@ -101,7 +101,7 @@ const TABS = ["Overview", "Transactions", "Collection"];
 export default function FinanceScreen() {
   const insets = useSafeAreaInsets();
   const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
-  const bottomPad = isWeb ? 90 : insets.bottom + 80;
+  const bottomPad = isWeb ? 140 : insets.bottom + 120;
   const [tab, setTab] = useState("Overview");
 
   return (
