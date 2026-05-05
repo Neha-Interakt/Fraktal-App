@@ -351,14 +351,16 @@ export default function HomeScreen() {
   if (isNewUser) {
     return (
       <View style={s.screen}>
-        <View style={[s.topSection, { paddingTop: topPad }]}>
-          <Navbar />
-        </View>
         <ScrollView
           style={s.scroll}
-          contentContainerStyle={[s.scrollContent, { paddingBottom: bottomPad }]}
+          contentContainerStyle={{ paddingBottom: bottomPad }}
           showsVerticalScrollIndicator={false}
+          stickyHeaderIndices={[0]}
         >
+          <View style={[s.topSection, { paddingTop: topPad }]}>
+            <Navbar />
+          </View>
+          <View style={s.scrollContent}>
           {/* Welcome banner */}
           <LinearGradient colors={["#1a365d", "#00122c"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={s.welcomeBanner}>
             <View style={{ gap: 4 }}>
@@ -399,6 +401,7 @@ export default function HomeScreen() {
             <Text style={s.sectionTitle}>Recent Activities</Text>
           </View>
           <EmptyActivitiesCard />
+          </View>
         </ScrollView>
       </View>
     );
@@ -406,14 +409,16 @@ export default function HomeScreen() {
 
   return (
     <View style={s.screen}>
-      <View style={[s.topSection, { paddingTop: topPad }]}>
-        <Navbar />
-      </View>
       <ScrollView
         style={s.scroll}
-        contentContainerStyle={[s.scrollContent, { paddingBottom: bottomPad }]}
+        contentContainerStyle={{ paddingBottom: bottomPad }}
         showsVerticalScrollIndicator={false}
+        stickyHeaderIndices={[0]}
       >
+        <View style={[s.topSection, { paddingTop: topPad }]}>
+          <Navbar />
+        </View>
+        <View style={s.scrollContent}>
         {/* Analytics */}
         <View style={s.analyticsSection}>
           <RevenueCard />
@@ -479,6 +484,7 @@ export default function HomeScreen() {
             amount="₹45,000"
             time="5 hours ago"
           />
+        </View>
         </View>
       </ScrollView>
     </View>
