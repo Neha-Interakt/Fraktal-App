@@ -254,7 +254,7 @@ const s = StyleSheet.create({
   body: { padding: 16, gap: 12 },
 
   // Hero card
-  heroCard: { borderRadius: 20, padding: 20, alignItems: "center", gap: 6 },
+  heroCard: { borderRadius: 20, padding: 20, alignItems: "center", gap: 6, shadowColor: "#000", shadowOffset: { width: 0, height: 4 }, shadowOpacity: 0.18, shadowRadius: 10, elevation: 6 },
   avatarWrap: { position: "relative", marginBottom: 4 },
   avatar: { width: 72, height: 72, borderRadius: 36, alignItems: "center", justifyContent: "center" },
   avatarInitial: { fontFamily: "Inter_700Bold", fontSize: 28, color: DARK },
@@ -272,7 +272,7 @@ const s = StyleSheet.create({
   editBtnTxt: { fontFamily: "Inter_500Medium", fontSize: 13, color: WHITE },
 
   // KYC banner
-  kycBanner: { backgroundColor: WHITE, borderRadius: 14, padding: 14, flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
+  kycBanner: { backgroundColor: WHITE, borderRadius: 14, padding: 14, flexDirection: "row", justifyContent: "space-between", alignItems: "center", shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
   kycLeft: { flexDirection: "row", alignItems: "center", gap: 10 },
   kycDot: { width: 10, height: 10, borderRadius: 5, backgroundColor: "#48bb78" },
   kycTitle: { fontFamily: "Inter_600SemiBold", fontSize: 13, color: DARK },
@@ -283,7 +283,7 @@ const s = StyleSheet.create({
   // Menu
   menuSection: { gap: 6 },
   menuSectionTitle: { fontFamily: "Inter_500Medium", fontSize: 12, color: "#888", paddingHorizontal: 4, textTransform: "uppercase", letterSpacing: 0.5 },
-  menuCard: { backgroundColor: WHITE, borderRadius: 14, overflow: "hidden" },
+  menuCard: { backgroundColor: WHITE, borderRadius: 14, shadowColor: "#000", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.06, shadowRadius: 4, elevation: 2 },
   menuItem: { flexDirection: "row", alignItems: "center", paddingHorizontal: 14, paddingVertical: 13, gap: 12 },
   menuItemBorder: { borderBottomWidth: 1, borderBottomColor: "#f2f2f2" },
   menuIconWrap: { width: 32, height: 32, borderRadius: 10, backgroundColor: `${P}0f`, alignItems: "center", justifyContent: "center" },
@@ -292,7 +292,7 @@ const s = StyleSheet.create({
   menuBadgeTxt: { fontFamily: "Inter_500Medium", fontSize: 11, color: P },
 
   // Logout
-  logoutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, backgroundColor: "#fff0f0", borderRadius: 14, paddingVertical: 14, borderWidth: 1, borderColor: "#fecaca" },
+  logoutBtn: { flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 10, backgroundColor: "#fff0f0", borderRadius: 14, paddingVertical: 14, borderWidth: 1, borderColor: "#fecaca", shadowColor: "#e53e3e", shadowOffset: { width: 0, height: 1 }, shadowOpacity: 0.08, shadowRadius: 4, elevation: 2 },
   logoutTxt: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: "#e53e3e" },
   versionTxt: { fontFamily: "Inter_400Regular", fontSize: 11, color: "#aaa", textAlign: "center", marginTop: 4 },
 });

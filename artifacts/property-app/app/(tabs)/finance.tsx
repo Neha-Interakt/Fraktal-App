@@ -312,7 +312,7 @@ const s = StyleSheet.create({
   tabChipTxt: { fontFamily: "Inter_500Medium", fontSize: 13, color: "#555" },
   tabChipTxtActive: { color: WHITE },
   body: { padding: 16, gap: 12 },
-  card: { backgroundColor: WHITE, borderRadius: 16, padding: 16 },
+  card: { backgroundColor: WHITE, borderRadius: 16, padding: 16, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 3 },
   cardHeaderRow: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", marginBottom: 4 },
   cardTitle: { fontFamily: "Inter_600SemiBold", fontSize: 15, color: DARK },
   cardMeta: { fontFamily: "Inter_400Regular", fontSize: 12, color: "#888" },

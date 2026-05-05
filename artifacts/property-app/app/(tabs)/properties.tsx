@@ -166,6 +166,7 @@ export default function PropertiesScreen() {
             placeholderTextColor="#aaa"
             value={search}
             onChangeText={setSearch}
+            underlineColorAndroid="transparent"
           />
         </View>
 

@@ -217,7 +217,7 @@ const s = StyleSheet.create({
   body: { padding: 16, gap: 12 },
   empty: { alignItems: "center", justifyContent: "center", paddingVertical: 60, gap: 12 },
   emptyTxt: { fontFamily: "Inter_400Regular", fontSize: 14, color: "#aaa" },
-  card: { backgroundColor: WHITE, borderRadius: 16, padding: 14, gap: 10 },
+  card: { backgroundColor: WHITE, borderRadius: 16, padding: 14, gap: 10, shadowColor: "#000", shadowOffset: { width: 0, height: 2 }, shadowOpacity: 0.07, shadowRadius: 6, elevation: 3 },
   cardTop: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" },
   catBadge: { flexDirection: "row", alignItems: "center", gap: 4, borderRadius: 10, paddingHorizontal: 8, paddingVertical: 4 },
   catTxt: { fontFamily: "Inter_400Regular", fontSize: 11, color: P },
