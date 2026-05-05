@@ -128,7 +128,7 @@ export default function RoleSelectScreen() {
         <Text style={st.greeting}>
           {userName ? `Hello, ${userName}! 👋` : "Welcome! 👋"}
         </Text>
-        <Text style={st.headerTitle}>How will you use Propify?</Text>
+        <Text style={st.headerTitle}>How will you use Fraktal?</Text>
         <Text style={st.headerSub}>Select your role to personalise your experience</Text>
       </LinearGradient>
 

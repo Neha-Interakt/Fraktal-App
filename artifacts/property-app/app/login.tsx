@@ -207,7 +207,7 @@ export default function LoginScreen() {
           </View>
 
           {/* Guest */}
-          <TouchableOpacity onPress={() => login("Guest", "guest@propify.app")} activeOpacity={0.7} style={st.guestBtn}>
+          <TouchableOpacity onPress={() => login("Guest", "guest@fraktal.app")} activeOpacity={0.7} style={st.guestBtn}>
             <Text style={st.guestTxt}>Continue as Guest</Text>
           </TouchableOpacity>
         </View>
