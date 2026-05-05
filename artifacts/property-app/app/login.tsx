@@ -97,7 +97,7 @@ export default function LoginScreen() {
         <View style={st.headerContent}>
           <AppLogoIcon />
           <View style={st.headerTexts}>
-            <Text style={st.appName}>Propify</Text>
+            <Text style={st.appName}>Fraktal</Text>
             <Text style={st.appTagline}>Your property, simplified</Text>
           </View>
         </View>
@@ -123,7 +123,7 @@ export default function LoginScreen() {
 
           <View style={st.formGap}>
             <Text style={st.formTitle}>
-              {mode === "signin" ? "Welcome back!" : "Join Propify"}
+              {mode === "signin" ? "Welcome back!" : "Join Fraktal"}
             </Text>
             <Text style={st.formSub}>
               {mode === "signin"
