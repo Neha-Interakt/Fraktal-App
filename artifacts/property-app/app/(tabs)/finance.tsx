@@ -21,37 +21,6 @@ const WHITE = "#ffffff";
 const GREEN = "#38a169";
 const RED = "#e53e3e";
 
-// ─── Status Bar Icons ─────────────────────────────────────────────────────────
-function CellularIcon() {
-  return (
-    <Svg width={20} height={12} viewBox="0 0 20 12" fill="none">
-      <Rect x={0} y={7} width={3} height={5} rx={0.5} fill="#0c0c0c" />
-      <Rect x={4.25} y={5} width={3} height={7} rx={0.5} fill="#0c0c0c" />
-      <Rect x={8.5} y={3} width={3} height={9} rx={0.5} fill="#0c0c0c" />
-      <Rect x={12.75} y={1} width={3} height={11} rx={0.5} fill="#0c0c0c" />
-      <Rect x={17} y={0} width={3} height={12} rx={0.5} fill="#0c0c0c" opacity={0.3} />
-    </Svg>
-  );
-}
-function WifiIcon() {
-  return (
-    <Svg width={18} height={13} viewBox="0 0 18 13" fill="none">
-      <Path d="M9 10.5C9.828 10.5 10.5 11.172 10.5 12C10.5 12.828 9.828 13.5 9 13.5C8.172 13.5 7.5 12.828 7.5 12C7.5 11.172 8.172 10.5 9 10.5Z" fill="#0c0c0c" />
-      <Path d="M9 6.5C10.658 6.5 12.166 7.17 13.264 8.25L14.678 6.836C13.21 5.396 11.204 4.5 9 4.5C6.796 4.5 4.79 5.396 3.322 6.836L4.737 8.25C5.834 7.17 7.342 6.5 9 6.5Z" fill="#0c0c0c" />
-      <Path d="M9 2.5C11.761 2.5 14.261 3.619 16.071 5.429L17.485 4.015C15.314 1.843 12.314 0.5 9 0.5C5.686 0.5 2.686 1.843 0.515 4.015L1.929 5.429C3.739 3.619 6.239 2.5 9 2.5Z" fill="#0c0c0c" />
-    </Svg>
-  );
-}
-function BatteryIcon() {
-  return (
-    <Svg width={25} height={13} viewBox="0 0 25 13" fill="none">
-      <Rect x={0.5} y={0.5} width={21} height={12} rx={3.5} stroke="#0c0c0c" strokeOpacity={0.35} />
-      <Rect x={2} y={2} width={16} height={9} rx={2} fill="#0c0c0c" />
-      <Path d="M23 4.5V8.5C23.805 8.17 24.5 7.17 24.5 6.5C24.5 5.83 23.805 4.83 23 4.5Z" fill="#0c0c0c" fillOpacity={0.4} />
-    </Svg>
-  );
-}
-
 // ─── Finance Icons ────────────────────────────────────────────────────────────
 function ArrowUpIcon() {
   return (
@@ -138,11 +107,7 @@ export default function FinanceScreen() {
   return (
     <View style={s.screen}>
       {/* Header */}
-      <View style={s.header}>
-        <View style={[s.statusBar, { paddingTop: topPad }]}>
-          <Text style={s.statusTime}>9:41</Text>
-          <View style={s.statusIcons}><CellularIcon /><WifiIcon /><BatteryIcon /></View>
-        </View>
+      <View style={[s.header, { paddingTop: topPad }]}>
         <View style={s.titleRow}>
           <Text style={s.title}>Finance</Text>
           <Text style={s.subtitle}>April 2026</Text>
@@ -327,9 +292,6 @@ function CollectRow({ row }: { row: typeof COLLECTION[0] }) {
 const s = StyleSheet.create({
   screen: { flex: 1, backgroundColor: BG },
   header: { backgroundColor: WHITE },
-  statusBar: { flexDirection: "row", justifyContent: "space-between", alignItems: "center", paddingHorizontal: 16, paddingBottom: 4 },
-  statusTime: { fontFamily: "Inter_400Regular", fontSize: 15, color: "#0c0c0c", letterSpacing: -0.3 },
-  statusIcons: { flexDirection: "row", alignItems: "center", gap: 8 },
   titleRow: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 4 },
   title: { fontFamily: "Inter_700Bold", fontSize: 22, color: DARK },
   subtitle: { fontFamily: "Inter_400Regular", fontSize: 13, color: "#888", marginTop: 2 },

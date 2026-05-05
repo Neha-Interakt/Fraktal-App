@@ -18,53 +18,6 @@ import { useAuth } from "@/context/auth";
 
 const isWeb = Platform.OS === "web";
 
-// ─── Status Bar Icons (from Figma) ───────────────────────────────────────────
-
-function CellularIcon() {
-  return (
-    <Svg width={20} height={12} viewBox="0 0 20 12" fill="none">
-      <Rect x={0} y={7} width={3} height={5} rx={0.5} fill="#0c0c0c" />
-      <Rect x={4.25} y={5} width={3} height={7} rx={0.5} fill="#0c0c0c" />
-      <Rect x={8.5} y={3} width={3} height={9} rx={0.5} fill="#0c0c0c" />
-      <Rect x={12.75} y={1} width={3} height={11} rx={0.5} fill="#0c0c0c" />
-      <Rect x={17} y={0} width={3} height={12} rx={0.5} fill="#0c0c0c" opacity={0.3} />
-    </Svg>
-  );
-}
-
-function WifiIcon() {
-  return (
-    <Svg width={18} height={13} viewBox="0 0 18 13" fill="none">
-      <Path
-        d="M9 10.5C9.82843 10.5 10.5 11.1716 10.5 12C10.5 12.8284 9.82843 13.5 9 13.5C8.17157 13.5 7.5 12.8284 7.5 12C7.5 11.1716 8.17157 10.5 9 10.5Z"
-        fill="#0c0c0c"
-      />
-      <Path
-        d="M9 6.5C10.6576 6.5 12.1663 7.17 13.2635 8.25L14.6777 6.8358C13.2101 5.39578 11.2041 4.5 9 4.5C6.79589 4.5 4.78988 5.39578 3.32233 6.8358L4.73654 8.25C5.83372 7.17 7.34236 6.5 9 6.5Z"
-        fill="#0c0c0c"
-      />
-      <Path
-        d="M9 2.5C11.7614 2.5 14.2614 3.61929 16.0711 5.42893L17.4853 4.01472C15.3137 1.84315 12.3137 0.5 9 0.5C5.68629 0.5 2.68629 1.84315 0.514718 4.01472L1.92893 5.42893C3.73858 3.61929 6.23858 2.5 9 2.5Z"
-        fill="#0c0c0c"
-      />
-    </Svg>
-  );
-}
-
-function BatteryIcon() {
-  return (
-    <Svg width={25} height={13} viewBox="0 0 25 13" fill="none">
-      <Rect x={0.5} y={0.5} width={21} height={12} rx={3.5} stroke="#0c0c0c" strokeOpacity={0.35} />
-      <Rect x={2} y={2} width={16} height={9} rx={2} fill="#0c0c0c" />
-      <Path
-        d="M23 4.5V8.5C23.8047 8.17 24.5 7.17 24.5 6.5C24.5 5.83 23.8047 4.83 23 4.5Z"
-        fill="#0c0c0c"
-        fillOpacity={0.4}
-      />
-    </Svg>
-  );
-}
-
 // ─── App SVG Icons ────────────────────────────────────────────────────────────
 
 function BellIcon() {
@@ -141,24 +94,6 @@ function ClockSmallIcon() {
         fill="#F0F0F0"
       />
     </Svg>
-  );
-}
-
-// ─── Status Bar (Figma TopHeader) ────────────────────────────────────────────
-
-function StatusBar() {
-  const insets = useSafeAreaInsets();
-  const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
-
-  return (
-    <View style={[s.statusBar, { paddingTop: topPad }]}>
-      <Text style={s.statusTime}>9:41</Text>
-      <View style={s.statusIcons}>
-        <CellularIcon />
-        <WifiIcon />
-        <BatteryIcon />
-      </View>
-    </View>
   );
 }
 
@@ -410,13 +345,13 @@ function EmptyAnalyticsCard() {
 export default function HomeScreen() {
   const insets = useSafeAreaInsets();
   const { isNewUser, userName } = useAuth();
+  const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
   const bottomPad = isWeb ? 90 : insets.bottom + 80;
 
   if (isNewUser) {
     return (
       <View style={s.screen}>
-        <View style={s.topSection}>
-          <StatusBar />
+        <View style={[s.topSection, { paddingTop: topPad }]}>
           <Navbar />
         </View>
         <ScrollView
@@ -471,8 +406,7 @@ export default function HomeScreen() {
 
   return (
     <View style={s.screen}>
-      <View style={s.topSection}>
-        <StatusBar />
+      <View style={[s.topSection, { paddingTop: topPad }]}>
         <Navbar />
       </View>
       <ScrollView
@@ -562,25 +496,6 @@ const s = StyleSheet.create({
     backgroundColor: "#ffffff",
   },
 
-  // Status bar
-  statusBar: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    paddingHorizontal: 16,
-    paddingBottom: 4,
-  },
-  statusTime: {
-    fontFamily: "Inter_400Regular",
-    fontSize: 15,
-    color: "#0c0c0c",
-    letterSpacing: -0.3,
-  },
-  statusIcons: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-  },
 
   // Navbar
   navbar: {
