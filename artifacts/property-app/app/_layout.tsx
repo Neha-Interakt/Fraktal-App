@@ -46,6 +46,7 @@ function RootLayoutNav() {
       <Stack.Screen name="add-property"    options={{ headerShown: false, animation: "slide_from_bottom" }} />
       <Stack.Screen name="edit-property"  options={{ headerShown: false, animation: "slide_from_right" }} />
       <Stack.Screen name="chat"           options={{ headerShown: false, animation: "slide_from_right" }} />
+      <Stack.Screen name="chats-list"    options={{ headerShown: false, animation: "slide_from_right" }} />
     </Stack>
   );
 }

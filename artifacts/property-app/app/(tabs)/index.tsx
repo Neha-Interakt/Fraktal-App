@@ -384,7 +384,9 @@ export default function HomeScreen() {
             <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
               <QuickAction icon={<PlusCircleIcon />} label="Add property" />
             </TouchableOpacity>
-            <QuickAction icon={<ChatIcon />} label="Chats" />
+            <TouchableOpacity onPress={() => router.push("/chats-list" as any)} activeOpacity={0.8} style={{ flex: 1 }}>
+              <QuickAction icon={<ChatIcon />} label="Chats" />
+            </TouchableOpacity>
             <QuickAction icon={<FilesIcon />} label="Documents" />
           </View>
 
@@ -428,7 +430,9 @@ export default function HomeScreen() {
           <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
             <QuickAction icon={<PlusCircleIcon />} label="Add property" />
           </TouchableOpacity>
-          <QuickAction icon={<ChatIcon />} label="Chats" />
+          <TouchableOpacity onPress={() => router.push("/chats-list" as any)} activeOpacity={0.8} style={{ flex: 1 }}>
+            <QuickAction icon={<ChatIcon />} label="Chats" />
+          </TouchableOpacity>
           <QuickAction icon={<FilesIcon />} label="Documents" />
         </View>
 
