@@ -3,6 +3,7 @@ previewPath = "/property-app/"
 title = "Fraktal - Property Management"
 version = "1.0.0"
 id = "artifacts/property-app"
+router = "expo-domain"
 
 [[integratedSkills]]
 name = "expo"

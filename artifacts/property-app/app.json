@@ -14,7 +14,8 @@
       "package": "com.fraktal.app"
     },
     "web": {
-      "bundler": "webpack"
+      "bundler": "metro",
+      "output": "single"
     }
   }
 }

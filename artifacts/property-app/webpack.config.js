@@ -11,7 +11,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'web-build'),
     filename: 'bundle.[contenthash].js',
-    publicPath: process.env.BASE_PATH || '/',
+    publicPath: '/',
   },
   module: {
     rules: [
