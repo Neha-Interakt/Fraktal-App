@@ -1,16 +1,14 @@
 kind = "mobile"
 previewPath = "/property-app/"
-title = "Property Dashboard Mobile"
+title = "Fraktal - Property Management"
 version = "1.0.0"
 id = "artifacts/property-app"
-router = "expo-domain"
 
 [[integratedSkills]]
 name = "expo"
 version = "1.0.0"
 
 [[services]]
-ensurePreviewReachable = "/status"
 name = "expo"
 paths = [ "/property-app/" ]
 localPort = 22078
