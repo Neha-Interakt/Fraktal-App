@@ -1,0 +1,1 @@
+- [Fraktal Expo+React Navigation setup](fraktal-nav-setup.md) — working formula to render Expo app in Replit preview without expo-router.

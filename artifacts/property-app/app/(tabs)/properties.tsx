@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { router } from "expo-router";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useState } from "react";
 import {
   Platform,
@@ -61,7 +61,7 @@ function PropertyCard({ item }: { item: typeof PROPERTIES_DATA[0] }) {
   return (
     <TouchableOpacity
       activeOpacity={0.85}
-      onPress={() => router.push({ pathname: "/property-detail", params: { id: item.id } })}
+      onPress={() => navigationRef.navigate("PropertyDetail", { id: item.id })}
     >
       <View style={s.card}>
         {/* Image */}
@@ -150,7 +150,7 @@ export default function PropertiesScreen() {
             <Text style={s.pageTitle}>Properties</Text>
             <Text style={s.pageSubtitle}>{PROPERTIES_DATA.length} properties listed</Text>
           </View>
-          <TouchableOpacity activeOpacity={0.8} onPress={() => router.push("/add-property")}>
+          <TouchableOpacity activeOpacity={0.8} onPress={() => navigationRef.navigate("AddProperty")}>
             <View style={s.addBtnInner}>
               <PlusIcon />
             </View>

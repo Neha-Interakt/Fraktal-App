@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useState } from "react";
 import {
   KeyboardAvoidingView,
@@ -707,10 +707,10 @@ function Step10_Saved({ form }: any) {
           </View>
         ))}
       </View>
-      <TouchableOpacity onPress={() => router.replace("/(tabs)/properties" as any)} activeOpacity={0.8} style={[bn.cont, bn.full]}>
+      <TouchableOpacity onPress={() => navigationRef.reset({ index: 0, routes: [{ name: "App" as any }] })} activeOpacity={0.8} style={[bn.cont, bn.full]}>
         <Text style={bn.contTxt}>View My Properties</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => router.replace("/(tabs)/" as any)} activeOpacity={0.8} style={[bn.back, bn.full]}>
+      <TouchableOpacity onPress={() => navigationRef.reset({ index: 0, routes: [{ name: "App" as any }] })} activeOpacity={0.8} style={[bn.back, bn.full]}>
         <Text style={bn.backTxt}>Go to Dashboard</Text>
       </TouchableOpacity>
     </View>
@@ -796,7 +796,7 @@ export default function AddPropertyScreen() {
 
   const next = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const back = () => {
-    if (step === 0) { router.back(); return; }
+    if (step === 0) { navigationRef.goBack(); return; }
     setStep((s) => s - 1);
   };
 

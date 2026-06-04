@@ -1,4 +1,5 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useRoute } from "@react-navigation/native";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useState } from "react";
 import {
   Alert,
@@ -86,7 +87,8 @@ function InputField({
 }
 
 export default function EditPropertyScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const route = useRoute<any>();
+  const { id } = (route.params ?? {}) as { id: string };
   const property = PROPERTIES_DATA.find((p) => p.id === id) ?? PROPERTIES_DATA[0];
 
   const insets = useSafeAreaInsets();
@@ -111,7 +113,7 @@ export default function EditPropertyScreen() {
     }
     setSaved(true);
     setTimeout(() => {
-      router.back();
+      navigationRef.goBack();
     }, 700);
   };
 
@@ -123,7 +125,7 @@ export default function EditPropertyScreen() {
       <View style={s.screen}>
         {/* Header */}
         <View style={[s.header, { paddingTop: topPad }]}>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => router.back()} style={s.backBtn}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigationRef.goBack()} style={s.backBtn}>
             <ArrowLeftIcon />
           </TouchableOpacity>
           <Text style={s.headerTitle}>Edit Property</Text>
@@ -246,7 +248,7 @@ export default function EditPropertyScreen() {
           </TouchableOpacity>
 
           {/* Discard */}
-          <TouchableOpacity style={s.discardBtn} activeOpacity={0.7} onPress={() => router.back()}>
+          <TouchableOpacity style={s.discardBtn} activeOpacity={0.7} onPress={() => navigationRef.goBack()}>
             <Text style={s.discardTxt}>Discard Changes</Text>
           </TouchableOpacity>
         </ScrollView>

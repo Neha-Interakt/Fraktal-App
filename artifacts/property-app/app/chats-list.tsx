@@ -1,4 +1,4 @@
-import { router } from "expo-router";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useState } from "react";
 import {
   Platform,
@@ -117,10 +117,7 @@ function ChatRow({ item }: { item: ChatItem }) {
       style={s.chatRow}
       activeOpacity={0.75}
       onPress={() =>
-        router.push({
-          pathname: "/chat",
-          params: { id: item.tenantId, tenant: item.tenantName },
-        } as any)
+        navigationRef.navigate("Chat", { id: item.tenantId, tenant: item.tenantName })
       }
     >
       {/* Avatar */}
@@ -180,7 +177,7 @@ export default function ChatsListScreen() {
     <View style={s.screen}>
       {/* Header */}
       <View style={[s.header, { paddingTop: topPad }]}>
-        <TouchableOpacity style={s.backBtn} activeOpacity={0.7} onPress={() => router.back()}>
+        <TouchableOpacity style={s.backBtn} activeOpacity={0.7} onPress={() => navigationRef.goBack()}>
           <ArrowLeftIcon />
         </TouchableOpacity>
         <View style={s.headerCenter}>

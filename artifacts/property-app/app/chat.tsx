@@ -1,4 +1,5 @@
-import { router, useLocalSearchParams } from "expo-router";
+import { useRoute } from "@react-navigation/native";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useRef, useState } from "react";
 import {
   FlatList,
@@ -106,7 +107,8 @@ function Bubble({ msg, tenantName }: { msg: Message; tenantName: string }) {
 }
 
 export default function ChatScreen() {
-  const { id, tenant } = useLocalSearchParams<{ id: string; tenant: string }>();
+  const route = useRoute<any>();
+  const { id, tenant } = (route.params ?? {}) as { id?: string; tenant?: string };
   const insets = useSafeAreaInsets();
   const topPad = isWeb ? 8 : insets.top > 0 ? insets.top : 12;
   const bottomPad = isWeb ? 0 : insets.bottom;
@@ -148,7 +150,7 @@ export default function ChatScreen() {
       <View style={c.screen}>
         {/* Header */}
         <View style={[c.header, { paddingTop: topPad }]}>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => router.back()} style={c.backBtn}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigationRef.goBack()} style={c.backBtn}>
             <ArrowLeftIcon />
           </TouchableOpacity>
           <View style={c.headerCenter}>

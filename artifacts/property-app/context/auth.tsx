@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { router } from "expo-router";
 import React, { createContext, useContext, useEffect, useState } from "react";
+import { navigationRef } from "@/navigation/navigationRef";
 
 export type UserRole = "owner" | "tenant" | "manager" | null;
 
@@ -58,25 +58,31 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }));
   };
 
+  const nav = (name: string) => {
+    if (navigationRef.isReady()) {
+      navigationRef.reset({ index: 0, routes: [{ name: name as any }] });
+    }
+  };
+
   const completeOnboarding = async () => {
     await save({ hasOnboarded: true });
-    router.replace("/login" as any);
+    nav("Login");
   };
 
   const login = async (name: string, _email: string) => {
     await save({ isLoggedIn: true, userName: name });
-    router.replace("/role-select" as any);
+    nav("RoleSelect");
   };
 
   const selectRole = async (role: UserRole) => {
     await save({ role, isNewUser: true });
-    router.replace("/(tabs)/" as any);
+    nav("App");
   };
 
   const logout = async () => {
     await AsyncStorage.removeItem(STORAGE_KEY);
     setState({ loading: false, hasOnboarded: false, isLoggedIn: false, role: null, isNewUser: false, userName: "" });
-    router.replace("/onboarding" as any);
+    nav("Onboarding");
   };
 
   return (

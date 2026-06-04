@@ -1,6 +1,6 @@
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
-import { router } from "expo-router";
+import { navigationRef } from "@/navigation/navigationRef";
 import React from "react";
 import {
   Dimensions,
@@ -299,7 +299,7 @@ function EmptyPropertiesCard() {
         <Text style={s.emptySub}>Add your first property to start tracking rent and tenants</Text>
       </View>
       <TouchableOpacity
-        onPress={() => router.push("/add-property")}
+        onPress={() => navigationRef.navigate("AddProperty")}
         activeOpacity={0.85}
         style={s.emptyBtn}
       >
@@ -365,7 +365,7 @@ export default function HomeScreen() {
               <Text style={s.welcomeHi}>Welcome{userName ? `, ${userName}` : ""}! 🎉</Text>
               <Text style={s.welcomeSub}>You're all set. Add your first property to get started.</Text>
             </View>
-            <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.85} style={s.welcomeBtn}>
+            <TouchableOpacity onPress={() => navigationRef.navigate("AddProperty")} activeOpacity={0.85} style={s.welcomeBtn}>
               <Text style={s.welcomeBtnTxt}>Get Started →</Text>
             </TouchableOpacity>
           </LinearGradient>
@@ -381,10 +381,10 @@ export default function HomeScreen() {
 
           {/* Quick Actions */}
           <View style={s.quickActionsBar}>
-            <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => navigationRef.navigate("AddProperty")} activeOpacity={0.8} style={{ flex: 1 }}>
               <QuickAction icon={<PlusCircleIcon />} label="Add property" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => router.push("/chats-list" as any)} activeOpacity={0.8} style={{ flex: 1 }}>
+            <TouchableOpacity onPress={() => navigationRef.navigate("ChatsList")} activeOpacity={0.8} style={{ flex: 1 }}>
               <QuickAction icon={<ChatIcon />} label="Chats" />
             </TouchableOpacity>
             <QuickAction icon={<FilesIcon />} label="Documents" />
@@ -427,10 +427,10 @@ export default function HomeScreen() {
 
         {/* Quick Actions */}
         <View style={s.quickActionsBar}>
-          <TouchableOpacity onPress={() => router.push("/add-property")} activeOpacity={0.8} style={{ flex: 1 }}>
+          <TouchableOpacity onPress={() => navigationRef.navigate("AddProperty")} activeOpacity={0.8} style={{ flex: 1 }}>
             <QuickAction icon={<PlusCircleIcon />} label="Add property" />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => router.push("/chats-list" as any)} activeOpacity={0.8} style={{ flex: 1 }}>
+          <TouchableOpacity onPress={() => navigationRef.navigate("ChatsList")} activeOpacity={0.8} style={{ flex: 1 }}>
             <QuickAction icon={<ChatIcon />} label="Chats" />
           </TouchableOpacity>
           <QuickAction icon={<FilesIcon />} label="Documents" />
@@ -439,7 +439,7 @@ export default function HomeScreen() {
         {/* Properties */}
         <View style={s.sectionHeader}>
           <Text style={s.sectionTitle}>Properties</Text>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/properties" as any)}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigationRef.navigate("Properties")}>
             <Text style={s.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>
@@ -465,7 +465,7 @@ export default function HomeScreen() {
         {/* Recent Activities */}
         <View style={[s.sectionHeader, { marginTop: 4 }]}>
           <Text style={s.sectionTitle}>Recent Activities</Text>
-          <TouchableOpacity activeOpacity={0.7} onPress={() => router.push("/(tabs)/finance" as any)}>
+          <TouchableOpacity activeOpacity={0.7} onPress={() => navigationRef.navigate("Finance")}>
             <Text style={s.seeMore}>See more</Text>
           </TouchableOpacity>
         </View>

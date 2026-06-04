@@ -1,5 +1,6 @@
 import { Image } from "expo-image";
-import { router, useLocalSearchParams } from "expo-router";
+import { useRoute } from "@react-navigation/native";
+import { navigationRef } from "@/navigation/navigationRef";
 import React, { useRef, useState } from "react";
 import {
   Platform,
@@ -224,7 +225,8 @@ export const PROPERTIES_DATA = [
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function PropertyDetailScreen() {
-  const { id } = useLocalSearchParams<{ id: string }>();
+  const route = useRoute<any>();
+  const { id } = (route.params ?? {}) as { id: string };
   const property = PROPERTIES_DATA.find((p) => p.id === id) ?? PROPERTIES_DATA[1];
 
   const insets = useSafeAreaInsets();
@@ -239,12 +241,12 @@ export default function PropertyDetailScreen() {
 
   const onChatPress = () => {
     if (property.status === "Occupied") {
-      router.push({ pathname: "/chat", params: { id: property.id, tenant: property.tenant } } as any);
+      navigationRef.navigate("Chat", { id: property.id, tenant: property.tenant });
     }
   };
 
   const onEditPress = () => {
-    router.push({ pathname: "/edit-property", params: { id: property.id } } as any);
+    navigationRef.navigate("EditProperty", { id: property.id });
   };
 
   return (
@@ -253,7 +255,7 @@ export default function PropertyDetailScreen() {
       <View style={[s.topHeader, { paddingTop: topPad }]}>
         <View style={s.navbar}>
           <View style={s.navLeft}>
-            <TouchableOpacity activeOpacity={0.7} onPress={() => router.back()} style={s.backBtn}>
+            <TouchableOpacity activeOpacity={0.7} onPress={() => navigationRef.goBack()} style={s.backBtn}>
               <ArrowLeftIcon />
             </TouchableOpacity>
             <Text style={s.navTitle} numberOfLines={1}>{property.name}</Text>
