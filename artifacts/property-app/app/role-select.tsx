@@ -34,7 +34,7 @@ function OwnerIcon({ active }: { active: boolean }) {
       <Rect x={30} y={16} width={4} height={4} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.6 : 0.8} />
       <Rect x={24} y={24} width={4} height={4} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.6 : 0.8} />
       <Rect x={30} y={24} width={4} height={4} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.6 : 0.8} />
-      <Rect x={24} y={32} width={10} height={4} rx={1} fill={active ? GOLD : GOLD} />
+      <Rect x={24} y={32} width={10} height={4} rx={1} fill={GOLD} />
     </Svg>
   );
 }
@@ -45,7 +45,7 @@ function TenantIcon({ active }: { active: boolean }) {
     <Svg width={40} height={40} viewBox="0 0 40 40" fill="none">
       <Circle cx={20} cy={13} r={7} fill={c} />
       <Path d="M8 36C8 28.268 13.373 22 20 22C26.627 22 32 28.268 32 36" stroke={c} strokeWidth={2.5} strokeLinecap="round" fill="none" />
-      <Circle cx={32} cy={28} r={6} fill={active ? GOLD : GOLD} />
+      <Circle cx={32} cy={28} r={6} fill={GOLD} />
       <Path d="M30 28h4M32 26v4" stroke={active ? PRIMARY : WHITE} strokeWidth={2} strokeLinecap="round" />
     </Svg>
   );
@@ -61,7 +61,7 @@ function ManagerIcon({ active }: { active: boolean }) {
       <Rect x={21} y={22} width={5} height={5} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.8 : 0.9} />
       <Rect x={14} y={29} width={5} height={3} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.5 : 0.6} />
       <Rect x={21} y={29} width={5} height={3} rx={1} fill={active ? PRIMARY : WHITE} opacity={active ? 0.5 : 0.6} />
-      <Circle cx={32} cy={14} r={6} fill={active ? GOLD : GOLD} />
+      <Circle cx={32} cy={14} r={6} fill={GOLD} />
       <Path d="M32 11v6M29 14h6" stroke={active ? PRIMARY : WHITE} strokeWidth={2} strokeLinecap="round" />
     </Svg>
   );
@@ -75,6 +75,73 @@ function CheckBadge() {
     </Svg>
   );
 }
+
+// ─── Coming Soon Screen ────────────────────────────────────────────────────────
+
+function ComingSoonScreen({ role, onBack }: { role: UserRole; onBack: () => void }) {
+  const insets = useSafeAreaInsets();
+  const topPad = isWeb ? 20 : insets.top + 8;
+  const label = role === "tenant" ? "Tenant" : "Property Manager";
+  return (
+    <View style={StyleSheet.absoluteFill}>
+      <View style={{ flex: 1, backgroundColor: LIGHT_GRAY }}>
+        <LinearGradient colors={[PRIMARY, "#24487a"]} style={[cs.csHeader, { paddingTop: topPad }]}>
+          <TouchableOpacity onPress={onBack} activeOpacity={0.7} style={cs.backRow}>
+            <Svg width={20} height={20} viewBox="0 0 20 20" fill="none">
+              <Path d="M13 16L7 10L13 4" stroke={WHITE} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+            </Svg>
+            <Text style={cs.backTxt}>Back</Text>
+          </TouchableOpacity>
+          <Text style={cs.csTitle}>Coming Soon</Text>
+          <Text style={cs.csSub}>{label} experience is on the way</Text>
+        </LinearGradient>
+
+        <View style={cs.csBody}>
+          <View style={cs.iconWrap}>
+            <Svg width={56} height={56} viewBox="0 0 56 56" fill="none">
+              <Circle cx={28} cy={28} r={28} fill={`${PRIMARY}12`} />
+              <Path d="M28 18v12M28 34v3" stroke={PRIMARY} strokeWidth={3} strokeLinecap="round" />
+            </Svg>
+          </View>
+          <Text style={cs.csBigTitle}>We're building it</Text>
+          <Text style={cs.csDesc}>
+            The{" "}
+            <Text style={{ fontFamily: "Inter_600SemiBold", color: PRIMARY }}>{label}</Text>
+            {" "}experience is under active development.{"\n"}
+            Sign up as a{" "}
+            <Text style={{ fontFamily: "Inter_600SemiBold", color: PRIMARY }}>Property Owner</Text>
+            {" "}to get started today.
+          </Text>
+          <View style={cs.tipBox}>
+            <Text style={cs.tipTxt}>🚀 Expected release: Q3 2026</Text>
+          </View>
+          <TouchableOpacity onPress={onBack} activeOpacity={0.85} style={cs.btn}>
+            <LinearGradient colors={[GOLD, "#e8b820"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={cs.btnGrad}>
+              <Text style={cs.btnTxt}>← Go Back</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+const cs = StyleSheet.create({
+  csHeader:    { paddingBottom: 28, paddingHorizontal: 24, gap: 4 },
+  backRow:     { flexDirection: "row", alignItems: "center", gap: 6, marginBottom: 12 },
+  backTxt:     { fontFamily: "Inter_500Medium", fontSize: 14, color: "rgba(255,255,255,0.85)" },
+  csTitle:     { fontFamily: "Inter_700Bold", fontSize: 24, color: WHITE },
+  csSub:       { fontFamily: "Inter_400Regular", fontSize: 14, color: "rgba(255,255,255,0.7)", marginTop: 2 },
+  csBody:      { flex: 1, alignItems: "center", justifyContent: "center", paddingHorizontal: 32, gap: 18 },
+  iconWrap:    { width: 96, height: 96, borderRadius: 48, backgroundColor: `${PRIMARY}10`, alignItems: "center", justifyContent: "center" },
+  csBigTitle:  { fontFamily: "Inter_700Bold", fontSize: 22, color: "#1a1a1a", textAlign: "center" },
+  csDesc:      { fontFamily: "Inter_400Regular", fontSize: 14, color: "#555", textAlign: "center", lineHeight: 22 },
+  tipBox:      { backgroundColor: "#fffbeb", borderRadius: 12, paddingVertical: 12, paddingHorizontal: 20, borderWidth: 1, borderColor: `${GOLD}40` },
+  tipTxt:      { fontFamily: "Inter_500Medium", fontSize: 13, color: "#7a5c00" },
+  btn:         { borderRadius: 16, overflow: "hidden", alignSelf: "stretch", marginTop: 4 },
+  btnGrad:     { height: 52, alignItems: "center", justifyContent: "center" },
+  btnTxt:      { fontFamily: "Inter_700Bold", fontSize: 16, color: WHITE },
+});
 
 // ─── Role data ─────────────────────────────────────────────────────────────────
 
@@ -102,11 +169,14 @@ const ROLES: { key: UserRole; label: string; desc: string; badge: string; icon: 
   },
 ];
 
+// ─── Main Screen ───────────────────────────────────────────────────────────────
+
 export default function RoleSelectScreen() {
   const insets = useSafeAreaInsets();
   const { selectRole, userName } = useAuth();
   const [selected, setSelected] = useState<UserRole>(null);
   const [loading, setLoading] = useState(false);
+  const [comingSoon, setComingSoon] = useState<UserRole | null>(null);
 
   const topPad = isWeb ? 0 : insets.top + 8;
   const bottomPad = isWeb ? 32 : insets.bottom + 24;
@@ -118,6 +188,14 @@ export default function RoleSelectScreen() {
       await selectRole(selected);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleCardPress = (key: UserRole) => {
+    if (key === "tenant" || key === "manager") {
+      setComingSoon(key);
+    } else {
+      setSelected(key);
     }
   };
 
@@ -141,10 +219,11 @@ export default function RoleSelectScreen() {
         <View style={{ gap: 14 }}>
           {ROLES.map((role) => {
             const isActive = selected === role.key;
+            const isLocked = role.key === "tenant" || role.key === "manager";
             return (
               <TouchableOpacity
                 key={role.key}
-                onPress={() => setSelected(role.key)}
+                onPress={() => handleCardPress(role.key)}
                 activeOpacity={0.85}
               >
                 {isActive ? (
@@ -157,8 +236,8 @@ export default function RoleSelectScreen() {
                     <RoleCardContent role={role} isActive />
                   </LinearGradient>
                 ) : (
-                  <View style={[st.roleCard, st.roleCardInactive]}>
-                    <RoleCardContent role={role} isActive={false} />
+                  <View style={[st.roleCard, st.roleCardInactive, isLocked && st.roleCardLocked]}>
+                    <RoleCardContent role={role} isActive={false} isLocked={isLocked} />
                   </View>
                 )}
               </TouchableOpacity>
@@ -190,11 +269,16 @@ export default function RoleSelectScreen() {
           </LinearGradient>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Coming Soon Overlay */}
+      {comingSoon !== null && (
+        <ComingSoonScreen role={comingSoon} onBack={() => setComingSoon(null)} />
+      )}
     </View>
   );
 }
 
-function RoleCardContent({ role, isActive }: { role: (typeof ROLES)[0]; isActive: boolean }) {
+function RoleCardContent({ role, isActive, isLocked = false }: { role: (typeof ROLES)[0]; isActive: boolean; isLocked?: boolean }) {
   return (
     <View style={st.cardInner}>
       {/* Icon box */}
@@ -211,6 +295,11 @@ function RoleCardContent({ role, isActive }: { role: (typeof ROLES)[0]; isActive
               <Text style={st.badgeTxt}>{role.badge}</Text>
             </View>
           ) : null}
+          {isLocked && (
+            <View style={st.soonBadge}>
+              <Text style={st.soonTxt}>Coming Soon</Text>
+            </View>
+          )}
         </View>
         <Text style={[st.roleDesc, isActive && { color: `${WHITE}85` }]}>{role.desc}</Text>
       </View>
@@ -226,24 +315,27 @@ function RoleCardContent({ role, isActive }: { role: (typeof ROLES)[0]; isActive
 }
 
 const st = StyleSheet.create({
-  header:        { paddingBottom: 28, paddingHorizontal: 24, gap: 4, paddingTop: 20 },
-  greeting:      { fontFamily: "Inter_500Medium", fontSize: 14, color: `${"#ffffff"}80` },
-  headerTitle:   { fontFamily: "Inter_700Bold", fontSize: 24, color: WHITE },
-  headerSub:     { fontFamily: "Inter_400Regular", fontSize: 14, color: `${"#ffffff"}75`, marginTop: 2 },
-  content:       { padding: 20, paddingTop: 20, gap: 16 },
-  roleCard:      { borderRadius: 18, padding: 18, overflow: "hidden" },
+  header:           { paddingBottom: 28, paddingHorizontal: 24, gap: 4, paddingTop: 20 },
+  greeting:         { fontFamily: "Inter_500Medium", fontSize: 14, color: `${"#ffffff"}80` },
+  headerTitle:      { fontFamily: "Inter_700Bold", fontSize: 24, color: WHITE },
+  headerSub:        { fontFamily: "Inter_400Regular", fontSize: 14, color: `${"#ffffff"}75`, marginTop: 2 },
+  content:          { padding: 20, paddingTop: 20, gap: 16 },
+  roleCard:         { borderRadius: 18, padding: 18, overflow: "hidden" },
   roleCardInactive: { backgroundColor: WHITE, borderWidth: 1.5, borderColor: BORDER },
-  cardInner:     { flexDirection: "row", alignItems: "flex-start", gap: 14 },
-  iconBox:       { width: 64, height: 64, borderRadius: 16, alignItems: "center", justifyContent: "center", flexShrink: 0 },
-  iconBoxActive: { backgroundColor: `${"#ffffff"}15` },
-  iconBoxInactive:{ backgroundColor: `${PRIMARY}10` },
-  roleLabel:     { fontFamily: "Inter_700Bold", fontSize: 16, color: PRIMARY },
-  roleDesc:      { fontFamily: "Inter_400Regular", fontSize: 13, color: "#666", lineHeight: 18 },
-  badge:         { backgroundColor: `${GOLD}22`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 2 },
-  badgeTxt:      { fontFamily: "Inter_600SemiBold", fontSize: 10, color: GOLD },
-  tipBox:        { backgroundColor: "#fffbeb", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: `${GOLD}30` },
-  tipTxt:        { fontFamily: "Inter_400Regular", fontSize: 13, color: "#7a5c00", textAlign: "center" },
-  ctaBtn:        { borderRadius: 16, overflow: "hidden" },
-  ctaGrad:       { height: 54, alignItems: "center", justifyContent: "center" },
-  ctaTxt:        { fontFamily: "Inter_700Bold", fontSize: 17, color: WHITE },
+  roleCardLocked:   { opacity: 0.8 },
+  cardInner:        { flexDirection: "row", alignItems: "flex-start", gap: 14 },
+  iconBox:          { width: 64, height: 64, borderRadius: 16, alignItems: "center", justifyContent: "center", flexShrink: 0 },
+  iconBoxActive:    { backgroundColor: `${"#ffffff"}15` },
+  iconBoxInactive:  { backgroundColor: `${PRIMARY}10` },
+  roleLabel:        { fontFamily: "Inter_700Bold", fontSize: 16, color: PRIMARY },
+  roleDesc:         { fontFamily: "Inter_400Regular", fontSize: 13, color: "#666", lineHeight: 18 },
+  badge:            { backgroundColor: `${GOLD}22`, borderRadius: 8, paddingHorizontal: 7, paddingVertical: 2 },
+  badgeTxt:         { fontFamily: "Inter_600SemiBold", fontSize: 10, color: GOLD },
+  soonBadge:        { backgroundColor: "#e9f0fb", borderRadius: 8, paddingHorizontal: 7, paddingVertical: 2 },
+  soonTxt:          { fontFamily: "Inter_600SemiBold", fontSize: 10, color: "#4a6fa5" },
+  tipBox:           { backgroundColor: "#fffbeb", borderRadius: 12, padding: 12, borderWidth: 1, borderColor: `${GOLD}30` },
+  tipTxt:           { fontFamily: "Inter_400Regular", fontSize: 13, color: "#7a5c00", textAlign: "center" },
+  ctaBtn:           { borderRadius: 16, overflow: "hidden" },
+  ctaGrad:          { height: 54, alignItems: "center", justifyContent: "center" },
+  ctaTxt:           { fontFamily: "Inter_700Bold", fontSize: 17, color: WHITE },
 });
