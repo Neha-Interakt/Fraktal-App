@@ -126,18 +126,18 @@ export default function FinanceScreen() {
           <View style={s.summaryColRight}>
             <View style={s.smallSummCard}>
               <Text style={s.smallLabel}>Expenses</Text>
-              <Text style={s.smallVal}>₹63,400</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 2, marginTop: 2 }}>
+              <Text style={s.smallVal} numberOfLines={1} adjustsFontSizeToFit>₹63,400</Text>
+              <View style={s.smallChangeRow}>
                 <ArrowDownIcon />
-                <Text style={[s.smallChange, { color: RED }]}>−12% ↓</Text>
+                <Text style={[s.smallChange, { color: RED }]}>−12% this yr</Text>
               </View>
             </View>
-            <View style={[s.smallSummCard, { backgroundColor: `${P}22`, borderColor: `${P}44` }]}>
+            <View style={[s.smallSummCard, { backgroundColor: `${P}15`, borderColor: `${P}30` }]}>
               <Text style={s.smallLabel}>Net Revenue</Text>
-              <Text style={[s.smallVal, { color: P }]}>₹2,16,600</Text>
-              <View style={{ flexDirection: "row", alignItems: "center", gap: 2, marginTop: 2 }}>
+              <Text style={[s.smallVal, { color: P }]} numberOfLines={1} adjustsFontSizeToFit>₹2,16,600</Text>
+              <View style={s.smallChangeRow}>
                 <ArrowUpIcon />
-                <Text style={[s.smallChange, { color: GREEN }]}>+10.5%</Text>
+                <Text style={[s.smallChange, { color: GREEN }]}>+10.5% this yr</Text>
               </View>
             </View>
           </View>
@@ -295,17 +295,18 @@ const s = StyleSheet.create({
   titleRow: { paddingHorizontal: 16, paddingTop: 8, paddingBottom: 4 },
   title: { fontFamily: "Inter_700Bold", fontSize: 22, color: DARK },
   subtitle: { fontFamily: "Inter_400Regular", fontSize: 13, color: "#888", marginTop: 2 },
-  summaryRow: { flexDirection: "row", gap: 10, paddingHorizontal: 16, paddingVertical: 12 },
-  summaryCard: { flex: 1.3, borderRadius: 16, padding: 14, gap: 4 },
+  summaryRow: { flexDirection: "row", gap: 10, paddingHorizontal: 16, paddingVertical: 12, alignItems: "stretch" },
+  summaryCard: { flex: 1.3, borderRadius: 16, padding: 14, justifyContent: "space-between" },
   summaryLabel: { fontFamily: "Inter_400Regular", fontSize: 12, color: "rgba(255,255,255,0.7)" },
   summaryVal: { fontFamily: "Inter_700Bold", fontSize: 20, color: WHITE, marginTop: 2 },
   summaryBadge: { flexDirection: "row", alignItems: "center", gap: 2, marginTop: 4 },
   summaryBadgeTxt: { fontFamily: "Inter_400Regular", fontSize: 11 },
-  summaryColRight: { flex: 1, gap: 10 },
-  smallSummCard: { flex: 1, backgroundColor: "#f5f5f5", borderRadius: 14, padding: 10, borderWidth: 1, borderColor: "#e8e8e8", justifyContent: "space-between" },
-  smallLabel: { fontFamily: "Inter_400Regular", fontSize: 11, color: "#888" },
-  smallVal: { fontFamily: "Inter_700Bold", fontSize: 14, color: DARK, marginTop: 3 },
-  smallChange: { fontFamily: "Inter_400Regular", fontSize: 10 },
+  summaryColRight: { flex: 1, gap: 8 },
+  smallSummCard: { flex: 1, backgroundColor: "#f5f5f5", borderRadius: 14, paddingHorizontal: 12, paddingVertical: 10, borderWidth: 1, borderColor: "#e8e8e8", justifyContent: "space-between" },
+  smallLabel: { fontFamily: "Inter_400Regular", fontSize: 11, color: "#888", marginBottom: 2 },
+  smallVal: { fontFamily: "Inter_700Bold", fontSize: 15, color: DARK },
+  smallChange: { fontFamily: "Inter_400Regular", fontSize: 10, flexShrink: 1 },
+  smallChangeRow: { flexDirection: "row", alignItems: "center", gap: 3, marginTop: 4 },
   tabsRow: { paddingHorizontal: 16, paddingBottom: 12, gap: 8 },
   tabChip: { borderRadius: 20, paddingHorizontal: 16, paddingVertical: 6, backgroundColor: "#f0f0f0" },
   tabChipActive: { backgroundColor: P },
